@@ -19,4 +19,5 @@ code {
   --color-green-medium: #0ab68b;
   --color-green-dark: #028174;
   --color-beige: #ffe3b3;
+  --background-image-login: url('/login-bg2.jpg');
 }
