@@ -3,13 +3,16 @@ import Card from "@/components/common/Card";
 import Input from "@/components/common/Input";
 import { createFileRoute, redirect } from "@tanstack/react-router";
 import { useState } from "react";
-import { authQueryOptions, useLogin } from "../-auth-hooks";
+import { getAuthUser, useLogin } from "../-auth-hooks";
 import type { LoginFormType } from "@/models";
 
-function RouteComponent() {
-  const [formData, setFormData] = useState<LoginFormType>({ email: "", password: "" });
+function Login() {
+  const [formData, setFormData] = useState<LoginFormType>({
+    email: "",
+    password: "",
+  });
 
-  const {mutateAsync: login} = useLogin();
+  const { mutateAsync: login } = useLogin();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const { name, value } = e.target;
@@ -18,14 +21,15 @@ function RouteComponent() {
 
   const handleSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(formData);
     login(formData);
   };
 
   return (
     <div className="h-dvh w-full flex justify-center items-center bg-login bg-cover">
       <Card classes="w-96 m-10 p-5 text-black" color="transparent">
-        <h1 className="text-center text-white text-4xl mb-5">Login</h1>
+        <h1 className="text-center text-white text-3xl mb-5">
+          Hi! Welcome back
+        </h1>
         <form
           onSubmit={handleSubmit}
           action=""
@@ -55,11 +59,10 @@ function RouteComponent() {
 }
 
 export const Route = createFileRoute("/auth/login/")({
-  component: RouteComponent,
-  beforeLoad: async ({ context }) => {
-    try {
-      await context.queryClient.ensureQueryData(authQueryOptions);
-      throw redirect({ to: "/" });
-    } catch {}
+  component: Login,
+  beforeLoad: async () => {
+    console.log("authUser: ", getAuthUser());
+    const authUser = getAuthUser();
+    if (authUser) throw redirect({ to: "/" });
   },
 });
