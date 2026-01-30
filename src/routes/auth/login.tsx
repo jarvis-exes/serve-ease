@@ -3,8 +3,10 @@ import Card from "@/components/common/Card";
 import Input from "@/components/common/Input";
 import { createFileRoute, redirect } from "@tanstack/react-router";
 import { useState } from "react";
-import { getAuthUser, useLogin } from "../-auth-hooks";
 import type { LoginFormType } from "@/models";
+import { getAuthUser } from "@/utils/tokens";
+import { useLogin } from "./-auth-hooks";
+import Loader from "@/components/loaders/Loader";
 
 function Login() {
   const [formData, setFormData] = useState<LoginFormType>({
@@ -12,7 +14,7 @@ function Login() {
     password: "",
   });
 
-  const { mutateAsync: login } = useLogin();
+  const { mutateAsync: login, isPending } = useLogin();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const { name, value } = e.target;
@@ -26,14 +28,17 @@ function Login() {
 
   return (
     <div className="h-dvh w-full flex justify-center items-center bg-login bg-cover">
-      <Card classes="w-96 m-10 p-5 text-black" color="transparent">
-        <h1 className="text-center text-white text-3xl mb-5">
+      <Card
+        classes="w-96 m-10 h-96 p-10 text-black flex flex-col"
+        color="transparent"
+      >
+        <h1 className="text-center text-white text-3xl mb-10">
           Hi! Welcome back
         </h1>
         <form
           onSubmit={handleSubmit}
           action=""
-          className="flex flex-col items-center h-full gap-5 p-5"
+          className="flex flex-col h-full items-center gap-5"
         >
           <Input
             name="email"
@@ -51,14 +56,20 @@ function Login() {
             onChange={handleChange}
           />
 
-          <Button>Login</Button>
+          <div className="h-full flex flex-col justify-center items-center">
+            {isPending ? (
+              <Loader type="pizza" classes="" />
+            ) : (
+              <Button disabled={isPending}>Login</Button>
+            )}
+          </div>
         </form>
       </Card>
     </div>
   );
 }
 
-export const Route = createFileRoute("/auth/login/")({
+export const Route = createFileRoute("/auth/login")({
   component: Login,
   beforeLoad: async () => {
     console.log("authUser: ", getAuthUser());

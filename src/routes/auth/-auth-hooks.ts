@@ -1,17 +1,11 @@
-import type { AuthUserType, LoginFormType } from "@/models";
+import { api } from "@/api/api";
+import type { LoginFormType } from "@/models";
 import { Routes } from "@/models/routes"
-import { useMutation, useQueryClient } from "@tanstack/react-query"
+import { useMutation } from "@tanstack/react-query"
 import { useNavigate } from "@tanstack/react-router";
-import axios from "axios"
-import { jwtDecode } from "jwt-decode";
-
-const api = axios.create({
-    baseURL: 'https://serve-ease-l1i2.onrender.com',
-    withCredentials: true
-})
 
 export const useLogin = () => {
- 
+    const navigate = useNavigate();
     return useMutation({
         mutationFn: async (payload: LoginFormType) => {
             const { data } = await api.post(`${Routes.AUTH}${Routes.LOGIN}`, payload);
@@ -19,34 +13,21 @@ export const useLogin = () => {
         },
         onSuccess: (data) => {
             localStorage.setItem('accessToken', data.accessToken);
+            navigate({ to: `/` });
         }
     })
 }
 
 export const useLogout = () => {
-    const queryClient = useQueryClient();
     const navigate = useNavigate();
     return useMutation({
         mutationFn: async () => {
             await api.post(`${Routes.AUTH}${Routes.LOGOUT}`)
         },
         onSuccess: () => {
-            queryClient.removeQueries({ queryKey: ['accessToken', 'currentUser'] });
+            localStorage.removeItem('accessToken')
             navigate({ to: `${Routes.AUTH}${Routes.LOGIN}` });
         }
     })
 }
 
-export const getAuthUser = () => {
-    const token = localStorage.getItem("accessToken");
-    if (!token) return null;
-
-    const decoded = jwtDecode<AuthUserType>(token);
-
-    if (decoded.exp * 1000 < Date.now()) {
-        localStorage.removeItem("accessToken");
-        return null;
-    }
-
-    return decoded;
-}
