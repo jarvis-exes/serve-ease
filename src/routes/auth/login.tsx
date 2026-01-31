@@ -14,7 +14,7 @@ function Login() {
     password: "",
   });
 
-  const { mutateAsync: login, isPending } = useLogin();
+  const { mutateAsync: login, isPending, isError } = useLogin();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const { name, value } = e.target;
@@ -29,7 +29,7 @@ function Login() {
   return (
     <div className="h-dvh w-full flex justify-center items-center bg-login bg-cover">
       <Card
-        classes="w-96 m-10 h-96 p-10 text-black flex flex-col"
+        classes="w-96 m-10 min-h-96 p-10 text-black flex flex-col"
         color="transparent"
       >
         <h1 className="text-center text-white text-3xl mb-10">
@@ -38,7 +38,7 @@ function Login() {
         <form
           onSubmit={handleSubmit}
           action=""
-          className="flex flex-col h-full items-center gap-5"
+          className="flex flex-col min-h-60 h-full items-center gap-5"
         >
           <Input
             name="email"
@@ -46,6 +46,7 @@ function Login() {
             type="email"
             required
             onChange={handleChange}
+            disabled={isPending}
           />
 
           <Input
@@ -54,11 +55,14 @@ function Login() {
             type="password"
             required
             onChange={handleChange}
+            disabled={isPending}
           />
 
-          <div className="h-full flex flex-col justify-center items-center">
+          {isError && <div className="text-red-500 font-bold">Lagta hai password galat hai!</div>}
+
+          <div className="h-full flex flex-col m-auto">
             {isPending ? (
-              <Loader type="pizza" classes="" />
+              <Loader type="tarbooj"/>
             ) : (
               <Button disabled={isPending}>Login</Button>
             )}

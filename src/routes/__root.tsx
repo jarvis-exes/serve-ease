@@ -4,7 +4,7 @@ import { TanStackDevtools } from "@tanstack/react-devtools";
 import type { ContextType } from "@/models";
 
 const RootComponent = () => (
-  <>
+  <div className="h-screen flex flex-col">
     <Outlet />
     <TanStackDevtools
       config={{
@@ -17,7 +17,7 @@ const RootComponent = () => (
         },
       ]}
     />
-  </>
+  </div>
 );
 
 export const Route = createRootRouteWithContext<ContextType>()({

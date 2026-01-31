@@ -24,7 +24,7 @@ const Input: FC<InputProps> = (props) => {
       {label && <div className={twMerge(labelClasses)}>{label}</div>}
       <input
         className={twMerge(
-          'w-full focus:outline-none px-4 py-2 focus:py-4 rounded-2xl transition-all',
+          'w-full focus:outline-none px-4 py-2 focus:py-4 rounded-2xl transition-all disabled:cursor-not-allowed',
           colors[color],
           inputClasses
         )}
