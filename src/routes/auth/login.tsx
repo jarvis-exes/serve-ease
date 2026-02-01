@@ -58,13 +58,22 @@ function Login() {
             disabled={isPending}
           />
 
-          {isError && <div className="text-red-500 font-bold">Lagta hai password galat hai!</div>}
+          {isError && (
+            <div className="text-red-500 font-bold">
+              Lagta hai password galat hai!
+            </div>
+          )}
 
           <div className="h-full flex flex-col m-auto">
             {isPending ? (
-              <Loader type="tarbooj"/>
+              <Loader type="tarbooj" />
             ) : (
-              <Button disabled={isPending}>Login</Button>
+              <Button
+                disabled={isPending}
+                classes="text-xl px-6 py-4 rounded-3xl"
+              >
+                Login
+              </Button>
             )}
           </div>
         </form>

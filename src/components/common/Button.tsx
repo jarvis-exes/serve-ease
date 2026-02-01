@@ -7,10 +7,12 @@ type ButtonProps = {
   classes?: string;
   onClick?: () => void;
   disabled?: boolean;
+  icon?: ReactNode;
 };
 
 const colors = {
-  white: "bg-white/70 hover:bg-white/90 active:bg-white/70 text-gray-600 disabled:bg-black/30",
+  white:
+    "bg-white/70 hover:bg-white/90 active:bg-white/70 text-gray-600 disabled:bg-black/30",
 };
 
 const Button: FC<ButtonProps> = ({
@@ -19,18 +21,22 @@ const Button: FC<ButtonProps> = ({
   classes,
   onClick,
   disabled,
+  icon,
 }) => {
   return (
     <button
       className={twMerge(
-        "w-40 p-4 transition-all rounded-3xl active:scale-105 font-bold text-xl cursor-pointer disabled:cursor-not-allowed",
+        "px-4 py-2 transition-all rounded-2xl active:scale-105 font-bold text-lg cursor-pointer disabled:cursor-not-allowed",
         colors[color],
         classes,
       )}
       onClick={onClick}
       disabled={disabled}
     >
-      {children}
+      <div className="flex gap-2 items-center justify-center">
+        {icon}
+        {children}
+      </div>
     </button>
   );
 };
