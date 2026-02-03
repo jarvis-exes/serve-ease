@@ -2,5 +2,9 @@ export const Routes = {
     AUTH: '/auth',
     LOGIN: '/login',
     LOGOUT: '/logout',
-    ME: '/me'
+    MENU: '/menu',
+    EDIT: '/edit',
+    DASHBOARD: '/dashboard',
+    HOME: '/',
+
 }

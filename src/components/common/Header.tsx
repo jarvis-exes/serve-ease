@@ -1,12 +1,19 @@
 import { useLogout } from "@/routes/auth/-auth-hooks";
 import Button from "./Button";
 import { RiLogoutBoxLine } from "react-icons/ri";
+import Menu from "../menu/Menu";
+import { Link } from "@tanstack/react-router";
 
 const Header = () => {
   const { mutateAsync: logout } = useLogout();
   return (
     <div className="flex bg-green-medium h-16 justify-between px-4 py-2 items-center">
-      <div className="text-2xl font-bold text-white">Serve Ease</div>
+      <Link to='/' className="text-2xl font-bold text-white">
+        Serve Ease
+      </Link>
+      <div className="">
+        <Menu/>
+      </div>
       <div>
         <Button onClick={() => logout()} icon={<RiLogoutBoxLine />}>
           Logout
