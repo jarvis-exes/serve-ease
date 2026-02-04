@@ -12,7 +12,9 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as ProtectedRouteImport } from './routes/_protected'
 import { Route as ProtectedIndexRouteImport } from './routes/_protected/index'
 import { Route as AuthLoginRouteImport } from './routes/auth/login'
+import { Route as ProtectedMenuIndexRouteImport } from './routes/_protected/menu/index'
 import { Route as ProtectedDashboardIndexRouteImport } from './routes/_protected/dashboard/index'
+import { Route as ProtectedMenuEditRouteImport } from './routes/_protected/menu/edit'
 
 const ProtectedRoute = ProtectedRouteImport.update({
   id: '/_protected',
@@ -28,40 +30,58 @@ const AuthLoginRoute = AuthLoginRouteImport.update({
   path: '/auth/login',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ProtectedMenuIndexRoute = ProtectedMenuIndexRouteImport.update({
+  id: '/menu/',
+  path: '/menu/',
+  getParentRoute: () => ProtectedRoute,
+} as any)
 const ProtectedDashboardIndexRoute = ProtectedDashboardIndexRouteImport.update({
   id: '/dashboard/',
   path: '/dashboard/',
+  getParentRoute: () => ProtectedRoute,
+} as any)
+const ProtectedMenuEditRoute = ProtectedMenuEditRouteImport.update({
+  id: '/menu/edit',
+  path: '/menu/edit',
   getParentRoute: () => ProtectedRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/auth/login': typeof AuthLoginRoute
   '/': typeof ProtectedIndexRoute
+  '/menu/edit': typeof ProtectedMenuEditRoute
   '/dashboard': typeof ProtectedDashboardIndexRoute
+  '/menu': typeof ProtectedMenuIndexRoute
 }
 export interface FileRoutesByTo {
   '/auth/login': typeof AuthLoginRoute
   '/': typeof ProtectedIndexRoute
+  '/menu/edit': typeof ProtectedMenuEditRoute
   '/dashboard': typeof ProtectedDashboardIndexRoute
+  '/menu': typeof ProtectedMenuIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_protected': typeof ProtectedRouteWithChildren
   '/auth/login': typeof AuthLoginRoute
   '/_protected/': typeof ProtectedIndexRoute
+  '/_protected/menu/edit': typeof ProtectedMenuEditRoute
   '/_protected/dashboard/': typeof ProtectedDashboardIndexRoute
+  '/_protected/menu/': typeof ProtectedMenuIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/auth/login' | '/' | '/dashboard'
+  fullPaths: '/auth/login' | '/' | '/menu/edit' | '/dashboard' | '/menu'
   fileRoutesByTo: FileRoutesByTo
-  to: '/auth/login' | '/' | '/dashboard'
+  to: '/auth/login' | '/' | '/menu/edit' | '/dashboard' | '/menu'
   id:
     | '__root__'
     | '/_protected'
     | '/auth/login'
     | '/_protected/'
+    | '/_protected/menu/edit'
     | '/_protected/dashboard/'
+    | '/_protected/menu/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -92,6 +112,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthLoginRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_protected/menu/': {
+      id: '/_protected/menu/'
+      path: '/menu'
+      fullPath: '/menu'
+      preLoaderRoute: typeof ProtectedMenuIndexRouteImport
+      parentRoute: typeof ProtectedRoute
+    }
     '/_protected/dashboard/': {
       id: '/_protected/dashboard/'
       path: '/dashboard'
@@ -99,17 +126,28 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedDashboardIndexRouteImport
       parentRoute: typeof ProtectedRoute
     }
+    '/_protected/menu/edit': {
+      id: '/_protected/menu/edit'
+      path: '/menu/edit'
+      fullPath: '/menu/edit'
+      preLoaderRoute: typeof ProtectedMenuEditRouteImport
+      parentRoute: typeof ProtectedRoute
+    }
   }
 }
 
 interface ProtectedRouteChildren {
   ProtectedIndexRoute: typeof ProtectedIndexRoute
+  ProtectedMenuEditRoute: typeof ProtectedMenuEditRoute
   ProtectedDashboardIndexRoute: typeof ProtectedDashboardIndexRoute
+  ProtectedMenuIndexRoute: typeof ProtectedMenuIndexRoute
 }
 
 const ProtectedRouteChildren: ProtectedRouteChildren = {
   ProtectedIndexRoute: ProtectedIndexRoute,
+  ProtectedMenuEditRoute: ProtectedMenuEditRoute,
   ProtectedDashboardIndexRoute: ProtectedDashboardIndexRoute,
+  ProtectedMenuIndexRoute: ProtectedMenuIndexRoute,
 }
 
 const ProtectedRouteWithChildren = ProtectedRoute._addFileChildren(
