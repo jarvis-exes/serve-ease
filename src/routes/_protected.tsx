@@ -13,9 +13,11 @@ export const Route = createFileRoute("/_protected")({
 
 function App() {
   return (
-    <>
+    <div className="h-screen flex flex-col">
       <Header />
-      <Outlet />
-    </>
+      <main className="flex-1 overflow-auto">
+        <Outlet />
+      </main>
+    </div>
   );
 }

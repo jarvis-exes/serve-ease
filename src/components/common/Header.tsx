@@ -7,7 +7,7 @@ import { Link } from "@tanstack/react-router";
 const Header = () => {
   const { mutateAsync: logout } = useLogout();
   return (
-    <div className="flex bg-green-medium h-16 justify-between px-4 py-2 items-center">
+    <div className="flex shrink-0 bg-green-medium h-16 justify-between px-4 py-2 items-center">
       <Link to='/' className="text-2xl font-bold text-white">
         Serve Ease
       </Link>
