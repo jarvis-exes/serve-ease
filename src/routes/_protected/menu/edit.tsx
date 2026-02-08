@@ -2,6 +2,9 @@ import Card from '@/components/common/Card'
 import { createFileRoute } from '@tanstack/react-router'
 import * as Accordion from '@radix-ui/react-accordion'
 import { FaChevronDown } from "react-icons/fa";
+import FormSwitch from '@/components/common/FormSwitch';
+import { useForm } from 'react-hook-form';
+
 
 export const Route = createFileRoute('/_protected/menu/edit')({
     component: EditMenu,
@@ -66,26 +69,49 @@ const menu = [
     }
 ]
 
+interface MenuFormValues {
+    itemName: string;
+    isAvailable: boolean;
+    isVeg: boolean;
+}
+
 function EditMenu() {
-    return <div className='flex gap-5 p-5'>
-        <Card classes='w-full flex-2 p-5'>
-            <div className=' '>
-                <div className='text-xl font-bold m-2'>Categories</div>
-                <Accordion.Root type="single" collapsible className="w-full h-full m-0 overflow-auto">
+    const { control } = useForm<MenuFormValues>({
+        defaultValues: {
+            itemName: '',
+            isAvailable: true,
+            isVeg: true,
+        }
+    });
+
+
+
+    return <div className='flex h-full gap-5 p-5'>
+        <Card classes='w-full h-full flex-2 p-0'>
+            <div className='h-full flex flex-col'>
+                <div className='text-xl font-bold bg-green-light p-3 rounded-t-2xl'>
+                    <div>Categories(12)</div>
+                    <div></div>
+                </div>
+                <Accordion.Root type="single" collapsible className="w-full h-full p-5 overflow-auto ">
                     {menu.map((item, idx) => (
-                        <Accordion.Item value={`item-${idx}`} className="border-b">
+                        <Accordion.Item value={`item-${idx}`} className="space-y-2">
                             <Accordion.Header>
-                                <Accordion.Trigger className="group flex w-full items-center justify-between p-4 rounded-2xl hover:bg-slate-100">
+                                <Accordion.Trigger className="group border-b-4 border-gray-300 flex w-full items-center justify-between p-4 rounded-2xl hover:bg-slate-100">
                                     <span>{item.categorie}</span>
+                                    <FormSwitch
+                                        control={control}
+                                        name="isAvailable"
+                                    />
                                     <FaChevronDown className="transition-transform duration-300 ease-[cubic-bezier(0.87,0,0.13,1)] group-data-[state=open]:rotate-180" />
                                 </Accordion.Trigger>
                             </Accordion.Header>
 
                             <Accordion.Content className="overflow-hidden  transition-all data-[state=closed]:animate-slide-up data-[state=open]:animate-slide-down">
-                                <ul className="p-2 space-y-1">
+                                <ul className="p-0 space-y-1">
                                     {
                                         item.subCategories.map(item => (
-                                            <li className="p-2 pl-6 hover:text-green-medium cursor-pointer">{item}</li>
+                                            <li className="p-4 pl-10 rounded-2xl hover:bg-slate-100 cursor-pointer">{item}</li>
                                         ))
                                     }
                                 </ul>
@@ -94,10 +120,11 @@ function EditMenu() {
                     ))}
                 </Accordion.Root>
             </div>
-
         </Card>
 
-        <Card classes='w-full p-5 flex-3'> Items</Card>
+        <Card classes='w-full p-5 flex-3'>
+            <div>Items</div>
+        </Card>
     </div>
 }
 
