@@ -3,7 +3,6 @@ export const Routes = {
     LOGIN: '/login',
     LOGOUT: '/logout',
     MENU: '/menu',
-    EDIT: '/edit',
     ORDER: '/order',
     HOME: '/',
 

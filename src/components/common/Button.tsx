@@ -3,7 +3,7 @@ import { twMerge } from "tailwind-merge";
 
 type ButtonProps = {
   children: ReactNode;
-  color?: "white";
+  color?: 'transparent' | 'white';
   classes?: string;
   onClick?: () => void;
   disabled?: boolean;
@@ -11,13 +11,13 @@ type ButtonProps = {
 };
 
 const colors = {
-  white:
-    "bg-white/70 hover:bg-white/90 active:bg-white/70 text-gray-600 disabled:bg-black/30",
+  transparent : "hover:bg-black/20 text-white disabled:text-gray-500",
+  white: "bg-white/70 hover:bg-white/90 active:bg-white/70 text-gray-600 disabled:bg-black/30",
 };
 
 const Button: FC<ButtonProps> = ({
   children,
-  color = "white",
+  color = 'white',
   classes,
   onClick,
   disabled,
