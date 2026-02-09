@@ -12,8 +12,8 @@ const FormSwitch = <T extends FieldValues>({ name, control, label }: FormSwitchP
         name={name}
         control={control}
         render={({ field }) => (
-            <div>
-                <label className="text-sm font-medium text-slate-700" htmlFor={name}>
+            <div className='flex gap-2'>
+                <label className="font-medium text-slate-700" htmlFor={name}>
                     {label}
                 </label>
                 <Switch.Root

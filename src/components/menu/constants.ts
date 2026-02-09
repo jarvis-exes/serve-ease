@@ -6,8 +6,8 @@ export const menuItems: MenuItem[] = [
         link: Routes.HOME
     },
     {
-        name: 'Dashboard',
-        link: Routes.DASHBOARD
+        name: 'Order',
+        link: Routes.ORDER
     },
     {
         name: 'Menu',

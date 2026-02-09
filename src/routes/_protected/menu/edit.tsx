@@ -98,11 +98,18 @@ function EditMenu() {
                         <Accordion.Item value={`item-${idx}`} className="space-y-2">
                             <Accordion.Header>
                                 <Accordion.Trigger className="group border-b-4 border-gray-300 flex w-full items-center justify-between p-4 rounded-2xl hover:bg-slate-100">
-                                    <span>{item.categorie}</span>
-                                    <FormSwitch
-                                        control={control}
-                                        name="isAvailable"
-                                    />
+                                    <div className='w-full flex justify-between items-center mr-5'>
+                                        <span>{item.categorie}</span>
+                                        <div onClick={(e) => {
+                                            e.stopPropagation();
+                                        }}>
+                                            <FormSwitch
+                                                control={control}
+                                                name="isAvailable"
+                                            />
+                                        </div>
+
+                                    </div>
                                     <FaChevronDown className="transition-transform duration-300 ease-[cubic-bezier(0.87,0,0.13,1)] group-data-[state=open]:rotate-180" />
                                 </Accordion.Trigger>
                             </Accordion.Header>
@@ -111,7 +118,13 @@ function EditMenu() {
                                 <ul className="p-0 space-y-1">
                                     {
                                         item.subCategories.map(item => (
-                                            <li className="p-4 pl-10 rounded-2xl hover:bg-slate-100 cursor-pointer">{item}</li>
+                                            <li className="flex justify-between p-4 pl-10 pr-13 rounded-2xl hover:bg-slate-100 cursor-pointer">
+                                                {item}
+                                                <FormSwitch
+                                                    control={control}
+                                                    name="isAvailable"
+                                                />
+                                            </li>
                                         ))
                                     }
                                 </ul>
