@@ -11,7 +11,7 @@ type ButtonProps = {
 };
 
 const colors = {
-  transparent : "hover:bg-black/20 text-white disabled:text-gray-500",
+  transparent : "hover:bg-black/10 text-white disabled:text-gray-500",
   white: "bg-white/70 hover:bg-white/90 active:bg-white/70 text-gray-600 disabled:bg-black/30",
 };
 

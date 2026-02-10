@@ -5,5 +5,7 @@ export const Routes = {
     MENU: '/menu',
     ORDER: '/order',
     HOME: '/',
+    CATEGORIES: '/categories',
+    SUBCATEGORIES: 'sub-categories'
 
 }
