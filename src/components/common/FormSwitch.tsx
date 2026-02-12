@@ -1,18 +1,20 @@
 import { Controller, type Control, type FieldValues, type Path } from 'react-hook-form'
 import * as Switch from '@radix-ui/react-switch';
+import { twMerge } from 'tailwind-merge';
 
 type FormSwitchProps<T extends FieldValues> = {
     name: Path<T>;
     control: Control<T>;
     label?: string;
+    className?: string
 }
 
-const FormSwitch = <T extends FieldValues>({ name, control, label }: FormSwitchProps<T>) => {
+const FormSwitch = <T extends FieldValues>({ name, control, label, className }: FormSwitchProps<T>) => {
     return (<Controller
         name={name}
         control={control}
         render={({ field }) => (
-            <div className='flex gap-2'>
+            <div className={twMerge('flex gap-2', className)}>
                 <label className="font-medium text-slate-700" htmlFor={name}>
                     {label}
                 </label>

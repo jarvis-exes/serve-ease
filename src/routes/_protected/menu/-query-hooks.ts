@@ -1,5 +1,5 @@
 import { api } from "@/api/api"
-import type { CreateCategoriesRequestType, CreateSubCategoriesRequestType } from "@/models/menu.model"
+import type { CreateCategoriesRequestType, CreateSubCategoriesRequestType, ListCategoryResponseType, ListSubCategoryResponseType } from "@/models/menu.model"
 import { Routes } from "@/models/routes"
 import { useMutation, useQuery } from "@tanstack/react-query"
 
@@ -19,11 +19,23 @@ export const useCreateSubCategory = () => {
     })
 }
 
-export const useListCategories = () => {
-    return useQuery({
-        queryKey: ['categories'],
-        queryFn: async (outletId: string) => {
-            await api.get(Routes.CATEGORIES)
+export const useListCategories = (outletId: string) => {
+    return useQuery<ListCategoryResponseType[], Error>({
+        queryKey: ['categories', outletId],
+        queryFn: async () => {
+            const response = await api.get(`${Routes.CATEGORIES}/${outletId}`);
+            return response.data;
         }
+    })
+}
+
+export const useListSubCategories = (categoryId: string) => {
+    return useQuery<ListSubCategoryResponseType[], Error>({
+        queryKey: ['subCategories', categoryId],
+        queryFn: async () => {
+            const response = await api.get(`${Routes.SUBCATEGORIES}/${categoryId}`);
+            return response.data;
+        },
+        enabled:!!categoryId
     })
 }

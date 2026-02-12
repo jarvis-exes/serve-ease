@@ -27,22 +27,7 @@ export const menu = [
         categorie: 'Main Course',
         subCategories: ['Paneer', 'Chole', 'Allo Matar']
     },
-    {
-        categorie: 'Fast Food',
-        subCategories: ['Samosa', 'Kachori', 'Gol gappee']
-    },
-    {
-        categorie: 'Main Course',
-        subCategories: ['Paneer', 'Chole', 'Allo Matar']
-    },
-    {
-        categorie: 'Fast Food',
-        subCategories: ['Samosa', 'Kachori', 'Gol gappee']
-    },
-    {
-        categorie: 'Fast Food',
-        subCategories: ['Samosa', 'Kachori', 'Gol gappee']
-    },
+    
 ]
 
 export const items = [
