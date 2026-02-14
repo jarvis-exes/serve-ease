@@ -6,6 +6,7 @@ export const Routes = {
     ORDER: '/order',
     HOME: '/',
     CATEGORIES: '/categories',
-    SUBCATEGORIES: '/sub-categories'
+    SUBCATEGORIES: '/sub-categories',
+    ITEMS: '/items'
 
 }

@@ -28,6 +28,24 @@ export type ListSubCategoryResponseType = {
     updatedAt: Date;
 }
 
+export type ItemPrices = {
+    FULL?: number;
+    HALF?: number;
+    QUARTER?: number;
+    _id: string;
+}
+
+export type ListMenuItemResponseType = {
+    _id: string;
+    subCategoryId: string;
+    name: string;
+    prices: ItemPrices;
+    image: string;
+    sequence: number;
+    createdAt: Date;
+    updatedAt: Date;
+}
+
 export interface MenuFormValues {
     itemName: string;
     isAvailable: boolean;

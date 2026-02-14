@@ -2,6 +2,7 @@ import { createFileRoute } from '@tanstack/react-router'
 import Input from '@/components/common/Input';
 import Categories from './-components/Categories';
 import Items from './-components/Items';
+import { useState } from 'react';
 
 
 export const Route = createFileRoute('/_protected/menu/')({
@@ -9,6 +10,7 @@ export const Route = createFileRoute('/_protected/menu/')({
 })
 
 function Menu() {
+    const [selectedSubCategoryId, setSelectedSubCategoryId] = useState('');
 
     return (
         <div className='flex flex-col h-full'>
@@ -17,8 +19,8 @@ function Menu() {
             </div>
 
             <div className='flex flex-1 h-full gap-5 overflow-auto p-5'>
-                <Categories />
-                <Items />
+                <Categories setSelectedSubCategoryId= {setSelectedSubCategoryId} selectedSubCategoryId={selectedSubCategoryId}/>
+                <Items subCategoryId={selectedSubCategoryId}/>
             </div>
         </div>
     )
