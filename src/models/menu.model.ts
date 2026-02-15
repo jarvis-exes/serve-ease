@@ -17,6 +17,7 @@ export type ListCategoryResponseType = {
     sequence: string;
     createdAt: Date;
     updatedAt: Date;
+    isActive: boolean;
 }
 
 export type ListSubCategoryResponseType = {
@@ -26,6 +27,7 @@ export type ListSubCategoryResponseType = {
     sequence: string;
     createdAt: Date;
     updatedAt: Date;
+    isActive: boolean;
 }
 
 export type ItemPrices = {
@@ -44,10 +46,4 @@ export type ListMenuItemResponseType = {
     sequence: number;
     createdAt: Date;
     updatedAt: Date;
-}
-
-export interface MenuFormValues {
-    itemName: string;
-    isAvailable: boolean;
-    isVeg: boolean;
 }

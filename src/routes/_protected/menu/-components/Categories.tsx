@@ -1,16 +1,14 @@
 import Button from "@/components/common/Button";
 import Card from "@/components/common/Card";
-import FormSwitch from "@/components/common/FormSwitch";
 import * as Accordion from '@radix-ui/react-accordion'
 import { FaCheck, FaChevronDown, FaPlus } from "react-icons/fa";
 import { FaXmark } from "react-icons/fa6";
-import { useForm } from "react-hook-form";
-import type { CreateCategoriesRequestType, MenuFormValues } from "@/models/menu.model";
 import { useState, type FC } from "react";
 import Input from "@/components/common/Input";
-import { useListCategories, useListSubCategories } from "../-query-hooks";
+import { useListCategories } from "../-query-hooks";
 import Skeleton from "@/components/loaders/Skeleton";
-import { twMerge } from "tailwind-merge";
+import SubCategories from "./SubCategories";
+import SwitchButton from "@/components/common/Switch";
 
 type CategoriesProps = {
     setSelectedSubCategoryId: (id: string) => void;
@@ -20,34 +18,18 @@ type CategoriesProps = {
 const Categories: FC<CategoriesProps> = ({ setSelectedSubCategoryId, selectedSubCategoryId }) => {
 
     const [addingCategory, setAddingCategory] = useState(false);
-    const [addingSubCategory, setAddingSubCategory] = useState(false);
+
     const [categoryId, setCategoryId] = useState('');
 
     const outletId = '696656b3646f68216ea092c8';
 
     const { data: categories, isLoading: isCategoriesLoading } = useListCategories(outletId);
-    const { data: subCategories } = useListSubCategories(categoryId);
+
 
     const totalCategories = categories?.length;
 
-    const { control } = useForm<CreateCategoriesRequestType>({
-        defaultValues: {
-            outletId: outletId,
-            name: '',
-            sequence: 0,
-        }
-    });
-
     const handleAddCategory = () => {
         setAddingCategory(true);
-    }
-
-    const handleAddSubCategory = () => {
-        setAddingSubCategory(true);
-    }
-
-    const handleSelectItem = (subCategoryId: string) => {
-        setSelectedSubCategoryId(subCategoryId);
     }
 
     return (
@@ -101,71 +83,22 @@ const Categories: FC<CategoriesProps> = ({ setSelectedSubCategoryId, selectedSub
                                         >
                                             Delete
                                         </Button>
-                                        <FormSwitch
-                                            control={control}
-                                            name="isAvailable"
+                                        <SwitchButton
+                                            name="isActive"
                                             className=''
+                                            checked={item.isActive}
+                                            onChange={() => item.isActive = false}
                                         />
                                     </div>
 
                                 </Accordion.Header>
 
                                 <Accordion.Content className="overflow-hidden  transition-all data-[state=closed]:animate-slide-up data-[state=open]:animate-slide-down">
-                                    <ul className="p-0 space-y-1">
-                                        {
-                                            subCategories ? subCategories.map(item => (
-                                                <li key={item._id}
-                                                    className={twMerge("flex justify-between items-center pl-10 pr-13 rounded-2xl hover:bg-gray-100 cursor-pointer",
-                                                        selectedSubCategoryId === item._id ? 'bg-gray-200 border-b-4 border-gray-500 hover:bg-gray-200' : '')
-                                                    }
-                                                    onClick={() => handleSelectItem(item._id)}
-                                                >   
-                                                <span className="my-4">{item.name}</span>
-                                                    
-                                                    <div className={twMerge("flex items-center",
-                                                        selectedSubCategoryId !== item._id ? 'hidden' : '')}>
-                                                        <Button
-                                                            color="transparent"
-                                                            classes=' text-green-500'
-                                                        >
-                                                            Edit
-                                                        </Button>
-                                                        <Button
-                                                            color="transparent"
-                                                            classes=' text-red-500'
-                                                        >
-                                                            Delete
-                                                        </Button>
-                                                        <FormSwitch
-                                                            control={control}
-                                                            name="isAvailable"
-                                                            className=''
-                                                        />
-                                                    </div>
-                                                </li>
-                                            )) :
-                                                <Skeleton height="h-10" rows={3} className="py-6 px-3" />
-                                        }
-                                        <li className='flex justify-center'>
-                                            {addingSubCategory ?
-                                                <div className="flex w-full gap-5 mb-5 mx-5 items-center animate-in fade-in slide-in-from-top-2">
-                                                    <Input
-                                                        color="white"
-                                                        placeholder="Enter sub category name"
-                                                        inputClasses="h-14"
-                                                    />
-                                                    <FaCheck className="w-10 h-10 cursor-pointer text-green-500" />
-                                                    <FaXmark className="w-10 h-10 cursor-pointer text-red-500" onClick={() => setAddingSubCategory(false)} />
-                                                </div> :
-                                                <Button
-                                                    classes='text-green-dark text-md'
-                                                    icon={<FaPlus />}
-                                                    color='transparent'
-                                                    onClick={() => handleAddSubCategory()}>
-                                                    Add Sub Category
-                                                </Button>}
-                                        </li>
-                                    </ul>
+                                    <SubCategories
+                                        categoryId={categoryId}
+                                        selectedSubCategoryId={selectedSubCategoryId}
+                                        setSelectedSubCategoryId={setSelectedSubCategoryId}
+                                    />
                                 </Accordion.Content>
                             </Accordion.Item>
                         ))
