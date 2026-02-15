@@ -70,7 +70,7 @@ const SubCategories: FC<SubCategoriesProps> = ({ categoryId, selectedSubCategory
                         <Input
                             color="white"
                             placeholder="Enter sub category name"
-                            inputClasses="h-14"
+                            inputClasses="h-12"
                         />
                         <FaCheck className="w-10 h-10 cursor-pointer text-green-500" />
                         <FaXmark className="w-10 h-10 cursor-pointer text-red-500" onClick={() => setAddingSubCategory(false)} />

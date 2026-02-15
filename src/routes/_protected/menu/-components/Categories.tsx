@@ -5,10 +5,11 @@ import { FaCheck, FaChevronDown, FaPlus } from "react-icons/fa";
 import { FaXmark } from "react-icons/fa6";
 import { useState, type FC } from "react";
 import Input from "@/components/common/Input";
-import { useListCategories } from "../-query-hooks";
+import { useCreateCategory, useDeleteCategory, useListCategories, useUpdateCategory } from "../-query-hooks";
 import Skeleton from "@/components/loaders/Skeleton";
 import SubCategories from "./SubCategories";
 import SwitchButton from "@/components/common/Switch";
+import type { CreateSubCategoriesRequestType } from "@/models/menu.model";
 
 type CategoriesProps = {
     setSelectedSubCategoryId: (id: string) => void;
@@ -16,20 +17,43 @@ type CategoriesProps = {
 }
 
 const Categories: FC<CategoriesProps> = ({ setSelectedSubCategoryId, selectedSubCategoryId }) => {
-
-    const [addingCategory, setAddingCategory] = useState(false);
-
-    const [categoryId, setCategoryId] = useState('');
-
     const outletId = '696656b3646f68216ea092c8';
 
-    const { data: categories, isLoading: isCategoriesLoading } = useListCategories(outletId);
+    const [name, setName] = useState("");
+    const [categoryId, setCategoryId] = useState('');
+    const [addingCategory, setAddingCategory] = useState(false);
+    const [editingId, setEditingId] = useState<string | null>(null);
 
+    const { data: categories, isLoading: isCategoriesLoading } = useListCategories(outletId);
+    const { mutateAsync: createCategory } = useCreateCategory();
+    const { mutateAsync: deleteCategory } = useDeleteCategory()
+    const { mutateAsync: updateCategory } = useUpdateCategory();
 
     const totalCategories = categories?.length;
 
-    const handleAddCategory = () => {
+    const handleAddingCategory = () => {
         setAddingCategory(true);
+    }
+
+    const handleAddCategory = () => {
+        createCategory({
+            outletId,
+            name,
+            isActive: true,
+            sequence: (categories?.length ?? 0) + 1
+        })
+        setAddingCategory(false)
+        setName('');
+    }
+
+    const handleUpdateCategory = (payload: Partial<CreateSubCategoriesRequestType>) => {
+        updateCategory(payload)
+        setEditingId(null)
+        setName('');
+    }
+
+    const handleDeleteCategory = (categoryId: string) => {
+        deleteCategory(categoryId)
     }
 
     return (
@@ -41,7 +65,7 @@ const Categories: FC<CategoriesProps> = ({ setSelectedSubCategoryId, selectedSub
                     <Button
                         icon={<FaPlus />}
                         color='transparent'
-                        onClick={handleAddCategory}
+                        onClick={handleAddingCategory}
                     >
                         Add Category
                     </Button>
@@ -50,45 +74,74 @@ const Categories: FC<CategoriesProps> = ({ setSelectedSubCategoryId, selectedSub
                 <Accordion.Root type="single" collapsible className="w-full h-full px-5 py-2 overflow-auto ">
                     {addingCategory &&
                         <div className="flex gap-5 my-5 items-center animate-in fade-in slide-in-from-top-2">
-                            <Input color="white" placeholder="Enter category name"
-                                inputClasses="h-14" id="categoryInput" />
-                            <FaCheck className="w-10 h-10 cursor-pointer text-green-500" />
-                            <FaXmark className="w-10 h-10 cursor-pointer text-red-500" onClick={() => setAddingCategory(false)} />
+                            <Input
+                                color="white"
+                                placeholder="Enter category name"
+                                inputClasses="h-12" id="categoryInput"
+                                onChange={(e) => setName(e.target.value)}
+                            />
+                            <div className="flex gap-2 items-center">
+                                <FaCheck className="w-10 h-10 cursor-pointer text-green-500" onClick={() => handleAddCategory()} />
+                                <FaXmark className="w-12 h-12 cursor-pointer text-red-500" onClick={() => setAddingCategory(false)} />
+                            </div>
                         </div>
                     }
 
                     {isCategoriesLoading ?
                         <Skeleton height="h-15" rows={5} className="py-6 px-3" /> :
                         categories?.map(item => (
-                            <Accordion.Item value={item._id} key={item._id} className="space-y-2">
+                            <Accordion.Item value={item._id} key={item._id} className="space-y-2" disabled={!item.isActive}>
                                 <Accordion.Header className="group flex relative items-center">
                                     <Accordion.Trigger className=" border-b-4 border-gray-300 flex w-full items-center justify-between px-6 py-4 rounded-2xl hover:bg-gray-100"
                                         onClick={() => {
                                             setCategoryId(item._id);
                                         }}
                                     >
-                                        <span>{item.name}</span>
+                                        {editingId && editingId === item._id ?
+                                            <div className="flex w-full gap-5 mr-5 items-center animate-in fade-in slide-in-from-top-2">
+                                                <Input
+                                                    color="white"
+                                                    placeholder="Enter category name"
+                                                    inputClasses="h-12" id="categoryInput"
+                                                    onChange={(e) => setName(e.target.value)}
+                                                    value={name}
+                                                />
+                                                <div className="flex gap-2 items-center">
+                                                    <FaCheck className="w-10 h-10 cursor-pointer text-green-500" onClick={() => handleUpdateCategory({ name, categoryId: item._id })} />
+                                                    <FaXmark className="w-12 h-12 cursor-pointer text-red-500" onClick={() => setEditingId(null)} />
+                                                </div>
+                                            </div>
+                                            : <span>{item.name}</span>}
+
                                         <FaChevronDown className="transition-transform duration-300 ease-[cubic-bezier(0.87,0,0.13,1)] group-data-[state=open]:rotate-180" />
                                     </Accordion.Trigger>
+
                                     <div className="flex items-center absolute end-15">
-                                        <Button
-                                            color="transparent"
-                                            classes=' text-green-500 group-data-[state=closed]:hidden'
-                                        >
-                                            Edit
-                                        </Button>
-                                        <Button
-                                            color="transparent"
-                                            classes=' text-red-500 group-data-[state=closed]:hidden'
-                                        >
-                                            Delete
-                                        </Button>
-                                        <SwitchButton
-                                            name="isActive"
-                                            className=''
-                                            checked={item.isActive}
-                                            onChange={() => item.isActive = false}
-                                        />
+                                        {!editingId && <div className="flex items-center">
+                                            <Button
+                                                color="transparent"
+                                                classes=' text-green-500 group-data-[state=closed]:hidden'
+                                                onClick={() => {
+                                                    setEditingId(item._id)
+                                                    setName(item.name)
+                                                }}
+                                            >
+                                                Edit
+                                            </Button>
+                                            <Button
+                                                color="transparent"
+                                                classes=' text-red-500 group-data-[state=closed]:hidden'
+                                                onClick={() => handleDeleteCategory(item._id)}
+                                            >
+                                                Delete
+                                            </Button>
+                                            <SwitchButton
+                                                name="isActive"
+                                                className=''
+                                                checked={item.isActive}
+                                                onChange={() => handleUpdateCategory({ isActive: !item.isActive, categoryId: item._id })}
+                                            />
+                                        </div>}
                                     </div>
 
                                 </Accordion.Header>
