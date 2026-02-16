@@ -9,7 +9,7 @@ import { useCreateCategory, useDeleteCategory, useListCategories, useUpdateCateg
 import Skeleton from "@/components/loaders/Skeleton";
 import SubCategories from "./SubCategories";
 import SwitchButton from "@/components/common/Switch";
-import type { CreateSubCategoriesRequestType } from "@/models/menu.model";
+import type { UpdateCategoriesRequestType } from "@/models/menu.model";
 
 type CategoriesProps = {
     setSelectedSubCategoryId: (id: string) => void;
@@ -31,10 +31,6 @@ const Categories: FC<CategoriesProps> = ({ setSelectedSubCategoryId, selectedSub
 
     const totalCategories = categories?.length;
 
-    const handleAddingCategory = () => {
-        setAddingCategory(true);
-    }
-
     const handleAddCategory = () => {
         createCategory({
             outletId,
@@ -46,7 +42,7 @@ const Categories: FC<CategoriesProps> = ({ setSelectedSubCategoryId, selectedSub
         setName('');
     }
 
-    const handleUpdateCategory = (payload: Partial<CreateSubCategoriesRequestType>) => {
+    const handleUpdateCategory = (payload: Partial<UpdateCategoriesRequestType>) => {
         updateCategory(payload)
         setEditingId(null)
         setName('');
@@ -65,7 +61,7 @@ const Categories: FC<CategoriesProps> = ({ setSelectedSubCategoryId, selectedSub
                     <Button
                         icon={<FaPlus />}
                         color='transparent'
-                        onClick={handleAddingCategory}
+                        onClick={()=>setAddingCategory(true)}
                     >
                         Add Category
                     </Button>
@@ -77,7 +73,7 @@ const Categories: FC<CategoriesProps> = ({ setSelectedSubCategoryId, selectedSub
                             <Input
                                 color="white"
                                 placeholder="Enter category name"
-                                inputClasses="h-12" id="categoryInput"
+                                inputClasses="h-14" id="categoryInput"
                                 onChange={(e) => setName(e.target.value)}
                             />
                             <div className="flex gap-2 items-center">

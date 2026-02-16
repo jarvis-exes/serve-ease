@@ -1,8 +1,8 @@
-import { type FC } from 'react'
+import { type ButtonHTMLAttributes, type FC } from 'react'
 import { twMerge } from 'tailwind-merge'
 import * as Switch from '@radix-ui/react-switch';
 
-type SwitchProps = {
+type SwitchProps = ButtonHTMLAttributes<HTMLButtonElement> & {
     name: string;
     label?: string;
     checked?: boolean;
@@ -10,7 +10,7 @@ type SwitchProps = {
     onChange?: () => void;
 }
 
-const SwitchButton: FC<SwitchProps> = ({ name, label, checked = true, className, onChange }) => {
+const SwitchButton: FC<SwitchProps> = ({ name, label, checked = true, className, onChange, onClick, ...rest }) => {
     return (
         <div className={twMerge('flex gap-2', className)}>
             <label className="font-medium text-slate-700" htmlFor={name}>
@@ -20,7 +20,9 @@ const SwitchButton: FC<SwitchProps> = ({ name, label, checked = true, className,
                 id={name}
                 checked={checked}
                 onCheckedChange={onChange}
-                className="w-10 h-6 bg-slate-300 rounded-full relative data-[state=checked]:bg-green-500 transition-colors outline-none"
+                onClick={onClick}
+                className="w-10 h-6 bg-slate-300 rounded-full relative data-[state=checked]:bg-green-500 transition-colors outline-none cursor-pointer"
+                {...rest}
             >
                 <Switch.Thumb
                     className="block w-4 h-4 bg-white rounded-full transition-transform translate-x-1 will-change-transform data-[state=checked]:translate-x-5"

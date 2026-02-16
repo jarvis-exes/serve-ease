@@ -6,6 +6,7 @@ import type {
     CategoryType,
     ListMenuItemResponseType,
     UpdateCategoriesRequestType,
+    UpdateSubCategoriesRequestType,
 } from "@/models/menu.model"
 import { Routes } from "@/models/routes"
 import { useMutation, useQuery, useQueryClient, type UseMutationOptions } from "@tanstack/react-query"
@@ -98,7 +99,6 @@ export const useCreateCategory = (
     });
 };
 
-
 export const useCreateSubCategory = (
     options?: UseMutationOptions<SubCategoryType, AxiosError, CreateSubCategoriesRequestType>
 ) => {
@@ -152,7 +152,6 @@ export const useCreateSubCategory = (
     });
 };
 
-
 export const useDeleteCategory = (
     options?: UseMutationOptions<CategoryType, AxiosError, string>
 ) => {
@@ -200,19 +199,18 @@ export const useDeleteCategory = (
     });
 };
 
-
 export const useDeleteSubCategory = (
-    options?: UseMutationOptions<SubCategoryType, AxiosError, { id: string; categoryId: string }>
+    options?: UseMutationOptions<SubCategoryType, AxiosError, { subCategoryId: string; categoryId: string }>
 ) => {
     const queryClient = useQueryClient();
 
-    return useMutation<SubCategoryType, AxiosError, { id: string; categoryId: string }>({
-        mutationFn: async ({ id }) => {
-            const response = await api.delete(`${Routes.SUBCATEGORIES}/${id}`);
+    return useMutation<SubCategoryType, AxiosError, { subCategoryId: string; categoryId: string }>({
+        mutationFn: async ({ subCategoryId }) => {
+            const response = await api.delete(`${Routes.SUBCATEGORIES}/${subCategoryId}`);
             return response.data;
         },
 
-        onMutate: async ({ id, categoryId }) => {
+        onMutate: async ({ subCategoryId, categoryId }) => {
             await queryClient.cancelQueries({
                 queryKey: ['subCategories', categoryId],
             });
@@ -225,7 +223,7 @@ export const useDeleteSubCategory = (
             queryClient.setQueryData(
                 ['subCategories', categoryId],
                 (old: any[]) =>
-                    old?.filter((sub) => sub._id !== id)
+                    old?.filter((sub) => sub._id !== subCategoryId)
             );
 
             return { previousSubCategories, categoryId };
@@ -247,7 +245,6 @@ export const useDeleteSubCategory = (
         ...options,
     });
 };
-
 
 export const useUpdateCategory = (
     options?: UseMutationOptions<CategoryType, AxiosError, Partial<UpdateCategoriesRequestType>>
@@ -296,5 +293,54 @@ export const useUpdateCategory = (
         ...options
     });
 };
+
+export const useUpdateSubCategory = (
+    options?: UseMutationOptions<CategoryType, AxiosError, { payload: Partial<UpdateSubCategoriesRequestType>, categoryId: string }>
+) => {
+    const queryClient = useQueryClient();
+    return useMutation<CategoryType, AxiosError, { payload: Partial<UpdateSubCategoriesRequestType>, categoryId: string }>({
+        mutationFn: async (payload) => {
+            const response = await api.patch(Routes.SUBCATEGORIES, payload);
+            return response.data;
+        },
+        onMutate: async ({payload, categoryId}) => {
+            await queryClient.cancelQueries({
+                queryKey: ['subCategories', outletId],
+            });
+
+            const previousCategories = queryClient.getQueryData([
+                'subCategories',
+                categoryId,
+            ]);
+
+            queryClient.setQueryData(
+                ['subCategories', categoryId],
+                (old: any[]) =>
+                    old?.map((cat) =>
+                        cat._id === payload.subCategoryId
+                            ? { ...cat, ...payload }
+                            : cat
+                    )
+            );
+
+            return { previousCategories, categoryId };
+        },
+
+        onError: (context: any) => {
+            queryClient.setQueryData(
+                ['subCategories', context?.categoryId],
+                context?.previousCategories
+            );
+        },
+
+        onSettled: (variables: any) => {
+            queryClient.invalidateQueries({
+                queryKey: ['subCategories', variables?.categoryId],
+            });
+        },
+        ...options
+    });
+};
+
 
 

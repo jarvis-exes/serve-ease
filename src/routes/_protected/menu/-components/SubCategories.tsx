@@ -3,10 +3,11 @@ import { FaCheck, FaPlus } from "react-icons/fa";
 import { FaXmark } from "react-icons/fa6";
 import { useState, type FC } from "react";
 import Input from "@/components/common/Input";
-import { useListSubCategories } from "../-query-hooks";
+import { useCreateSubCategory, useDeleteSubCategory, useListSubCategories, useUpdateSubCategory } from "../-query-hooks";
 import Skeleton from "@/components/loaders/Skeleton";
 import { twMerge } from "tailwind-merge";
 import SwitchButton from "@/components/common/Switch";
+import type { UpdateSubCategoriesRequestType } from "@/models/menu.model";
 
 type SubCategoriesProps = {
     categoryId: string;
@@ -16,15 +17,36 @@ type SubCategoriesProps = {
 
 const SubCategories: FC<SubCategoriesProps> = ({ categoryId, selectedSubCategoryId, setSelectedSubCategoryId }) => {
     const [addingSubCategory, setAddingSubCategory] = useState(false);
+    const [name, setName] = useState("");
+    const [editingId, setEditingId] = useState<string | null>(null);
 
     const { data: subCategories } = useListSubCategories(categoryId);
-
-    const handleAddSubCategory = () => {
-        setAddingSubCategory(true);
-    }
+    const { mutateAsync: createSubCategory } = useCreateSubCategory();
+    const { mutateAsync: deleteSubCategory } = useDeleteSubCategory();
+    const { mutateAsync: updateSubCategory } = useUpdateSubCategory();
 
     const handleSelectItem = (subCategoryId: string) => {
         setSelectedSubCategoryId(subCategoryId);
+    }
+    const handleAddSubCategory = () => {
+        createSubCategory({
+            categoryId,
+            name,
+            isActive: true,
+            sequence: (subCategories?.length ?? 0) + 1
+        })
+        setAddingSubCategory(false)
+        setName('');
+    }
+
+    const handleUpdateSubCategory = (payload: Partial<UpdateSubCategoriesRequestType>) => {
+        updateSubCategory({ payload, categoryId })
+        setEditingId(null)
+        setName('');
+    }
+
+    const handleDeleteSubCategory = (subCategoryId: string) => {
+        deleteSubCategory({ subCategoryId, categoryId })
     }
 
     return (
@@ -37,28 +59,50 @@ const SubCategories: FC<SubCategoriesProps> = ({ categoryId, selectedSubCategory
                         }
                         onClick={() => handleSelectItem(item._id)}
                     >
-                        <span className="my-4">{item.name}</span>
+                        {editingId && editingId === item._id ?
+                            <div className="flex w-full gap-5 mr-5 items-center animate-in fade-in slide-in-from-top-2">
+                                <Input
+                                    color="white"
+                                    placeholder="Enter category name"
+                                    inputClasses="h-12" id="categoryInput"
+                                    onChange={(e) => setName(e.target.value)}
+                                    value={name}
+                                />
+                                <div className="flex gap-2 items-center">
+                                    <FaCheck className="w-10 h-10 cursor-pointer text-green-500" onClick={() => handleUpdateSubCategory({ name, subCategoryId: item._id })} />
+                                    <FaXmark className="w-12 h-12 cursor-pointer text-red-500" onClick={() => setEditingId(null)} />
+                                </div>
+                            </div>
+                            : <span className="my-4">{item.name}</span>}
                         <div className='flex items-center'>
-                            <Button
-                                color="transparent"
-                                classes={twMerge("text-green-500",
-                                    selectedSubCategoryId !== item._id ? 'hidden' : '')}
-                            >
-                                Edit
-                            </Button>
-                            <Button
-                                color="transparent"
-                                classes={twMerge("text-red-500",
-                                    selectedSubCategoryId !== item._id ? 'hidden' : '')}
-                            >
-                                Delete
-                            </Button>
-                            <SwitchButton
-                                name="isActive"
-                                className=''
-                                checked={item.isActive}
-                                onChange={()=>item.isActive=false}
-                            />
+                            {!editingId && <div className="flex items-center">
+                                <Button
+                                    color="transparent"
+                                    classes=' text-green-500 group-data-[state=closed]:hidden'
+                                    onClick={() => {
+                                        setEditingId(item._id)
+                                        setName(item.name)
+                                    }}
+                                >
+                                    Edit
+                                </Button>
+                                <Button
+                                    color="transparent"
+                                    classes=' text-red-500 group-data-[state=closed]:hidden'
+                                    onClick={() => handleDeleteSubCategory(item._id)}
+                                >
+                                    Delete
+                                </Button>
+                                <SwitchButton
+                                    name="isActive"
+                                    className=''
+                                    checked={item.isActive}
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                    }}
+                                    onChange={() => handleUpdateSubCategory({ isActive: !item.isActive, subCategoryId: item._id })}
+                                />
+                            </div>}
                         </div>
                     </li>
                 )) :
@@ -66,20 +110,22 @@ const SubCategories: FC<SubCategoriesProps> = ({ categoryId, selectedSubCategory
             }
             <li className='flex justify-center'>
                 {addingSubCategory ?
-                    <div className="flex w-full gap-5 mb-5 mx-5 items-center animate-in fade-in slide-in-from-top-2">
+                    <div className="flex w-full gap-5 my-4 items-center animate-in fade-in slide-in-from-top-2">
                         <Input
                             color="white"
                             placeholder="Enter sub category name"
-                            inputClasses="h-12"
+                            inputClasses="h-14"
+                            id="subCategoryInput"
+                            onChange={(e) => setName(e.target.value)}
                         />
-                        <FaCheck className="w-10 h-10 cursor-pointer text-green-500" />
+                        <FaCheck className="w-10 h-10 cursor-pointer text-green-500" onClick={() => handleAddSubCategory()} />
                         <FaXmark className="w-10 h-10 cursor-pointer text-red-500" onClick={() => setAddingSubCategory(false)} />
                     </div> :
                     <Button
                         classes='text-green-dark text-md'
                         icon={<FaPlus />}
                         color='transparent'
-                        onClick={() => handleAddSubCategory()}>
+                        onClick={() => setAddingSubCategory(true)}>
                         Add Sub Category
                     </Button>}
             </li>
