@@ -6,7 +6,7 @@ type InputProps = InputHTMLAttributes<HTMLInputElement> & {
   placeholder?: string;
   label?: string;
   type?: string;
-  color?: 'black' | 'white';
+  color?: 'black' | 'white' | 'transparent';
   containerClasses?: string;
   inputClasses?: string;
   labelClasses?: string;
@@ -14,9 +14,10 @@ type InputProps = InputHTMLAttributes<HTMLInputElement> & {
 };
 
 const Input: FC<InputProps> = (props) => {
-  const { label, containerClasses, inputClasses, labelClasses, color='black', animate, ...rest } = props;
+  const { label, containerClasses, inputClasses, labelClasses, color = 'black', animate, ...rest } = props;
 
   const colors = {
+    transparent: 'bg-none',
     white: 'bg-black/10  text-black',
     black: 'bg-black/50  text-white'
   }

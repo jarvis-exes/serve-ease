@@ -18,7 +18,7 @@ function Menu() {
                 <Input color='white' containerClasses='w-1/3' placeholder='Search for an item or category' />
             </div>
 
-            <div className='flex flex-1 h-full gap-5 overflow-auto p-5'>
+            <div className='flex h-full gap-5 overflow-auto p-5'>
                 <Categories setSelectedSubCategoryId= {setSelectedSubCategoryId} selectedSubCategoryId={selectedSubCategoryId}/>
                 <Items subCategoryId={selectedSubCategoryId}/>
             </div>

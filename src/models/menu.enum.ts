@@ -1,5 +1,5 @@
 export enum Quantity {
-    Full = 'FULL',
-    Half = 'HALF',
-    Quarter = 'QUARTER'
+    FULL = 'Full',
+    HALF = 'Half',
+    QUARTER = 'Quarter'
 }
