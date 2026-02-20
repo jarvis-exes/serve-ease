@@ -423,11 +423,11 @@ export const useUpdateCategory = (
       );
     },
 
-    onSettled: () => {
-      queryClient.invalidateQueries({
-        queryKey: ["categories", outletId],
-      });
-    },
+    // onSettled: () => {
+    //   queryClient.invalidateQueries({
+    //     queryKey: ["categories", outletId],
+    //   });
+    // },
     ...options,
   });
 };
@@ -475,11 +475,11 @@ export const useUpdateSubCategory = (
       );
     },
 
-    onSettled: (variables: any) => {
-      queryClient.invalidateQueries({
-        queryKey: ["subCategories", variables?.categoryId],
-      });
-    },
+    // onSettled: (variables: any) => {
+    //   queryClient.invalidateQueries({
+    //     queryKey: ["subCategories", variables?.categoryId],
+    //   });
+    // },
     ...options,
   });
 };
@@ -498,7 +498,7 @@ export const useUpdateItem = (
     { payload: Partial<UpdateItemRequestType>; subCategoryId: string }
   >({
     mutationFn: async ({ payload }) => {
-      const response = await api.patch(Routes.SUBCATEGORIES, payload);
+      const response = await api.patch(Routes.ITEMS, payload);
       return response.data;
     },
     onMutate: async ({ payload, subCategoryId }) => {
@@ -527,11 +527,11 @@ export const useUpdateItem = (
       );
     },
 
-    onSettled: (variables: any) => {
-      queryClient.invalidateQueries({
-        queryKey: ["items", variables?.subCategoryId],
-      });
-    },
+    // onSettled: (variables: any) => {
+    //   queryClient.invalidateQueries({
+    //     queryKey: ["items", variables?.subCategoryId],
+    //   });
+    // },
     ...options,
   });
 };

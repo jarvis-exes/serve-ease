@@ -3,7 +3,7 @@ import Card from "@/components/common/Card";
 import * as Accordion from "@radix-ui/react-accordion";
 import { FaCheck, FaChevronDown, FaPlus } from "react-icons/fa";
 import Input from "@/components/common/Input";
-import { useState, type FC } from "react";
+import { useEffect, useState, type FC } from "react";
 import { FaXmark } from "react-icons/fa6";
 import {
   useCreateItem,
@@ -14,7 +14,7 @@ import {
 import Skeleton from "@/components/loaders/Skeleton";
 import SwitchButton from "@/components/common/Switch";
 import { Quantity } from "@/models/menu.enum";
-import type { UpdateItemRequestType } from "@/models/menu.model";
+import type { ItemType } from "@/models/menu.model";
 
 type ItemsProps = {
   subCategoryId: string;
@@ -23,6 +23,7 @@ const Items: FC<ItemsProps> = ({ subCategoryId }) => {
   const [addingItem, setAddingItem] = useState(false);
   const [name, setName] = useState("");
   const [editingId, setEditingId] = useState<string | null>(null);
+  const [editingItem, setEditingItem] = useState<ItemType | null>(null);
 
   const { data: items, isLoading } = useListItems(subCategoryId);
   const { mutateAsync: createItem } = useCreateItem();
@@ -43,15 +44,38 @@ const Items: FC<ItemsProps> = ({ subCategoryId }) => {
     setName("");
   };
 
-  const handleUpdateItem = (payload: Partial<UpdateItemRequestType>)=> {
-    updateItem({payload, subCategoryId});
+  const handleUpdateItem = () => {
+    if (!editingItem) return;
+
+    const payload = {
+      itemId: editingItem?._id,
+      name: editingItem?.name,
+      isActive: editingItem?.isActive,
+      sequence: editingItem?.sequence,
+      prices: {
+        FULL: editingItem.prices?.FULL,
+        HALF: editingItem.prices?.HALF,
+        QUARTER: editingItem.prices?.QUARTER,
+      },
+    };
+    updateItem({ payload, subCategoryId });
     setEditingId(null);
     setName("");
-  }
+  };
 
   const handleDeleteItem = (itemId: string) => {
     deleteItem({ itemId, subCategoryId });
   };
+
+  useEffect(() => {
+    if (!editingItem) return;
+
+    // const timeout = setTimeout(() => {
+      handleUpdateItem();
+    // }, 500);
+
+    // return () => clearTimeout(timeout);
+  }, [editingItem]);
 
   return (
     <Card classes="flex-6 p-0">
@@ -99,8 +123,12 @@ const Items: FC<ItemsProps> = ({ subCategoryId }) => {
           ) : items && items.length > 0 ? (
             items?.map((item) => (
               <Accordion.Item value={item._id} className="space-y-2">
-                <Accordion.Header className="flex relative items-center ">
-                  <Accordion.Trigger disabled={!item.isActive} className="group border-b-4 border-gray-300 flex w-full items-center justify-between p-4 rounded-2xl hover:bg-gray-100">
+                <Accordion.Header className="group flex relative items-center ">
+                  <Accordion.Trigger
+                    disabled={!item.isActive}
+                    onClick={() => setEditingItem(item)}
+                    className="border-b-4 border-gray-300 flex w-full items-center justify-between py-4 px-8 rounded-2xl hover:bg-gray-100"
+                  >
                     {editingId && editingId === item._id ? (
                       <div
                         className="flex w-full gap-5 mr-5 items-center animate-in fade-in slide-in-from-top-2"
@@ -117,12 +145,7 @@ const Items: FC<ItemsProps> = ({ subCategoryId }) => {
                         <div className="flex gap-2 items-center">
                           <FaCheck
                             className="w-10 h-10 cursor-pointer text-green-500"
-                            onClick={() =>
-                              handleUpdateItem({
-                                name,
-                                itemId: item._id,
-                              })
-                            }
+                            onClick={() => handleUpdateItem()}
                           />
                           <FaXmark
                             className="w-12 h-12 cursor-pointer text-red-500"
@@ -164,12 +187,13 @@ const Items: FC<ItemsProps> = ({ subCategoryId }) => {
                           name="isActive"
                           className=""
                           checked={item.isActive}
-                          onChange={() =>
-                            handleUpdateItem({
+                          onChange={() => {
+                            setEditingItem({
+                              ...item,
                               isActive: !item.isActive,
-                              itemId: item._id,
-                            })
-                          }
+                            });
+                            handleUpdateItem();
+                          }}
                         />
                       </div>
                     )}
@@ -184,7 +208,20 @@ const Items: FC<ItemsProps> = ({ subCategoryId }) => {
                         color="white"
                         placeholder="Price"
                         containerClasses="w-32"
-                        value={item.prices.FULL}
+                        value={editingItem?.prices.FULL}
+                        onChange={(e) => {
+                          setEditingItem((prev) =>
+                            prev
+                              ? {
+                                  ...prev,
+                                  prices: {
+                                    ...prev.prices,
+                                    FULL: Number(e.target.value),
+                                  },
+                                }
+                              : prev,
+                          );
+                        }}
                       />
                     </li>
                     <li className="flex justify-between items-center py-2 px-2 lg:px-12 rounded-2xl hover:bg-gray-100 cursor-pointer">
@@ -193,7 +230,20 @@ const Items: FC<ItemsProps> = ({ subCategoryId }) => {
                         color="white"
                         placeholder="Price"
                         containerClasses="w-32"
-                        value={item.prices.HALF}
+                        value={editingItem?.prices.HALF}
+                        onChange={(e) =>
+                          setEditingItem((prev) =>
+                            prev
+                              ? {
+                                  ...prev,
+                                  prices: {
+                                    ...prev.prices,
+                                    HALF: Number(e.target.value),
+                                  },
+                                }
+                              : prev,
+                          )
+                        }
                       />
                     </li>
                     <li className="flex justify-between items-center py-2 px-2 lg:px-12 rounded-2xl hover:bg-gray-100 cursor-pointer">
@@ -202,7 +252,20 @@ const Items: FC<ItemsProps> = ({ subCategoryId }) => {
                         color="white"
                         placeholder="Price"
                         containerClasses="w-32"
-                        value={item.prices.QUARTER}
+                        value={editingItem?.prices.QUARTER}
+                        onChange={(e) =>
+                          setEditingItem((prev) =>
+                            prev
+                              ? {
+                                  ...prev,
+                                  prices: {
+                                    ...prev.prices,
+                                    QUARTER: Number(e.target.value),
+                                  },
+                                }
+                              : prev,
+                          )
+                        }
                       />
                     </li>
                   </ul>

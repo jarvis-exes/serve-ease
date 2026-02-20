@@ -32,8 +32,6 @@ export type ItemType = {
     image: string;
     sequence: number;
     isActive: boolean;
-    createdAt: Date;
-    updatedAt: Date;
     removeImage: boolean;
 }
 
@@ -85,6 +83,7 @@ export type UpdateItemRequestType = {
     image: string;
     sequence: number;
     isActive: boolean;
+    subCategoryId: string;
     removeImage: boolean;
 }
 
