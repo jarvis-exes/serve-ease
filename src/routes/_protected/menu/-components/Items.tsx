@@ -50,47 +50,8 @@ const Items: FC<ItemsProps> = ({ subCategoryId }) => {
     if (!editingItem) return;
 
     const payload = editingItem;
-
-    // const payload = {
-    //   itemId: editingItem?._id,
-    //   name: editingItem?.name,
-    //   isActive: editingItem?.isActive,
-    //   sequence: editingItem?.sequence,
-    //   prices: {
-    //     FULL: editingItem.prices?.FULL,
-    //     HALF: editingItem.prices?.HALF,
-    //     QUARTER: editingItem.prices?.QUARTER,
-    //   },
-    // };
     updateItem({ payload, subCategoryId });
   };
-
-  //   const handleUpdateItem = async () => {
-  //   if (!editingItem) return;
-
-  //   const formData = new FormData();
-
-  //   formData.append("itemId", editingItem._id);
-  //   formData.append("name", editingItem.name);
-  //   formData.append("isActive", String(editingItem.isActive));
-  //   formData.append("sequence", String(editingItem.sequence));
-
-  //   formData.append("prices[FULL]", String(editingItem.prices.FULL));
-  //   formData.append("prices[HALF]", String(editingItem.prices.HALF));
-  //   formData.append("prices[QUARTER]", String(editingItem.prices.QUARTER));
-
-  //   if (editingItem.image) {
-  //     formData.append("image", editingItem.image);
-  //   }
-
-  //   await updateItem({
-  //     formData,
-  //     subCategoryId,
-  //   });
-
-  //   setEditingItem(null);
-  // };
-
 
   const handleDeleteItem = (itemId: string) => {
     deleteItem({ itemId, subCategoryId });

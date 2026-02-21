@@ -499,9 +499,9 @@ export const useUpdateItem = (
       formData.append("isActive", String(payload.isActive));
       formData.append("sequence", String(payload.sequence));
 
-      formData.append("prices[FULL]", String(payload.prices?.FULL) || '');
-      formData.append("prices[HALF]", String(payload.prices?.HALF) || '');
-      formData.append("prices[QUARTER]", String(payload.prices?.QUARTER || ''));
+      payload.prices?.FULL && formData.append("prices[FULL]", String(payload.prices?.FULL));
+      payload.prices?.HALF && formData.append("prices[HALF]", String(payload.prices?.HALF));
+      payload.prices?.QUARTER && formData.append("prices[QUARTER]", String(payload.prices?.QUARTER));
 
       if (payload.image instanceof File) {
         formData.append("image", payload.image);
@@ -533,11 +533,11 @@ export const useUpdateItem = (
       );
     },
 
-    // onSettled: (variables: any) => {
-    //   queryClient.invalidateQueries({
-    //     queryKey: ["items", variables?.subCategoryId],
-    //   });
-    // },
+    onSettled: (variables: any) => {
+      queryClient.invalidateQueries({
+        queryKey: ["items", variables?.subCategoryId],
+      });
+    },
     ...options,
   });
 };
