@@ -29,7 +29,7 @@ export type ItemType = {
     subCategoryId: string;
     name: string;
     prices: ItemPrices;
-    image: string;
+    image: string | File;
     sequence: number;
     isActive: boolean;
     removeImage: boolean;
@@ -80,7 +80,7 @@ export type UpdateItemRequestType = {
     itemId: string;
     name: string;
     prices: ItemPrices;
-    image: string;
+    image: File;
     sequence: number;
     isActive: boolean;
     subCategoryId: string;

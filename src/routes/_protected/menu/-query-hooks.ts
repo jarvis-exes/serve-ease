@@ -8,7 +8,6 @@ import type {
   UpdateSubCategoriesRequestType,
   ItemType,
   CreateItemRequestType,
-  UpdateItemRequestType,
 } from "@/models/menu.model";
 import { Routes } from "@/models/routes";
 import {
@@ -340,9 +339,7 @@ export const useDeleteItem = (
     { itemId: string; subCategoryId: string }
   >({
     mutationFn: async ({ itemId }) => {
-      const response = await api.delete(
-        `${Routes.ITEMS}/${itemId}`,
-      );
+      const response = await api.delete(`${Routes.ITEMS}/${itemId}`);
       return response.data;
     },
 
@@ -351,10 +348,7 @@ export const useDeleteItem = (
         queryKey: ["items", itemId],
       });
 
-      const previousItems = queryClient.getQueryData([
-        "items",
-        subCategoryId,
-      ]);
+      const previousItems = queryClient.getQueryData(["items", subCategoryId]);
 
       queryClient.setQueryData(["items", subCategoryId], (old: any[]) =>
         old?.filter((sub) => sub._id !== itemId),
@@ -488,17 +482,32 @@ export const useUpdateItem = (
   options?: UseMutationOptions<
     CategoryType,
     AxiosError,
-    { payload: Partial<UpdateItemRequestType>; subCategoryId: string }
+    { payload: Partial<ItemType>; subCategoryId: string }
   >,
 ) => {
   const queryClient = useQueryClient();
   return useMutation<
     CategoryType,
     AxiosError,
-    { payload: Partial<UpdateItemRequestType>; subCategoryId: string }
+    { payload: Partial<ItemType>; subCategoryId: string }
   >({
     mutationFn: async ({ payload }) => {
-      const response = await api.patch(Routes.ITEMS, payload);
+      const formData = new FormData();
+
+      formData.append("itemId", payload._id || '');
+      formData.append("name", payload.name || '');
+      formData.append("isActive", String(payload.isActive));
+      formData.append("sequence", String(payload.sequence));
+
+      formData.append("prices[FULL]", String(payload.prices?.FULL) || '');
+      formData.append("prices[HALF]", String(payload.prices?.HALF) || '');
+      formData.append("prices[QUARTER]", String(payload.prices?.QUARTER || ''));
+
+      if (payload.image instanceof File) {
+        formData.append("image", payload.image);
+      }
+
+      const response = await api.patch(Routes.ITEMS, formData);
       return response.data;
     },
     onMutate: async ({ payload, subCategoryId }) => {
@@ -506,14 +515,11 @@ export const useUpdateItem = (
         queryKey: ["items", subCategoryId],
       });
 
-      const previousItems = queryClient.getQueryData([
-        "items",
-        subCategoryId,
-      ]);
+      const previousItems = queryClient.getQueryData(["items", subCategoryId]);
 
       queryClient.setQueryData(["items", subCategoryId], (old: any[]) =>
         old?.map((cat) =>
-          cat._id === payload.itemId ? { ...cat, ...payload } : cat,
+          cat._id === payload._id ? { ...cat, ...payload } : cat,
         ),
       );
 

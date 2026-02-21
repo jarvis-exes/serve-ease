@@ -3,7 +3,7 @@ import Card from "@/components/common/Card";
 import * as Accordion from "@radix-ui/react-accordion";
 import { FaCheck, FaChevronDown, FaPlus } from "react-icons/fa";
 import Input from "@/components/common/Input";
-import { useEffect, useState, type FC } from "react";
+import { useRef, useState, type FC } from "react";
 import { FaXmark } from "react-icons/fa6";
 import {
   useCreateItem,
@@ -19,10 +19,12 @@ import type { ItemType } from "@/models/menu.model";
 type ItemsProps = {
   subCategoryId: string;
 };
+
 const Items: FC<ItemsProps> = ({ subCategoryId }) => {
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+
   const [addingItem, setAddingItem] = useState(false);
   const [name, setName] = useState("");
-  const [editingId, setEditingId] = useState<string | null>(null);
   const [editingItem, setEditingItem] = useState<ItemType | null>(null);
 
   const { data: items, isLoading } = useListItems(subCategoryId);
@@ -47,35 +49,76 @@ const Items: FC<ItemsProps> = ({ subCategoryId }) => {
   const handleUpdateItem = () => {
     if (!editingItem) return;
 
-    const payload = {
-      itemId: editingItem?._id,
-      name: editingItem?.name,
-      isActive: editingItem?.isActive,
-      sequence: editingItem?.sequence,
-      prices: {
-        FULL: editingItem.prices?.FULL,
-        HALF: editingItem.prices?.HALF,
-        QUARTER: editingItem.prices?.QUARTER,
-      },
-    };
+    const payload = editingItem;
+
+    // const payload = {
+    //   itemId: editingItem?._id,
+    //   name: editingItem?.name,
+    //   isActive: editingItem?.isActive,
+    //   sequence: editingItem?.sequence,
+    //   prices: {
+    //     FULL: editingItem.prices?.FULL,
+    //     HALF: editingItem.prices?.HALF,
+    //     QUARTER: editingItem.prices?.QUARTER,
+    //   },
+    // };
     updateItem({ payload, subCategoryId });
-    setEditingId(null);
-    setName("");
   };
+
+  //   const handleUpdateItem = async () => {
+  //   if (!editingItem) return;
+
+  //   const formData = new FormData();
+
+  //   formData.append("itemId", editingItem._id);
+  //   formData.append("name", editingItem.name);
+  //   formData.append("isActive", String(editingItem.isActive));
+  //   formData.append("sequence", String(editingItem.sequence));
+
+  //   formData.append("prices[FULL]", String(editingItem.prices.FULL));
+  //   formData.append("prices[HALF]", String(editingItem.prices.HALF));
+  //   formData.append("prices[QUARTER]", String(editingItem.prices.QUARTER));
+
+  //   if (editingItem.image) {
+  //     formData.append("image", editingItem.image);
+  //   }
+
+  //   await updateItem({
+  //     formData,
+  //     subCategoryId,
+  //   });
+
+  //   setEditingItem(null);
+  // };
+
 
   const handleDeleteItem = (itemId: string) => {
     deleteItem({ itemId, subCategoryId });
   };
 
-  useEffect(() => {
-    if (!editingItem) return;
+  const updatePrice = (type: keyof typeof Quantity, value: string) => {
+    setEditingItem((prev) =>
+      prev
+        ? {
+          ...prev,
+          prices: {
+            ...prev.prices,
+            [type]: value,
+          },
+        }
+        : prev
+    );
+  };
 
-    // const timeout = setTimeout(() => {
-      handleUpdateItem();
-    // }, 500);
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file || !editingItem) return;
 
-    // return () => clearTimeout(timeout);
-  }, [editingItem]);
+    setEditingItem(prev =>
+      prev ? { ...prev, image: file as any } : prev
+    );
+  };
+
 
   return (
     <Card classes="flex-6 p-0">
@@ -126,155 +169,148 @@ const Items: FC<ItemsProps> = ({ subCategoryId }) => {
                 <Accordion.Header className="group flex relative items-center ">
                   <Accordion.Trigger
                     disabled={!item.isActive}
-                    onClick={() => setEditingItem(item)}
-                    className="border-b-4 border-gray-300 flex w-full items-center justify-between py-4 px-8 rounded-2xl hover:bg-gray-100"
+                    className="border-b-4 border-gray-300 flex w-full items-center justify-between px-8 rounded-2xl hover:bg-gray-100"
                   >
-                    {editingId && editingId === item._id ? (
+                    {editingItem && editingItem._id === item._id ? (
                       <div
-                        className="flex w-full gap-5 mr-5 items-center animate-in fade-in slide-in-from-top-2"
+                        className="animate-in fade-in slide-in-from-top-2"
                         onClick={(e) => e.stopPropagation()}
                       >
                         <Input
-                          color="white"
+                          color="transparent"
                           placeholder="Enter category name"
-                          inputClasses="h-12"
+                          inputClasses="h-14 p-0"
                           id="categoryInput"
-                          onChange={(e) => setName(e.target.value)}
-                          value={name}
+                          value={editingItem?.name || ""}
+                          onChange={(e) =>
+                            setEditingItem((prev) =>
+                              prev
+                                ? {
+                                  ...prev,
+                                  name: e.target.value,
+                                }
+                                : null
+                            )
+                          }
                         />
-                        <div className="flex gap-2 items-center">
-                          <FaCheck
-                            className="w-10 h-10 cursor-pointer text-green-500"
-                            onClick={() => handleUpdateItem()}
-                          />
-                          <FaXmark
-                            className="w-12 h-12 cursor-pointer text-red-500"
-                            onClick={() => setEditingId(null)}
-                          />
-                        </div>
                       </div>
                     ) : (
-                      <div className="w-full flex justify-between items-center mr-5">
-                        <span>{item.name}</span>
+                      <div className="w-full flex justify-between items-center py-4 mr-5">
+                        {item.name}
                       </div>
                     )}
                     <FaChevronDown className="transition-transform duration-300 ease-[cubic-bezier(0.87,0,0.13,1)] group-data-[state=open]:rotate-180" />
                   </Accordion.Trigger>
                   <div className="flex items-center absolute end-15">
-                    {!editingId && (
-                      <div
-                        className="flex items-center"
-                        onClick={(e) => e.stopPropagation()}
-                      >
-                        <Button
-                          color="transparent"
-                          classes=" text-green-500 group-data-[state=closed]:hidden"
-                          onClick={() => {
-                            setEditingId(item._id);
-                            setName(item.name);
-                          }}
-                        >
-                          Edit
-                        </Button>
-                        <Button
-                          color="transparent"
-                          classes=" text-red-500 group-data-[state=closed]:hidden"
-                          onClick={() => handleDeleteItem(item._id)}
-                        >
-                          Delete
-                        </Button>
-                        <SwitchButton
-                          name="isActive"
-                          className=""
-                          checked={item.isActive}
-                          onChange={() => {
-                            setEditingItem({
-                              ...item,
-                              isActive: !item.isActive,
-                            });
-                            handleUpdateItem();
-                          }}
-                        />
-                      </div>
-                    )}
+                    <div
+                      className="flex items-center"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      {editingItem && editingItem._id === item._id ?
+                        <div>
+                          <Button
+                            color="transparent"
+                            classes=" text-green-500 group-data-[state=closed]:hidden"
+                            onClick={() => {
+                              setEditingItem(null);
+                              handleUpdateItem();
+                            }}
+                          >
+                            Update
+                          </Button>
+                          <Button
+                            color="transparent"
+                            classes=" text-red-500 group-data-[state=closed]:hidden"
+                            onClick={() => setEditingItem(null)}
+                          >
+                            Cancel
+                          </Button>
+                        </div>
+                        :
+                        <div>
+                          <Button
+                            color="transparent"
+                            classes=" text-green-500 group-data-[state=closed]:hidden"
+                            onClick={() => {
+                              setEditingItem(item);
+                            }}
+                          >
+                            Edit
+                          </Button>
+                          <Button
+                            color="transparent"
+                            classes=" text-red-500 group-data-[state=closed]:hidden"
+                            onClick={() => handleDeleteItem(item._id)}
+                          >
+                            Delete
+                          </Button>
+                        </div>
+                      }
+                      <SwitchButton
+                        name="isActive"
+                        className=""
+                        checked={item.isActive}
+                        onChange={() => {
+                          setEditingItem({
+                            ...item,
+                            isActive: !item.isActive,
+                          });
+                          handleUpdateItem();
+                        }}
+                      />
+                    </div>
+
                   </div>
                 </Accordion.Header>
 
-                <Accordion.Content className="overflow-hidden w-full transition-all data-[state=closed]:animate-slide-up data-[state=open]:animate-slide-down flex gap-3 mb-2">
-                  <ul className="p-0 w-1/2 min-w-fit space-y-1">
-                    <li className="flex justify-between items-center py-2 px-2 lg:px-12 rounded-2xl hover:bg-gray-100 cursor-pointer">
-                      <span>{Quantity.FULL}</span>
-                      <Input
-                        color="white"
-                        placeholder="Price"
-                        containerClasses="w-32"
-                        value={editingItem?.prices.FULL}
-                        onChange={(e) => {
-                          setEditingItem((prev) =>
-                            prev
-                              ? {
-                                  ...prev,
-                                  prices: {
-                                    ...prev.prices,
-                                    FULL: Number(e.target.value),
-                                  },
-                                }
-                              : prev,
-                          );
-                        }}
-                      />
-                    </li>
-                    <li className="flex justify-between items-center py-2 px-2 lg:px-12 rounded-2xl hover:bg-gray-100 cursor-pointer">
-                      <span>{Quantity.HALF}</span>
-                      <Input
-                        color="white"
-                        placeholder="Price"
-                        containerClasses="w-32"
-                        value={editingItem?.prices.HALF}
-                        onChange={(e) =>
-                          setEditingItem((prev) =>
-                            prev
-                              ? {
-                                  ...prev,
-                                  prices: {
-                                    ...prev.prices,
-                                    HALF: Number(e.target.value),
-                                  },
-                                }
-                              : prev,
-                          )
-                        }
-                      />
-                    </li>
-                    <li className="flex justify-between items-center py-2 px-2 lg:px-12 rounded-2xl hover:bg-gray-100 cursor-pointer">
-                      <span>{Quantity.QUARTER}</span>
-                      <Input
-                        color="white"
-                        placeholder="Price"
-                        containerClasses="w-32"
-                        value={editingItem?.prices.QUARTER}
-                        onChange={(e) =>
-                          setEditingItem((prev) =>
-                            prev
-                              ? {
-                                  ...prev,
-                                  prices: {
-                                    ...prev.prices,
-                                    QUARTER: Number(e.target.value),
-                                  },
-                                }
-                              : prev,
-                          )
-                        }
-                      />
-                    </li>
+                <Accordion.Content className="flex gap-3 mb-2 h-44 w-full transition-all data-[state=closed]:animate-slide-up data-[state=open]:animate-slide-down">
+                  <ul className="p-0 w-1/2 min-w-fit space-y-1 items-center">
+                    {Object.keys(Quantity).map((key) => {
+                      const qKey = key as keyof typeof Quantity;
+                      return (
+                        <li
+                          key={qKey}
+                          className="flex justify-between gap-5 items-center py-2 px-2 lg:px-10 rounded-2xl hover:bg-gray-100 cursor-pointer"
+                        >
+                          <span>{Quantity[qKey]}</span>
+                          <Input
+                            color="white"
+                            placeholder="Price"
+                            containerClasses="w-32"
+                            disabled={editingItem?._id !== item._id}
+                            value={editingItem?._id === item._id ? editingItem?.prices[qKey] : item.prices[qKey]}
+                            onChange={(e) => updatePrice(qKey, e.target.value)}
+                          />
+                        </li>
+                      );
+                    })}
                   </ul>
-                  <div className="w-1/2 bg-gray-200 rounded-2xl p-2">
+                  <div className="w-1/2 relative h-full flex gap-2 justify-center bg-gray-200 rounded-2xl">
                     <img
-                      className="w-full h-full"
-                      src={item.image}
+                      className="h-full rounded-2xl"
+                      src={
+                        editingItem?._id === item._id &&
+                          editingItem.image instanceof File
+                          ? URL.createObjectURL(editingItem.image)
+                          : (item.image as string)
+                      }
                       alt="Item Image"
                     />
+                    {editingItem?._id == item._id &&
+                      <div className="absolute h-full w-full flex flex-col gap-5 items-center justify-center rounded-2xl backdrop-blur-sm">
+                        <Button onClick={() => fileInputRef.current?.click()}>
+                          Upload
+                        </Button>
+                        <Button>Remove</Button>
+                        <input
+                          type="file"
+                          ref={fileInputRef}
+                          hidden
+                          accept="image/*"
+                          onChange={handleFileChange}
+                        />
+                      </div>
+                    }
                   </div>
                 </Accordion.Content>
               </Accordion.Item>
