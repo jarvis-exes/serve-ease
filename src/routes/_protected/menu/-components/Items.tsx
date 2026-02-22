@@ -26,6 +26,7 @@ const Items: FC<ItemsProps> = ({ subCategoryId }) => {
   const [addingItem, setAddingItem] = useState(false);
   const [name, setName] = useState("");
   const [editingItem, setEditingItem] = useState<ItemType | null>(null);
+  const [images, setImages] = useState<Record<string, string>>({});
 
   const { data: items, isLoading } = useListItems(subCategoryId);
   const { mutateAsync: createItem } = useCreateItem();
@@ -71,15 +72,23 @@ const Items: FC<ItemsProps> = ({ subCategoryId }) => {
     );
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, item: ItemType) => {
     const file = e.target.files?.[0];
     if (!file || !editingItem) return;
-
+    const previewUrl = URL.createObjectURL(file)
+    setImages(prev => ({ ...prev, [item._id]: previewUrl }))
     setEditingItem(prev =>
       prev ? { ...prev, image: file as any } : prev
     );
   };
 
+  const toggleItem = async (item: ItemType) => {
+    const payload = {
+      _id: item._id,
+      isActive: !item.isActive
+    }
+    updateItem({ payload, subCategoryId })
+  }
 
   return (
     <Card classes="flex-6 p-0">
@@ -173,8 +182,8 @@ const Items: FC<ItemsProps> = ({ subCategoryId }) => {
                             color="transparent"
                             classes=" text-green-500 group-data-[state=closed]:hidden"
                             onClick={() => {
-                              setEditingItem(null);
                               handleUpdateItem();
+                              setEditingItem(null);
                             }}
                           >
                             Update
@@ -212,11 +221,7 @@ const Items: FC<ItemsProps> = ({ subCategoryId }) => {
                         className=""
                         checked={item.isActive}
                         onChange={() => {
-                          setEditingItem({
-                            ...item,
-                            isActive: !item.isActive,
-                          });
-                          handleUpdateItem();
+                          toggleItem(item);
                         }}
                       />
                     </div>
@@ -250,10 +255,7 @@ const Items: FC<ItemsProps> = ({ subCategoryId }) => {
                     <img
                       className="h-full rounded-2xl"
                       src={
-                        editingItem?._id === item._id &&
-                          editingItem.image instanceof File
-                          ? URL.createObjectURL(editingItem.image)
-                          : (item.image as string)
+                        images[item._id] ? images[item._id] : (item.image as string)
                       }
                       alt="Item Image"
                     />
@@ -268,7 +270,7 @@ const Items: FC<ItemsProps> = ({ subCategoryId }) => {
                           ref={fileInputRef}
                           hidden
                           accept="image/*"
-                          onChange={handleFileChange}
+                          onChange={(e) => handleFileChange(e, item)}
                         />
                       </div>
                     }

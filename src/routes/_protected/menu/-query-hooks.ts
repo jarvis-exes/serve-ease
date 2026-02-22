@@ -10,6 +10,7 @@ import type {
   CreateItemRequestType,
 } from "@/models/menu.model";
 import { Routes } from "@/models/routes";
+import { getOutletId } from "@/utils/tokens";
 import {
   useMutation,
   useQuery,
@@ -18,7 +19,7 @@ import {
 } from "@tanstack/react-query";
 import type { AxiosError } from "axios";
 
-const outletId = "696656b3646f68216ea092c8";
+const outletId = getOutletId();
 
 export const useListCategories = (outletId: string) => {
   return useQuery<CategoryType[], Error>({
@@ -494,14 +495,18 @@ export const useUpdateItem = (
     mutationFn: async ({ payload }) => {
       const formData = new FormData();
 
-      formData.append("itemId", payload._id || '');
-      formData.append("name", payload.name || '');
-      formData.append("isActive", String(payload.isActive));
-      formData.append("sequence", String(payload.sequence));
+      formData.append("itemId", payload._id || "");
+      payload.name && formData.append("name", payload.name || "");
+      payload.isActive !== undefined &&
+        formData.append("isActive", String(payload.isActive));
+      payload.sequence && formData.append("sequence", String(payload.sequence));
 
-      payload.prices?.FULL && formData.append("prices[FULL]", String(payload.prices?.FULL));
-      payload.prices?.HALF && formData.append("prices[HALF]", String(payload.prices?.HALF));
-      payload.prices?.QUARTER && formData.append("prices[QUARTER]", String(payload.prices?.QUARTER));
+      payload.prices?.FULL &&
+        formData.append("prices[FULL]", String(payload.prices?.FULL));
+      payload.prices?.HALF &&
+        formData.append("prices[HALF]", String(payload.prices?.HALF));
+      payload.prices?.QUARTER &&
+        formData.append("prices[QUARTER]", String(payload.prices?.QUARTER));
 
       if (payload.image instanceof File) {
         formData.append("image", payload.image);
@@ -533,11 +538,11 @@ export const useUpdateItem = (
       );
     },
 
-    onSettled: (variables: any) => {
-      queryClient.invalidateQueries({
-        queryKey: ["items", variables?.subCategoryId],
-      });
-    },
+    // onSettled: (variables: any) => {
+    //   queryClient.invalidateQueries({
+    //     queryKey: ["items", variables?.subCategoryId],
+    //   });
+    // },
     ...options,
   });
 };

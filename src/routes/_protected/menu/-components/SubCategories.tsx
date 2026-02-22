@@ -80,7 +80,7 @@ const SubCategories: FC<SubCategoriesProps> = ({
                 onClick={(e) => e.stopPropagation()}
               >
                 <Input
-                  color="transparent"
+                  color="white"
                   placeholder="Enter category name"
                   inputClasses="h-12"
                   id="categoryInput"

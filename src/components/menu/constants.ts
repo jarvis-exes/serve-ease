@@ -3,7 +3,7 @@ import { Routes } from "@/models/routes";
 export const menuItems: MenuItem[] = [
     {
         name: 'Home',
-        link: Routes.HOME
+        link: '/'
     },
     {
         name: 'Order',
@@ -13,4 +13,5 @@ export const menuItems: MenuItem[] = [
         name: 'Menu',
         link: Routes.MENU
     },
+    
 ]

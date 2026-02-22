@@ -4,7 +4,7 @@ export const Routes = {
     LOGOUT: '/logout',
     MENU: '/menu',
     ORDER: '/order',
-    HOME: '/',
+    HOME: '/home',
     CATEGORIES: '/categories',
     SUBCATEGORIES: '/sub-categories',
     ITEMS: '/items'

@@ -1,6 +1,11 @@
 import type { AuthUserType } from "@/models";
 import { jwtDecode } from "jwt-decode";
 
+export const getTokens = () => {
+    const accessToken = localStorage.getItem("accessToken");
+    return {accessToken};
+}
+
 export const getAuthUser = () => {
     const {accessToken} = getTokens();
     if (!accessToken) return null;
@@ -15,7 +20,7 @@ export const getAuthUser = () => {
     return decoded;
 }
 
-export const getTokens = () => {
-    const accessToken = localStorage.getItem("accessToken");
-    return {accessToken};
+export const getOutletId = ()=>{
+    return "696656b3646f68216ea092c8";
 }
+
