@@ -1,33 +1,30 @@
 import { socket } from '@/socket'
-import { getOutletId } from '@/utils/tokens';
 import { createFileRoute } from '@tanstack/react-router'
-import { useEffect } from 'react'
-import { useGetMenu } from './-query-hooks';
-
-
+import { useEffect, useState } from 'react'
+import type { ItemType } from '@/models/menu.model';
+import CategoriesPannel from './-components/CategoriesPannel';
+import ItemsPannel from './-components/ItemsPannel';
+import CartPannel from './-components/CartPannel';
 
 const OrderPage = () => {
-  const outletId = getOutletId();
-  const { data: menuItems } = useGetMenu(outletId);
-
-  console.log(menuItems)
+  const [items, setItems] = useState<ItemType[]>();
+  // const [cart, setCart] = useState<CartItem[]>([]);
 
   useEffect(() => {
     socket.connect();
-
     socket.on("connect", () => {
 
     })
-
     return () => {
       socket.disconnect();
     }
-  })
+  }, [])
 
   return (
-    <div>
-      <h1>ORDER PAGE</h1>
-      {menuItems.categories.map(category=>category.subCategories.map(subCategory=>subCategory.items.map(item=><div>{item.name}</div>)))}
+    <div className='flex w-full h-full p-2 gap-2 bg-gray-100'>
+      <CategoriesPannel selectItems={setItems}/>
+      <ItemsPannel items={items}/> 
+      <CartPannel/> 
     </div>
 
   )

@@ -500,6 +500,7 @@ export const useUpdateItem = (
       payload.isActive !== undefined &&
         formData.append("isActive", String(payload.isActive));
       payload.sequence && formData.append("sequence", String(payload.sequence));
+      payload.removeImage && formData.append("removeImage", String(payload.removeImage));
 
       payload.prices?.FULL &&
         formData.append("prices[FULL]", String(payload.prices?.FULL));

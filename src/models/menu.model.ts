@@ -3,8 +3,6 @@ export type CategoryType = {
     outletId: string;
     name: string;
     sequence: string;
-    createdAt: Date;
-    updatedAt: Date;
     isActive: boolean;
 }
 
@@ -13,8 +11,6 @@ export type SubCategoryType = {
     categoryId: string;
     name: string;
     sequence: string;
-    createdAt: Date;
-    updatedAt: Date;
     isActive: boolean;
 }
 
@@ -63,17 +59,13 @@ export type UpdateSubCategoriesRequestType = {
     sequence: number;
 }
 
-interface FileWithPreview extends File {
-  preview: string;
-}
-
 export type CreateItemRequestType = {
     subCategoryId: string;
     name: string;
     sequence: number;
     isActive: boolean;
     prices?: ItemPrices;
-    image?: FileWithPreview;
+    image?: File;
 }
 
 export type UpdateItemRequestType = {
@@ -85,6 +77,27 @@ export type UpdateItemRequestType = {
     isActive: boolean;
     subCategoryId: string;
     removeImage: boolean;
+}
+
+export type CompleteMenuResponseType = {
+    outletId: string;
+    categories: OrderCategory[];
+}
+
+export type OrderCategory = {
+     _id: string;
+    name: string;
+    sequence: string;
+    isActive: boolean;
+    subCategories: OrderSubCategory[];
+}
+
+export type OrderSubCategory = {
+      _id: string;
+    name: string;
+    sequence: string;
+    isActive: boolean;
+    items: ItemType[];
 }
 
 

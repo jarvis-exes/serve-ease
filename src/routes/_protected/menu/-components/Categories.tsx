@@ -15,6 +15,7 @@ import Skeleton from "@/components/loaders/Skeleton";
 import SubCategories from "./SubCategories";
 import SwitchButton from "@/components/common/Switch";
 import type { UpdateCategoriesRequestType } from "@/models/menu.model";
+import { getOutletId } from "@/utils/tokens";
 
 type CategoriesProps = {
   setSelectedSubCategoryId: (id: string) => void;
@@ -25,7 +26,7 @@ const Categories: FC<CategoriesProps> = ({
   setSelectedSubCategoryId,
   selectedSubCategoryId,
 }) => {
-  const outletId = "696656b3646f68216ea092c8";
+  const outletId = getOutletId();
 
   const [name, setName] = useState("");
   const [categoryId, setCategoryId] = useState("");
@@ -64,7 +65,7 @@ const Categories: FC<CategoriesProps> = ({
   };
 
   return (
-    <Card classes="flex-5 p-0">
+    <Card className="flex-5 p-0">
       <div className="h-full flex flex-col">
         <div className="flex justify-between items-center bg-green-light px-7 py-2 rounded-t-2xl">
           <div className="text-xl font-bold">Categories({totalCategories})</div>

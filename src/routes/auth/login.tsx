@@ -29,7 +29,7 @@ function Login() {
   return (
     <div className="h-dvh w-full flex justify-center items-center bg-login bg-cover">
       <Card
-        classes="w-96 m-10 min-h-96 p-10 text-black flex flex-col"
+        className="w-96 m-10 min-h-96 p-10 text-black flex flex-col"
         color="transparent"
       >
         <h1 className="text-center text-white text-3xl mb-10">
@@ -85,7 +85,6 @@ function Login() {
 export const Route = createFileRoute("/auth/login")({
   component: Login,
   beforeLoad: async () => {
-    console.log("authUser: ", getAuthUser());
     const authUser = getAuthUser();
     if (authUser) throw redirect({ to: "/" });
   },

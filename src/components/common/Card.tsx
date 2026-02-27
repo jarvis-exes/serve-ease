@@ -3,7 +3,7 @@ import { twMerge } from "tailwind-merge";
 type CardProps = {
   children: React.ReactNode;
   color?: "transparent" | "white";
-  classes?: string;
+  className?: string;
 };
 
 const style = {
@@ -11,9 +11,9 @@ const style = {
   white: "bg-white",
 };
 
-const Card: React.FC<CardProps> = ({ children, color = "white", classes }) => {
+const Card: React.FC<CardProps> = ({ children, color = "white", className }) => {
   return (
-    <div className={twMerge("p-2 shadow-xl rounded-2xl", style[color], classes)}>
+    <div className={twMerge("p-2 shadow-xl rounded-2xl", style[color], className)}>
       {children}
     </div>
   );

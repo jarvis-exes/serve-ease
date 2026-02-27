@@ -47,7 +47,7 @@ export default function DemoHome() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Revenue Chart */}
-        <Card classes="p-6">
+        <Card className="p-6">
           <h3 className="font-bold mb-4 text-slate-700">Revenue Trends</h3>
           <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">
@@ -69,7 +69,7 @@ export default function DemoHome() {
         </Card>
 
         {/* Orders Bar Chart */}
-        <Card classes="p-6">
+        <Card className="p-6">
           <h3 className="font-bold mb-4 text-slate-700">Daily Orders</h3>
           <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">
@@ -90,7 +90,7 @@ export default function DemoHome() {
 
 function StatCard({ title, value, change, icon }: { title: string, value: string, change: string, icon: React.ReactNode }) {
   return (
-    <Card classes="p-6 flex items-center justify-between">
+    <Card className="p-6 flex items-center justify-between">
       <div>
         <p className="text-sm text-slate-500 font-medium">{title}</p>
         <h2 className="text-3xl font-bold text-slate-800">{value}</h2>
