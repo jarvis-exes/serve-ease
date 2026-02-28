@@ -1,3 +1,5 @@
+import type { Quantity } from "./menu.enum";
+
 export type CategoryType = {
     _id: string;
     outletId: string;
@@ -98,6 +100,15 @@ export type OrderSubCategory = {
     sequence: string;
     isActive: boolean;
     items: ItemType[];
+}
+
+export type CartItem = {
+    itemId: string;
+    name: string;
+    quantity: number;
+    price: number;
+    size: Quantity;
+
 }
 
 

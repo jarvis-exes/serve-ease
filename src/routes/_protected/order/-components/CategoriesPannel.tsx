@@ -9,7 +9,7 @@ import { twMerge } from "tailwind-merge";
 import type { ItemType, OrderSubCategory } from "@/models/menu.model";
 
 type CategoriesPannelProps = {
-  selectItems: (items : ItemType[]) => void;
+  selectItems: (items: ItemType[]) => void;
 };
 
 const CategoriesPannel: FC<CategoriesPannelProps> = ({
@@ -23,14 +23,14 @@ const CategoriesPannel: FC<CategoriesPannelProps> = ({
 
   const categories = data?.categories;
 
-  const handleSelect = (subCategory: OrderSubCategory)=>{
+  const handleSelect = (subCategory: OrderSubCategory) => {
     setSelectedSubCategoryId(subCategory._id);
     selectItems(subCategory.items);
   }
 
 
   return (
-    <Card className="flex-2 p-0">
+    <Card className="flex-3 p-0">
       <div className="h-full flex flex-col">
         <div className="bg-green-light px-7 py-2 rounded-t-2xl text-xl font-bold">
           Categories
@@ -39,17 +39,16 @@ const CategoriesPannel: FC<CategoriesPannelProps> = ({
         <Accordion.Root
           type="single"
           collapsible
-          className="w-full h-full px-5 py-2 overflow-auto "
+          className="w-full h-full px-3 py-2 overflow-auto "
         >
           {isLoading ? (
             <Skeleton height="h-15" rows={5} className="py-6 px-3" />
           ) : (
             categories?.map((category) => (
-              <Accordion.Item
+              category.isActive && <Accordion.Item
                 value={category._id}
                 key={category._id}
-                className="space-y-2"
-                disabled={!category.isActive}
+                className="space-y-1"
               >
                 <Accordion.Header className="group flex relative items-center">
                   <Accordion.Trigger
@@ -60,9 +59,10 @@ const CategoriesPannel: FC<CategoriesPannelProps> = ({
                   </Accordion.Trigger>
                 </Accordion.Header>
 
-                <Accordion.Content className="overflow-hidden transition-all data-[state=closed]:animate-slide-up data-[state=open]:animate-slide-down">
+                <Accordion.Content className="overflow-hidden mb-1 transition-all data-[state=closed]:animate-slide-up data-[state=open]:animate-slide-down">
                   <ul className="space-y-1">
                     {category.subCategories.map(subCategory =>
+                      subCategory.isActive &&
                       <li
                         key={subCategory._id}
                         className={twMerge(
