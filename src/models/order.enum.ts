@@ -1,6 +1,6 @@
 export enum OrderType {
-    PARCEL= 'Parcel',
-    DINE_IN = 'Dine In',
-    ZOMATO = 'Zomato',
-    SWIGGY = 'Swiggy' 
+    PARCEL= 'PARCEL',
+    TABLE = 'TABLE',
+    ZOMATO = 'ZOMATO',
+    SWIGGY = 'SWIGGY' 
 }

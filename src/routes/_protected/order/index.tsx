@@ -24,7 +24,7 @@ const OrderPage = () => {
     <div className='flex w-full h-full p-2 gap-2 bg-gray-100'>
       <CategoriesPannel selectItems={setItems}/>
       <ItemsPannel items={items} setCart={setCart}/> 
-      <CartPannel cart={cart}/> 
+      <CartPannel cart={cart} setCart={setCart}/> 
     </div>
   )
 }

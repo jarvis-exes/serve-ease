@@ -166,7 +166,7 @@ const Categories: FC<CategoriesProps> = ({
                       >
                         <Button
                           color="transparent"
-                          classes=" text-green-500 group-data-[state=closed]:hidden"
+                          className=" text-green-500 group-data-[state=closed]:hidden"
                           onClick={() => {
                             setEditingId(item._id);
                             setName(item.name);
@@ -176,7 +176,7 @@ const Categories: FC<CategoriesProps> = ({
                         </Button>
                         <Button
                           color="transparent"
-                          classes=" text-red-500 group-data-[state=closed]:hidden"
+                          className=" text-red-500 group-data-[state=closed]:hidden"
                           onClick={() => handleDeleteCategory(item._id)}
                         >
                           Delete

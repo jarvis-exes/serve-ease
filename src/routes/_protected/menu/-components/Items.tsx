@@ -106,7 +106,6 @@ const Items: FC<ItemsProps> = ({ subCategoryId }) => {
           <div className="text-xl font-bold">Items({totalItems})</div>
           {subCategoryId &&
             <Button
-              classes=""
               icon={<FaPlus />}
               color="transparent"
               onClick={() => {
@@ -194,7 +193,7 @@ const Items: FC<ItemsProps> = ({ subCategoryId }) => {
                           <div>
                             <Button
                               color="transparent"
-                              classes=" text-green-500 group-data-[state=closed]:hidden"
+                              className=" text-green-500 group-data-[state=closed]:hidden"
                               onClick={() => {
                                 handleUpdateItem();
                                 setEditingItem(null);
@@ -204,7 +203,7 @@ const Items: FC<ItemsProps> = ({ subCategoryId }) => {
                             </Button>
                             <Button
                               color="transparent"
-                              classes=" text-red-500 group-data-[state=closed]:hidden"
+                              className=" text-red-500 group-data-[state=closed]:hidden"
                               onClick={() => setEditingItem(null)}
                             >
                               Cancel
@@ -214,7 +213,7 @@ const Items: FC<ItemsProps> = ({ subCategoryId }) => {
                           <div>
                             <Button
                               color="transparent"
-                              classes=" text-green-500 group-data-[state=closed]:hidden"
+                              className=" text-green-500 group-data-[state=closed]:hidden"
                               onClick={() => {
                                 setEditingItem(item);
                               }}
@@ -223,7 +222,7 @@ const Items: FC<ItemsProps> = ({ subCategoryId }) => {
                             </Button>
                             <Button
                               color="transparent"
-                              classes=" text-red-500 group-data-[state=closed]:hidden"
+                              className=" text-red-500 group-data-[state=closed]:hidden"
                               onClick={() => handleDeleteItem(item._id)}
                             >
                               Delete

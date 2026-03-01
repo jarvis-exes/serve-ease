@@ -110,7 +110,7 @@ const SubCategories: FC<SubCategoriesProps> = ({
               >
                 <Button
                   color="transparent"
-                  classes=" text-green-500 group-data-[state=closed]:hidden"
+                  className=" text-green-500 group-data-[state=closed]:hidden"
                   onClick={() => {
                     setEditingId(item._id);
                     setName(item.name);
@@ -120,7 +120,7 @@ const SubCategories: FC<SubCategoriesProps> = ({
                 </Button>
                 <Button
                   color="transparent"
-                  classes=" text-red-500 group-data-[state=closed]:hidden"
+                  className=" text-red-500 group-data-[state=closed]:hidden"
                   onClick={() => handleDeleteSubCategory(item._id)}
                 >
                   Delete
@@ -167,7 +167,7 @@ const SubCategories: FC<SubCategoriesProps> = ({
           </div>
         ) : (
           <Button
-            classes="text-green-dark text-md"
+            className="text-green-dark text-md"
             icon={<FaPlus />}
             color="transparent"
             onClick={() => setAddingSubCategory(true)}

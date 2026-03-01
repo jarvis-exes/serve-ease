@@ -70,7 +70,7 @@ function Login() {
             ) : (
               <Button
                 disabled={isPending}
-                classes="text-xl px-6 py-4 rounded-3xl"
+                className="text-xl px-6 py-4 rounded-3xl"
               >
                 Login
               </Button>

@@ -2,6 +2,7 @@ import Card from '@/components/common/Card'
 import type { CartItem, ItemType } from '@/models/menu.model'
 import type { Dispatch, FC, SetStateAction } from 'react';
 import ItemCard from './ItemCard';
+import { IoFastFoodSharp } from "react-icons/io5";
 
 type ItemsPannelProps = {
     items?: ItemType[];
@@ -16,9 +17,16 @@ const ItemsPannel: FC<ItemsPannelProps> = ({ items, setCart }) => {
                 Items
             </div>
 
+            {!items &&
+                <div className='h-full w-full flex flex-col gap-5 items-center justify-center'>
+                    <IoFastFoodSharp className='w-32 h-32 text-slate-800'/>
+                    <span className='font-semibold text-slate-800'>Please Select Category fom Left Menu</span>
+                </div>
+            }
+
             <div className='p-3 pb-9 gap-2 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 overflow-auto'>
                 {items?.map(item =>
-                    item.isActive && <ItemCard item={item} setCart={setCart}/>
+                    item.isActive && <ItemCard item={item} setCart={setCart} />
                 )}
             </div>
         </Card>
