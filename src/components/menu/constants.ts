@@ -10,6 +10,10 @@ export const menuItems: MenuItem[] = [
         link: Routes.ORDER
     },
     {
+        name: 'Kitchen',
+        link: Routes.KITCHEN
+    },
+    {
         name: 'Menu',
         link: Routes.MENU
     },

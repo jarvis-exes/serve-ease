@@ -2,7 +2,7 @@ import { getTokens } from "@/utils/tokens";
 import axios from "axios";
 
 export const api = axios.create({
-    baseURL: 'https://serve-ease-l1i2.onrender.com',
+    baseURL: import.meta.env.VITE_BASE_URL,
     withCredentials: true
 })
 
