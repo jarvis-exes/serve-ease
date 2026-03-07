@@ -13,7 +13,7 @@ const OrderPage = () => {
   useEffect(() => {
     socket.connect();
     socket.on("connect", () => {
-
+      
     })
     return () => {
       socket.disconnect();

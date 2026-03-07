@@ -71,7 +71,7 @@ const CartPannel: FC<CartPannelProps> = ({ cart, setCart }) => {
 
         <Card className='bg-slate-100 h-full p-2 flex flex-col gap-1 overflow-auto'>
           {cart.length > 0 ? cart.map(item =>
-            <div className='flex justify-between items-center hover:bg-white rounded-xl p-2'>
+            <div key={`${item.itemId}${item.size}`} className='flex justify-between items-center hover:bg-white rounded-xl p-2'>
               <div>
                 <div className='flex gap-3 items-center'>
                   <div className='font-semibold'>{item.name}</div>
