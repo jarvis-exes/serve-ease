@@ -5,29 +5,29 @@ import { createFileRoute } from '@tanstack/react-router'
 import { useEffect } from 'react'
 
 function KitchenPage() {
-    // useEffect(() => {
-    //     console.log("first")
-    //     socket.on('new_order', (data) => {
-    //         new Audio('./notification.wav').play();
-    //         console.log(data);
-    //     })
-
-    //     // return () => socket.disconnect();
-    // },[])
-
     useEffect(() => {
+        console.log("first")
+        socket.on('new_order', (data) => {
+            new Audio('./notification.wav').play();
+            console.log(data);
+        })
+
+        // return () => socket.disconnect();
+    },[])
+
+//     useEffect(() => {
       
-    socket.on("new_order", (order) => {
-        window.alert("New Order")
-        console.log(order);
-    //   setOrders((prev) => [...prev, order]);
-    });
+//     socket.on("new_order", (order) => {
+//         window.alert("New Order")
+//         console.log(order);
+//     //   setOrders((prev) => [...prev, order]);
+//     });
 
-    return () => {
-      socket.off("new_order");
-    };
+//     // return () => {
+//     //   socket.off("new_order");
+//     // };
 
-  }, []);
+//   }, []);
     
 
     return <div className='bg-gray-100 h-full p-2'>

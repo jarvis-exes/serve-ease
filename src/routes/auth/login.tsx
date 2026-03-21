@@ -4,7 +4,7 @@ import Input from "@/components/common/Input";
 import { createFileRoute, redirect } from "@tanstack/react-router";
 import { useState } from "react";
 import type { LoginFormType } from "@/models";
-import { getAuthUser } from "@/utils/tokens";
+import { getTokens } from "@/utils/tokens";
 import { useLogin } from "./-auth-hooks";
 import Loader from "@/components/loaders/Loader";
 
@@ -85,7 +85,7 @@ function Login() {
 export const Route = createFileRoute("/auth/login")({
   component: Login,
   beforeLoad: async () => {
-    const authUser = getAuthUser();
-    if (authUser) throw redirect({ to: "/" });
+    const token = getTokens();
+    if (token) throw redirect({ to: "/" });
   },
 });
