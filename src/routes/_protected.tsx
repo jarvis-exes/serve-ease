@@ -17,7 +17,7 @@ function App() {
   useEffect(() => {
     socket.connect();
     socket.on("connect", () => {
-      console.log("Connected")
+      // console.log("Connected")
     })
     return () => {
       socket.disconnect();
