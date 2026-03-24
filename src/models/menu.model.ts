@@ -125,4 +125,5 @@ export type Order = {
   status: string;
   tokenNumber: number;
   totalAmount: number;
+  _id: string;
 };
