@@ -21,13 +21,12 @@ export const decodeToken = () => {
 };
 
 export const getUser = () => {
-  const storedUser = localStorage.getItem("user");
-  const user = storedUser ? JSON.parse(storedUser) : null;
+  const user =  decodeToken();
   return user;
 };
 
 export const getOutletId = () => {
   const user = getUser();
-  const outletId = user.outlets[0];
+  const outletId = user?.defaultOutlet;
   return outletId;
 };
