@@ -27,6 +27,6 @@ export const getUser = () => {
 
 export const getOutletId = () => {
   const user = getUser();
-  const outletId = user?.defaultOutlet;
+  const outletId = user?.defaultOutlet as string;
   return outletId;
 };
