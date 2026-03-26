@@ -8,6 +8,7 @@ import { FaMinus, FaPlus } from 'react-icons/fa';
 import { GiForkKnifeSpoon } from "react-icons/gi";
 import { useCreateOrder } from '../-query-hooks';
 import { getOutletId } from '@/utils/tokens';
+import { toast, ToastContainer } from 'react-toastify';
 
 type CartPannelProps = {
   cart: CartItem[];
@@ -25,7 +26,12 @@ const CartPannel: FC<CartPannelProps> = ({ cart, setCart }) => {
 
   const [orderType, setOrderType] = useState<OrderType>(OrderType.TABLE);
 
-  const { mutateAsync: createOrder } = useCreateOrder();
+  const { mutateAsync: createOrder } = useCreateOrder({
+    onSuccess: () => {
+      setCart([]);
+      toast('Order Created')
+    }
+  });
   const outletId = getOutletId();
 
   const totalPrice = cart.reduce((acc, item) => acc + (item.price * item.quantity), 0);
@@ -108,6 +114,7 @@ const CartPannel: FC<CartPannelProps> = ({ cart, setCart }) => {
           </Button>
         </div>
       </div>
+      <ToastContainer />
     </Card>
   )
 }
