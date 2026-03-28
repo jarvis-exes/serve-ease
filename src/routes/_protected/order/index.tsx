@@ -5,7 +5,7 @@ import type { CartItem, ItemType, Order } from '@/models/menu.model';
 import CategoriesPannel from './-components/CategoriesPannel';
 import ItemsPannel from './-components/ItemsPannel';
 import CartPannel from './-components/CartPannel';
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 
 const OrderPage = () => {
   const [items, setItems] = useState<ItemType[]>();
@@ -27,7 +27,6 @@ const OrderPage = () => {
       <CategoriesPannel selectItems={setItems} />
       <ItemsPannel items={items} setCart={setCart} />
       <CartPannel cart={cart} setCart={setCart} />
-      <ToastContainer/>
     </div>
   )
 }

@@ -4,6 +4,7 @@ import Header from "@/components/common/Header";
 import { getTokens } from "@/utils/tokens";
 import { useEffect } from "react";
 import { socket } from "@/socket";
+import { ToastContainer } from "react-toastify";
 
 export const Route = createFileRoute("/_protected")({
   component: App,
@@ -30,6 +31,7 @@ function App() {
       <main className="flex-1 overflow-auto">
         <Outlet />
       </main>
+      <ToastContainer autoClose={1500} />
     </div>
   );
 }

@@ -8,7 +8,7 @@ import { FaMinus, FaPlus } from 'react-icons/fa';
 import { GiForkKnifeSpoon } from "react-icons/gi";
 import { useCreateOrder } from '../-query-hooks';
 import { getOutletId } from '@/utils/tokens';
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 
 type CartPannelProps = {
   cart: CartItem[];
@@ -28,12 +28,12 @@ const CartPannel: FC<CartPannelProps> = ({ cart, setCart }) => {
 
   const { mutateAsync: createOrder } = useCreateOrder({
     onSuccess: () => {
+      toast.success('Order Created');
       setCart([]);
-      toast('Order Created')
     }
   });
-  const outletId = getOutletId();
 
+  const outletId = getOutletId();
   const totalPrice = cart.reduce((acc, item) => acc + (item.price * item.quantity), 0);
 
   const handleQuantityChange = (itemId: string, size: Quantity, delta: number) => {
@@ -66,8 +66,7 @@ const CartPannel: FC<CartPannelProps> = ({ cart, setCart }) => {
           {orderConfigs.map(({ type, color }) => (
             <span
               key={type}
-              className={`${color} p-2 rounded-xl transition-all min-w-fit opacity-60 ${orderType === type ? 'flex-1 opacity-100' : ''
-                }`}
+              className={`${color} p-2 rounded-xl transition-all min-w-fit opacity-60 ${orderType === type ? 'flex-1 opacity-100' : ''}`}
               onClick={() => setOrderType(type)}
             >
               {type}
@@ -114,7 +113,6 @@ const CartPannel: FC<CartPannelProps> = ({ cart, setCart }) => {
           </Button>
         </div>
       </div>
-      <ToastContainer />
     </Card>
   )
 }

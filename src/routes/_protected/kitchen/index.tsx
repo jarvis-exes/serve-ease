@@ -7,7 +7,8 @@ import { socket } from '@/socket'
 import { getUser } from '@/utils/tokens'
 import { createFileRoute } from '@tanstack/react-router'
 import { useEffect, useState } from 'react'
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
+import { twMerge } from 'tailwind-merge'
 
 function KitchenPage() {
     const user = getUser();
@@ -37,7 +38,7 @@ function KitchenPage() {
         });
 
         socket.on("new_order", (order: Order) => {
-            setOrders((prev) => [...prev, order]);
+            setOrders((prev) => [order, ...prev]);
             toast.info(`New Order #${order.tokenNumber}`);
             new Audio('./notification.wav').play();
         });
@@ -62,6 +63,13 @@ function KitchenPage() {
         })
     }
 
+    const sizeColors = {
+       FULL : 'bg-teal-100 text-teal-700',
+       HALF : 'bg-cyan-100 text-cyan-700',
+       QUARTER : 'bg-blue-100 text-blue-700'
+    } 
+    
+
     return (
         orders.length < 1 ?
             <div className='h-full w-full flex justify-center items-center'>
@@ -69,8 +77,11 @@ function KitchenPage() {
             </div>
             : <div className='bg-gray-200 h-full p-2 flex text-gray-800'>
                 <Card className='h-full w-1/2 flex flex-col p-0 pb-2'>
-                    <div className='text-lg p-2 font-bold text-center'>Preparing</div>
-                    <div className='max-h-full overflow-auto p-2 pt-0 pb-9 gap-2 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3'>
+                    <div className='flex text-lg p-2 font-bold items-center gap-2'>
+                        <div className='w-5 h-5 rounded-full bg-green-500'> </div>
+                        <span>Preparing</span>
+                    </div>
+                    <div className='max-h-full overflow-auto p-2 pt-0 pb-9 gap-3 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2'>
                         {orders?.filter(order => order.status !== 'READY').map(order =>
                             <Card key={order._id} className='flex flex-col w-full h-fit p-0'>
                                 <div className="bg-linear-to-b from-gray-400 to-gray-300 px-2 py-2 rounded-t-2xl font-bold flex justify-between">
@@ -79,12 +90,12 @@ function KitchenPage() {
                                 </div>
                                 <div className='flex flex-col gap-1 p-2'>
                                     {order.orderItems?.map(item =>
-                                        <div key={`${item.itemId}${item.size}`} className='flex gap-2 justify-between items-center'>
+                                        <div key={`${item.itemId}${item.size}`} className='flex gap-2 justify-between items-center font-semibold px-3'>
                                             <div className='flex gap-2 items-center'>
                                                 <span>{item.name}</span>
-                                                <span className='px-1.5 rounded-xl text-sm text-green-dark font-semibold bg-gray-200'>{item.size}</span>
+                                                <span className={twMerge('px-1.5 rounded-sm text-sm', sizeColors[item.size])}>{item.size}</span>
                                             </div>
-                                            <span>x{item.quantity}</span>
+                                            <span>x {item.quantity}</span>
                                         </div>
                                     )}
                                 </div>
@@ -103,7 +114,7 @@ function KitchenPage() {
                 </Card>
                 <div className='h-full w-1/2 flex flex-col pb-2'>
                     <div className='text-lg p-2 font-bold text-center'>Prepared</div>
-                    <div className='max-h-full overflow-auto p-2 pt-0 pb-9 gap-2 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3'>
+                    <div className='max-h-full overflow-auto p-2 pt-0 pb-9 gap-2 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2'>
                         {orders?.filter(order => order.status === 'READY').map(order =>
                             <Card key={order._id} className='flex flex-col w-full h-fit p-0'>
                                 <div className="bg-linear-to-b from-gray-400 to-gray-300 px-2 py-2 rounded-t-2xl font-bold flex justify-between">
@@ -135,8 +146,6 @@ function KitchenPage() {
                         )}
                     </div>
                 </div>
-
-                <ToastContainer />
             </div>)
 }
 
