@@ -9,6 +9,8 @@ import { GiForkKnifeSpoon } from "react-icons/gi";
 import { useCreateOrder } from '../-query-hooks';
 import { getOutletId } from '@/utils/tokens';
 import { toast } from 'react-toastify';
+import { sizeColors } from '../../-constants';
+import { twMerge } from 'tailwind-merge';
 
 type CartPannelProps = {
   cart: CartItem[];
@@ -24,7 +26,7 @@ const orderConfigs = [
 
 const CartPannel: FC<CartPannelProps> = ({ cart, setCart }) => {
 
-  const [orderType, setOrderType] = useState<OrderType>(OrderType.TABLE);
+  const [orderType, setOrderType] = useState<OrderType>(OrderType.PARCEL);
 
   const { mutateAsync: createOrder } = useCreateOrder({
     onSuccess: () => {
@@ -80,7 +82,7 @@ const CartPannel: FC<CartPannelProps> = ({ cart, setCart }) => {
               <div>
                 <div className='flex gap-3 items-center'>
                   <div className='font-semibold'>{item.name}</div>
-                  <div className='font- text-gray-700 bg-gray-200 px-2 rounded-md text-sm'>{item.size}</div>
+                  <div className={twMerge('px-2 py-1 rounded-sm text-sm font-semibold', sizeColors[item.size])}>{item.size}</div>
                 </div>
                 <div className=''>{`${item.price} x ${item.quantity} = ₹${item.price * item.quantity}`}</div>
               </div>

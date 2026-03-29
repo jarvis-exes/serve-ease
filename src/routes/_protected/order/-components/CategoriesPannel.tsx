@@ -28,7 +28,6 @@ const CategoriesPannel: FC<CategoriesPannelProps> = ({
     selectItems(subCategory.items);
   }
 
-
   return (
     <Card className="flex-3 p-0">
       <div className="h-full flex flex-col">
@@ -37,8 +36,7 @@ const CategoriesPannel: FC<CategoriesPannelProps> = ({
         </div>
 
         <Accordion.Root
-          type="single"
-          collapsible
+          type="multiple"
           className="w-full h-full px-3 py-2 overflow-auto "
         >
           {isLoading ? (
@@ -52,7 +50,7 @@ const CategoriesPannel: FC<CategoriesPannelProps> = ({
               >
                 <Accordion.Header className="group flex relative items-center">
                   <Accordion.Trigger
-                    className=" border-b-4 border-gray-300 flex w-full items-center justify-between px-6 py-4 rounded-2xl hover:bg-gray-100"
+                    className=" border-b-4 border-gray-300 flex w-full items-center justify-between px-6 py-4 rounded-2xl hover:bg-gray-100 group-data-[state=open]:bg-gray-100"
                   >
                     <span>{category.name}</span>
                     <FaChevronDown className="transition-transform duration-300 ease-[cubic-bezier(0.87,0,0.13,1)] group-data-[state=open]:rotate-180" />
