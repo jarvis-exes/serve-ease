@@ -9,6 +9,7 @@ export const Routes = {
     SUBCATEGORIES: '/sub-categories',
     ITEMS: '/items',
     ORDERS: '/orders',
-    KITCHEN: '/kitchen'
-
+    KITCHEN: '/kitchen',
+    USERS: '/users',
+    CREATE_KITCHEN: '/create-kitchen'
 }

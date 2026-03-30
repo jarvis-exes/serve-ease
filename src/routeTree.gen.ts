@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as ProtectedRouteImport } from './routes/_protected'
 import { Route as ProtectedIndexRouteImport } from './routes/_protected/index'
 import { Route as AuthLoginRouteImport } from './routes/auth/login'
+import { Route as ProtectedUsersIndexRouteImport } from './routes/_protected/users/index'
 import { Route as ProtectedOrderIndexRouteImport } from './routes/_protected/order/index'
 import { Route as ProtectedMenuIndexRouteImport } from './routes/_protected/menu/index'
 import { Route as ProtectedKitchenIndexRouteImport } from './routes/_protected/kitchen/index'
@@ -29,6 +30,11 @@ const AuthLoginRoute = AuthLoginRouteImport.update({
   id: '/auth/login',
   path: '/auth/login',
   getParentRoute: () => rootRouteImport,
+} as any)
+const ProtectedUsersIndexRoute = ProtectedUsersIndexRouteImport.update({
+  id: '/users/',
+  path: '/users/',
+  getParentRoute: () => ProtectedRoute,
 } as any)
 const ProtectedOrderIndexRoute = ProtectedOrderIndexRouteImport.update({
   id: '/order/',
@@ -52,6 +58,7 @@ export interface FileRoutesByFullPath {
   '/kitchen': typeof ProtectedKitchenIndexRoute
   '/menu': typeof ProtectedMenuIndexRoute
   '/order': typeof ProtectedOrderIndexRoute
+  '/users': typeof ProtectedUsersIndexRoute
 }
 export interface FileRoutesByTo {
   '/auth/login': typeof AuthLoginRoute
@@ -59,6 +66,7 @@ export interface FileRoutesByTo {
   '/kitchen': typeof ProtectedKitchenIndexRoute
   '/menu': typeof ProtectedMenuIndexRoute
   '/order': typeof ProtectedOrderIndexRoute
+  '/users': typeof ProtectedUsersIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -68,12 +76,13 @@ export interface FileRoutesById {
   '/_protected/kitchen/': typeof ProtectedKitchenIndexRoute
   '/_protected/menu/': typeof ProtectedMenuIndexRoute
   '/_protected/order/': typeof ProtectedOrderIndexRoute
+  '/_protected/users/': typeof ProtectedUsersIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/auth/login' | '/' | '/kitchen' | '/menu' | '/order'
+  fullPaths: '/auth/login' | '/' | '/kitchen' | '/menu' | '/order' | '/users'
   fileRoutesByTo: FileRoutesByTo
-  to: '/auth/login' | '/' | '/kitchen' | '/menu' | '/order'
+  to: '/auth/login' | '/' | '/kitchen' | '/menu' | '/order' | '/users'
   id:
     | '__root__'
     | '/_protected'
@@ -82,6 +91,7 @@ export interface FileRouteTypes {
     | '/_protected/kitchen/'
     | '/_protected/menu/'
     | '/_protected/order/'
+    | '/_protected/users/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -112,6 +122,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthLoginRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_protected/users/': {
+      id: '/_protected/users/'
+      path: '/users'
+      fullPath: '/users'
+      preLoaderRoute: typeof ProtectedUsersIndexRouteImport
+      parentRoute: typeof ProtectedRoute
+    }
     '/_protected/order/': {
       id: '/_protected/order/'
       path: '/order'
@@ -141,6 +158,7 @@ interface ProtectedRouteChildren {
   ProtectedKitchenIndexRoute: typeof ProtectedKitchenIndexRoute
   ProtectedMenuIndexRoute: typeof ProtectedMenuIndexRoute
   ProtectedOrderIndexRoute: typeof ProtectedOrderIndexRoute
+  ProtectedUsersIndexRoute: typeof ProtectedUsersIndexRoute
 }
 
 const ProtectedRouteChildren: ProtectedRouteChildren = {
@@ -148,6 +166,7 @@ const ProtectedRouteChildren: ProtectedRouteChildren = {
   ProtectedKitchenIndexRoute: ProtectedKitchenIndexRoute,
   ProtectedMenuIndexRoute: ProtectedMenuIndexRoute,
   ProtectedOrderIndexRoute: ProtectedOrderIndexRoute,
+  ProtectedUsersIndexRoute: ProtectedUsersIndexRoute,
 }
 
 const ProtectedRouteWithChildren = ProtectedRoute._addFileChildren(

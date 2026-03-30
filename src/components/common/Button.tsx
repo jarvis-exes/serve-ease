@@ -1,7 +1,7 @@
-import { type FC, type ReactNode } from "react";
+import { type ButtonHTMLAttributes, type FC, type ReactNode } from "react";
 import { twMerge } from "tailwind-merge";
 
-type ButtonProps = {
+type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   children: ReactNode;
   color?: 'transparent' | 'white' | 'green';
   className?: string;
@@ -11,19 +11,22 @@ type ButtonProps = {
 };
 
 const colors = {
-  transparent : "hover:bg-black/10 text-white disabled:text-gray-500",
+  transparent: "hover:bg-black/10 text-white disabled:text-gray-500",
   white: "bg-white/70 hover:bg-white/90 active:bg-white/70 text-gray-600 disabled:bg-black/30",
   green: "bg-green-medium text-white hover:bg-green-dark disabled:bg-green-medium/40"
 };
 
-const Button: FC<ButtonProps> = ({
-  children,
-  color = 'white',
-  className,
-  onClick,
-  disabled,
-  icon,
-}) => {
+const Button: FC<ButtonProps> = (props) => {
+  const {
+    children,
+    color = 'white',
+    className,
+    onClick,
+    disabled,
+    icon,
+    ...rest
+  } = props;
+
   return (
     <button
       className={twMerge(
@@ -33,6 +36,7 @@ const Button: FC<ButtonProps> = ({
       )}
       onClick={onClick}
       disabled={disabled}
+      {...rest}
     >
       <div className="flex gap-2 items-center justify-center">
         {icon}

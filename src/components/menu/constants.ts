@@ -17,6 +17,9 @@ export const menuItems: MenuItem[] = [
         name: 'Menu',
         link: Routes.MENU
     },
-    
+    {
+        name: 'Users',
+        link: Routes.USERS
+    }
     
 ]

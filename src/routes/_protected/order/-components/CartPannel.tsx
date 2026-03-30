@@ -28,7 +28,7 @@ const CartPannel: FC<CartPannelProps> = ({ cart, setCart }) => {
 
   const [orderType, setOrderType] = useState<OrderType>(OrderType.PARCEL);
 
-  const { mutateAsync: createOrder } = useCreateOrder({
+  const { mutateAsync: createOrder, isPending } = useCreateOrder({
     onSuccess: () => {
       toast.success('Order Created');
       setCart([]);
@@ -108,7 +108,7 @@ const CartPannel: FC<CartPannelProps> = ({ cart, setCart }) => {
         </Card>
         <div className='flex justify-between items-center px-2'>
           <span className='font-semibold text-xl'>Total: {totalPrice}</span>
-          <Button color='green' className='px-8' disabled={cart.length < 1}
+          <Button color='green' className='px-8' disabled={cart.length < 1 || isPending}
             onClick={handleCreateOrder}
           >
             Order

@@ -210,41 +210,6 @@ function KitchenPage() {
                     }
                     </Card>
                 </div>
-                
-                {/* <div className='h-full w-1/2 flex flex-col pb-2'>
-                    <div className='text-lg p-2 font-bold text-center'>Prepared</div>
-                    <div className='max-h-full overflow-auto p-2 pt-0 pb-9 gap-2 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2'>
-                        {preparedOrders.map(order =>
-                            <Card key={order._id} className='flex flex-col w-full h-fit p-0'>
-                                <div className="bg-linear-to-b from-gray-400 to-gray-300 px-2 py-2 rounded-t-2xl font-bold flex justify-between">
-                                    <span>#{order.tokenNumber}</span>
-                                    <span>{order.orderType}</span>
-                                </div>
-                                <div className='flex flex-col p-2'>
-                                    {order.orderItems?.map(item =>
-                                        <div className='flex gap-2 justify-between items-center'>
-                                            <div className='flex gap-2 items-center'>
-                                                <span>{item.name}</span>
-                                                <span className='px-1.5 rounded-xl text-sm text-green-dark font-semibold bg-gray-200'> {item.size}</span>
-                                            </div>
-                                            <span>x{item.quantity}</span>
-                                        </div>
-                                    )}
-
-                                </div>
-                                <div className='p-2 flex justify-center'>
-                                    {!isKitchen &&
-                                        <Button color='green' className='w-full rounded-xl'
-                                            onClick={() => handleOrderComplete(order._id)}
-                                        >
-                                            Complete
-                                        </Button>
-                                    }
-                                </div>
-                            </Card>
-                        )}
-                    </div>
-                </div> */}
             </div>)
 }
 
