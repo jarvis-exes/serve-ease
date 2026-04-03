@@ -1,7 +1,7 @@
 import type { FC } from "react";
 import { Link } from "@tanstack/react-router";
 import { getUser } from "@/utils/tokens";
-import { Roles } from "@/models/roles.enum";
+import { Roles } from "@/enums/roles.enum";
 
 type MenuBarProps = {
   items: MenuItem[];

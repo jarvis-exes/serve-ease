@@ -1,8 +1,8 @@
 import Button from '@/components/common/Button';
 import Card from '@/components/common/Card'
-import type { Quantity } from '@/models/menu.enum';
+import type { Quantity } from '@/enums/menu.enum';
 import type { CartItem } from '@/models/menu.model'
-import { OrderType } from '@/models/order.enum';
+import { OrderType } from '@/enums/order.enum';
 import { useState, type Dispatch, type FC, type SetStateAction } from 'react';
 import { FaMinus, FaPlus } from 'react-icons/fa';
 import { GiForkKnifeSpoon } from "react-icons/gi";

@@ -11,11 +11,12 @@ import {
   useListCategories,
   useUpdateCategory,
 } from "../-query-hooks";
-import Skeleton from "@/components/loaders/Skeleton";
 import SubCategories from "./SubCategories";
 import SwitchButton from "@/components/common/Switch";
 import type { UpdateCategoriesRequestType } from "@/models/menu.model";
 import { getOutletId } from "@/utils/tokens";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
 type CategoriesProps = {
   setSelectedSubCategoryId: (id: string) => void;
@@ -106,7 +107,11 @@ const Categories: FC<CategoriesProps> = ({
           )}
 
           {isCategoriesLoading ? (
-            <Skeleton height="h-15" rows={5} className="py-6 px-3" />
+            <div className="space-y-3 px-1 py-4">
+              <Skeleton height={60}  borderRadius={20} />
+              <Skeleton height={60}  borderRadius={20} />
+              <Skeleton height={60}  borderRadius={20} width={'70%'}/>
+            </div>
           ) : (
             categories?.map((item) => (
               <Accordion.Item

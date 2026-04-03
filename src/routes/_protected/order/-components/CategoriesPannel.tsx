@@ -2,11 +2,12 @@ import Card from "@/components/common/Card";
 import * as Accordion from "@radix-ui/react-accordion";
 import { FaChevronDown } from "react-icons/fa";
 import { useState, type FC } from "react";
-import Skeleton from "@/components/loaders/Skeleton";
 import { getOutletId } from "@/utils/tokens";
 import { useGetMenu } from "../-query-hooks";
 import { twMerge } from "tailwind-merge";
 import type { ItemType, OrderSubCategory } from "@/models/menu.model";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
 type CategoriesPannelProps = {
   selectItems: (items: ItemType[]) => void;
@@ -40,7 +41,11 @@ const CategoriesPannel: FC<CategoriesPannelProps> = ({
           className="w-full h-full px-3 py-2 overflow-auto "
         >
           {isLoading ? (
-            <Skeleton height="h-15" rows={5} className="py-6 px-3" />
+            <div>
+              <Skeleton height={60} borderRadius={20} />
+              <Skeleton height={60} borderRadius={20} />
+              <Skeleton height={60} borderRadius={20} />
+            </div>
           ) : (
             categories?.map((category) => (
               category.isActive && <Accordion.Item

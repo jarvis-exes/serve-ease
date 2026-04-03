@@ -1,5 +1,5 @@
 import Card from "@/components/common/Card";
-import { Quantity } from "@/models/menu.enum";
+import { Quantity } from "@/enums/menu.enum";
 import type { CartItem, ItemType } from "@/models/menu.model";
 import type { Dispatch, FC, SetStateAction } from "react";
 import { twMerge } from "tailwind-merge";

@@ -1,5 +1,5 @@
-import type { Quantity } from "./menu.enum";
-import type { OrderType } from "./order.enum";
+import type { Quantity } from "../enums/menu.enum";
+import type { OrderType } from "../enums/order.enum";
 
 export type CategoryType = {
   _id: string;

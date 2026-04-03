@@ -3,6 +3,7 @@ import Card from '@/components/common/Card';
 import { createFileRoute } from '@tanstack/react-router'
 import { useState } from 'react';
 import { useCreateKitchenUser } from './-query-hooks';
+import { toast } from 'react-toastify';
 
 function Users() {
   const [formData, setFormData] = useState({
@@ -11,7 +12,14 @@ function Users() {
     password: '',
   });
 
-  const {mutateAsync: createKitchenUser, isPending} = useCreateKitchenUser();
+  const {mutateAsync: createKitchenUser, isPending} = useCreateKitchenUser({
+    onSuccess: ()=>{
+      toast.success('Kitchen user created')
+    },
+    onError: ()=>{
+      toast.error('Error creating kitchen user')
+    }
+  });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const { name, value } = e.target;

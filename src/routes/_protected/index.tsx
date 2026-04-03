@@ -1,5 +1,5 @@
-import DemoHome from "@/components/common/DemoHome";
 import { createFileRoute } from "@tanstack/react-router";
+import Dashboard from "./-dashboard/Dashboard";
 
 export const Route = createFileRoute("/_protected/")({
   component: Home,
@@ -8,7 +8,7 @@ export const Route = createFileRoute("/_protected/")({
 function Home() {
   return (
     <div className="flex h-full justify-center items-center m-auto gap-30 flex-col md:flex-row">
-      <DemoHome/>
+      <Dashboard/>
     </div>
   );
 };

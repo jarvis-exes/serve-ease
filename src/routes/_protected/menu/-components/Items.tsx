@@ -11,10 +11,11 @@ import {
   useListItems,
   useUpdateItem,
 } from "../-query-hooks";
-import Skeleton from "@/components/loaders/Skeleton";
 import SwitchButton from "@/components/common/Switch";
-import { Quantity } from "@/models/menu.enum";
+import { Quantity } from "@/enums/menu.enum";
 import type { ItemType } from "@/models/menu.model";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
 type ItemsProps = {
   subCategoryId: string;
@@ -142,7 +143,11 @@ const Items: FC<ItemsProps> = ({ subCategoryId }) => {
           )}
 
           {isLoading ? (
-            <Skeleton height="h-10" rows={6} />
+            <div className="space-y-3 px-1 py-4">
+              <Skeleton height={40} borderRadius={20} />
+              <Skeleton height={40} borderRadius={20} />
+              <Skeleton height={40} borderRadius={20} width={'70%'} />
+            </div>
           ) : items && items.length > 0 ? (
             items?.map((item) => {
               const imageSrc = images[item._id] === null ? null : images[item._id] ?? item.image;

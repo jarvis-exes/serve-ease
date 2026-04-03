@@ -9,10 +9,11 @@ import {
   useListSubCategories,
   useUpdateSubCategory,
 } from "../-query-hooks";
-import Skeleton from "@/components/loaders/Skeleton";
 import { twMerge } from "tailwind-merge";
 import SwitchButton from "@/components/common/Switch";
 import type { UpdateSubCategoriesRequestType } from "@/models/menu.model";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
 type SubCategoriesProps = {
   categoryId: string;
@@ -144,7 +145,11 @@ const SubCategories: FC<SubCategoriesProps> = ({
           </li>
         ))
       ) : (
-        <Skeleton height="h-10" rows={3} className="py-6 px-3" />
+        <div className="space-y-3 px-1 py-4">
+          <Skeleton height={40} borderRadius={20} />
+          <Skeleton height={40} borderRadius={20} />
+          <Skeleton height={40} borderRadius={20} width={'70%'} />
+        </div>
       )}
       <li className="flex justify-center">
         {addingSubCategory ? (

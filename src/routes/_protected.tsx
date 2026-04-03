@@ -1,10 +1,11 @@
-import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
+import { createFileRoute, Navigate, Outlet, redirect, useLocation } from "@tanstack/react-router";
 import { Routes } from "@/models/routes";
 import Header from "@/components/common/Header";
-import { getTokens } from "@/utils/tokens";
+import { getTokens, getUser } from "@/utils/tokens";
 import { useEffect } from "react";
 import { socket } from "@/socket";
 import { ToastContainer } from "react-toastify";
+import { Roles } from "@/enums/roles.enum";
 
 export const Route = createFileRoute("/_protected")({
   component: App,
@@ -15,15 +16,21 @@ export const Route = createFileRoute("/_protected")({
 });
 
 function App() {
+  const user = getUser();
+  const location = useLocation();
+
   useEffect(() => {
     socket.connect();
     socket.on("connect", () => {
-      // console.log("Connected")
     })
     return () => {
       socket.disconnect();
     }
   }, [])
+
+  if (user?.role === Roles.KITCHEN && location.pathname !== "/kitchen") {
+    return <Navigate to="/kitchen" replace />;
+  }
 
   return (
     <div className="h-screen flex flex-col">
