@@ -23,7 +23,7 @@ const OrderPage = () => {
   }, []);
 
   return (
-    <div className='flex w-full h-full p-2 gap-2 bg-gray-100'>
+    <div className='flex w-full h-full p-2 gap-2'>
       <CategoriesPannel selectItems={setItems} />
       <ItemsPannel items={items} setCart={setCart} />
       <CartPannel cart={cart} setCart={setCart} />

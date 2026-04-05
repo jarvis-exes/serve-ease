@@ -32,13 +32,13 @@ const CategoriesPannel: FC<CategoriesPannelProps> = ({
   return (
     <Card className="flex-3 p-0">
       <div className="h-full flex flex-col">
-        <div className="bg-green-light px-7 py-2 rounded-t-2xl text-xl font-bold">
+        <div className="px-3 pt-3 rounded-t-2xl text-2xl text-slate-800">
           Categories
         </div>
 
         <Accordion.Root
           type="multiple"
-          className="w-full h-full px-3 py-2 overflow-auto "
+          className="w-full h-full p-3 overflow-auto "
         >
           {isLoading ? (
             <div>

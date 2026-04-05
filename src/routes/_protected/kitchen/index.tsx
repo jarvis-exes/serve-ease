@@ -105,9 +105,9 @@ function KitchenPage() {
     return (
         orders.length < 1 ?
             <div className='h-full w-full flex justify-center items-center'>
-                <Loader type='pizza' classes='scale-200' />
+                <Loader type='pizza' classes='scale-200'/>
             </div>
-            : <div className='bg-gray-200 h-full p-2 flex gap-3 text-gray-800'>
+            : <div className='h-full p-2 flex gap-3 text-gray-800'>
                 <div className='h-full w-1/2 flex flex-col'>
                     <div className='flex text-lg px-6 py-3 items-center justify-between gap-2'>
                         <div className='flex items-center gap-2'>

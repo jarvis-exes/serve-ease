@@ -12,7 +12,7 @@ type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
 
 const colors = {
   transparent: "hover:bg-black/10 text-white disabled:text-gray-500",
-  white: "bg-white/70 hover:bg-white/90 active:bg-white/70 text-gray-600 disabled:bg-black/30",
+  white: "bg-white/70 hover:bg-black/10 active:bg-white/70 text-gray-600 disabled:bg-black/30",
   green: "bg-green-medium text-white hover:bg-green-dark disabled:bg-green-medium/40"
 };
 

@@ -12,15 +12,15 @@ const MenuBar: FC<MenuBarProps> = ({ items }) => {
   if (isKitchen) items = items.filter(item => item.name === 'Kitchen')
 
   return (
-    <div className="flex gap-15 font-semibold">
+    <div className="flex gap-5 font-semibold">
       {items.map((item, idx) => {
         return (
           <Link
             key={idx}
             to={item.link}
-            className="underline-animate "
+            className=" px-3 py-2 rounded-full bg-gray-300 text-gray-700"
             activeProps={{
-              className: "after:w-full",
+              className: "bg-gray-900 text-white",
             }}
           >
             {item.name}

@@ -13,7 +13,7 @@ export default function Dashboard() {
   const { data: { stats, user } = {}, isLoading } = useGetDashboardData();
 
   return (
-    <div className="p-6 space-y-6 bg-slate-50 w-full h-full">
+    <div className="flex flex-col w-full gap-6 p-6">
       <header>
         {isLoading ? <Skeleton count={2} width={'40%'} height={30} borderRadius={15} /> :
           <>

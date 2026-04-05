@@ -1,6 +1,6 @@
 import { createFileRoute, Navigate, Outlet, redirect, useLocation } from "@tanstack/react-router";
 import { Routes } from "@/models/routes";
-import Header from "@/components/common/Header";
+import Header from "@/components/menu/Header";
 import { getTokens, getUser } from "@/utils/tokens";
 import { useEffect } from "react";
 import { socket } from "@/socket";
@@ -33,7 +33,7 @@ function App() {
   }
 
   return (
-    <div className="h-screen flex flex-col">
+    <div className="h-screen flex flex-col bg-slate-100">
       <Header />
       <main className="flex-1 overflow-auto">
         <Outlet />

@@ -68,11 +68,11 @@ const Categories: FC<CategoriesProps> = ({
   return (
     <Card className="flex-5 p-0">
       <div className="h-full flex flex-col">
-        <div className="flex justify-between items-center bg-green-light px-7 py-2 rounded-t-2xl">
+        <div className="flex justify-between items-center px-7 pt-2 rounded-t-2xl">
           <div className="text-xl font-bold">Categories({totalCategories})</div>
           <Button
             icon={<FaPlus />}
-            color="transparent"
+            
             onClick={() => setAddingCategory(true)}
           >
             Add Category

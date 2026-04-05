@@ -103,7 +103,7 @@ const Items: FC<ItemsProps> = ({ subCategoryId }) => {
   return (
     <Card className="flex-6 p-0">
       <div className="h-full flex flex-col">
-        <div className="flex justify-between h-15 items-center bg-green-light px-7 py-2 rounded-t-2xl">
+        <div className="flex justify-between h-15 items-center px-7 pt-2 rounded-t-2xl">
           <div className="text-xl font-bold">Items({totalItems})</div>
           {subCategoryId &&
             <Button
