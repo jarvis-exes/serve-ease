@@ -3,9 +3,7 @@ import Card from '@/components/common/Card'
 import Loader from '@/components/loaders/Loader'
 import type { Order } from '@/models/menu.model'
 import { OrderStatus, OrderType } from '@/enums/order.enum'
-import { Roles } from '@/enums/roles.enum'
 import { socket } from '@/socket'
-import { getUser } from '@/utils/tokens'
 import { createFileRoute } from '@tanstack/react-router'
 import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify';
@@ -13,10 +11,10 @@ import { twMerge } from 'tailwind-merge';
 import { IoBag, IoFastFoodSharp } from "react-icons/io5";
 import { ImSpoonKnife } from "react-icons/im";
 import { sizeColors } from '../-constants'
+import { useIsKitchen } from '@/utils/utils'
 
 function KitchenPage() {
-    const user = getUser();
-    const isKitchen = user?.role === Roles.KITCHEN;
+    const isKitchen = useIsKitchen();
 
     const [orders, setOrders] = useState<Order[]>([]);
 
