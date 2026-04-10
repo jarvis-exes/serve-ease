@@ -16,11 +16,11 @@ const MobileMenu = () => {
             <Dropdown.Portal>
                 <Dropdown.Content 
                 sideOffset={10} align="end" 
-                className="flex flex-col gap-3 min-w-48 bg-gray-900 rounded-2xl px-4 py-3 text-2xl text-white data-[state='open']:animate-pop-in data-[state='closed']:animate-pop-out "
+                className="z-20 flex flex-col gap-3 min-w-48 bg-gray-900 rounded-2xl px-4 py-3 text-2xl text-white data-[state='open']:animate-pop-in data-[state='closed']:animate-pop-out "
                 >
                     {menuItems.map((item, idx) => {
                         return (
-                            <Dropdown.Item>
+                            <Dropdown.Item asChild>
                                 <Link
                                     key={idx}
                                     to={item.link}
@@ -36,7 +36,7 @@ const MobileMenu = () => {
                         );
                     })}
                     <Dropdown.Separator className="h-px bg-slate-600" />
-                    <Dropdown.Item onClick={() => logout()} className="flex items-center gap-3">
+                    <Dropdown.Item onSelect={() => logout()} className="flex items-center gap-3">
                         <RiLogoutBoxLine className="text-green-medium"/>
                         <span>Logout</span>
                     </Dropdown.Item>

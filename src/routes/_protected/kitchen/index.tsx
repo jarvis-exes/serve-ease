@@ -66,7 +66,7 @@ function KitchenPage() {
     const preparedOrders = orders.filter(o => o.status === OrderStatus.READY);
 
     return (
-        <div className='h-full flex flex-col p-2 pt-0'>
+        <div className='h-full flex flex-col '>
             {isMobile &&
                 <div className='w-full flex justify-center'>
                     <SegmentedControl
@@ -77,7 +77,7 @@ function KitchenPage() {
                 </div>
             }
 
-            <div className='h-full flex gap-3 text-gray-800'>
+            <div className='h-full overflow-auto flex gap-3 text-gray-800'>
 
                 {(tab === 'PREPARING' || tab === 'ALL') && (
                     <OrdersPannel

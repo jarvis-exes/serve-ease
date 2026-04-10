@@ -29,7 +29,7 @@ function App() {
   }, [])
 
   if (user?.role === Roles.KITCHEN && location.pathname !== "/kitchen") {
-    return <Navigate to="/kitchen" replace />;
+    return <Navigate to="/kitchen" search={{tab: 'PREPARING'}} />;
   }
 
   return (

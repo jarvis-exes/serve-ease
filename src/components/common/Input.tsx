@@ -23,7 +23,7 @@ const Input: FC<InputProps> = (props) => {
   }
 
   return (
-    <div className={twMerge("w-full flex gap-2 justify-center items-center", containerClasses)}>
+    <div className={twMerge("w-full flex flex-col gap-2 justify-center items-center", containerClasses)}>
       {label && <div className={twMerge(labelClasses)}>{label}</div>}
       <input
         className={twMerge(

@@ -12,7 +12,7 @@ const MobileHeader = () => {
     const { mutateAsync: logout } = useLogout();
 
     return (
-        <div className='flex p-2 items-center justify-between'>
+        <div className='flex shrink-0 p-2 items-center justify-between'>
             <Link to='/' className="flex items-center gap-3 h-full">
                 <img src='/cutlery.png' alt="" className="h-10" />
                 <span className="text-2xl font-bold text-gray-800">Serve Ease</span>
