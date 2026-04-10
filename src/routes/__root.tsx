@@ -4,7 +4,7 @@ import { TanStackDevtools } from "@tanstack/react-devtools";
 import type { ContextType } from "@/models";
 
 const RootComponent = () => (
-  <div className="h-screen">
+  <div>
     <Outlet />
     <TanStackDevtools
       config={{

@@ -23,6 +23,7 @@ export default defineConfig({
         name: 'Serve Ease',
         short_name: 'Serve Ease',
         theme_color: '#ff6b00',
+        display: 'standalone',
         icons: [
           {
             src: '/cutlery.png',

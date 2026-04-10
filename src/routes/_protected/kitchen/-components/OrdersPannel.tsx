@@ -29,7 +29,7 @@ export const OrdersPannel = ({ title, count, orders, accentColor, buttonLabel, o
                 </div>
                 <div className={twMerge('font-bold', textClass)}>{count} ORDERS</div>
             </div>
-            <Card className='h-full p-3 overflow-auto m-2 mt-0'>
+            <Card className='h-full p-3 overflow-auto shadow-none'>
                 {orders.length > 0 ? (
                     <div className="max-h-full overflow-auto gap-3 flex flex-wrap content-start">
                         {
