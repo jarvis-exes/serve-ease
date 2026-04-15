@@ -47,6 +47,7 @@ function Login() {
             required
             onChange={handleChange}
             disabled={isPending}
+            animate
           />
 
           <Input
@@ -56,6 +57,7 @@ function Login() {
             required
             onChange={handleChange}
             disabled={isPending}
+            animate
           />
 
           {isError && (

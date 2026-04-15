@@ -31,7 +31,6 @@ const CartPannel: FC<CartPannelProps> = ({ cart, setCart }) => {
   const { mutateAsync: createOrder, isPending } = useCreateOrder({
     onSuccess: () => {
       toast.success('Order Created');
-      setCart([]);
     }
   });
 
@@ -55,6 +54,7 @@ const CartPannel: FC<CartPannelProps> = ({ cart, setCart }) => {
       orderType: orderType,
       orderItems: cart
     })
+    setCart([]);
   }
 
   return (

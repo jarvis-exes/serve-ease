@@ -22,16 +22,16 @@ export const OrdersPannel = ({ title, count, orders, accentColor, buttonLabel, o
 
     return (
         <div className='h-full w-full flex flex-col overflow-auto'>
-            <div className='flex text-lg px-6 py-3 items-center justify-between gap-2 '>
+            <div className='flex text-lg px-6 py-3 items-center justify-between gap-2'>
                 <div className='flex items-center gap-2'>
                     <div className={twMerge('w-5 h-5 rounded-full', bgClass)}></div>
                     <span className='font-bold'>{title}</span>
                 </div>
                 <div className={twMerge('font-bold', textClass)}>{count} ORDERS</div>
             </div>
-            <Card className='h-full p-3 overflow-auto shadow-none'>
+            <Card className='h-full overflow-auto shadow-none p-0'>
                 {orders.length > 0 ? (
-                    <div className="max-h-full overflow-auto gap-3 flex flex-wrap content-start">
+                    <div className="max-h-full p-3 overflow-auto gap-3 flex flex-wrap content-start">
                         {
                             orders.map(order => (
                                 <OrderCard
