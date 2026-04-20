@@ -1,10 +1,10 @@
-import { IsMobile } from "@/utils/mobile";
+import { useIsMobile } from "@/utils/mobile";
 import Menu from "./Menu";
 import MobileHeader from "./MobileHeader";
 
 
 const Header = () => {
-  const isMobile = IsMobile();
+  const isMobile = useIsMobile();
 
   return isMobile ? <MobileHeader /> : <Menu />;
 };

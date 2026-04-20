@@ -7,7 +7,7 @@ import { toast } from 'react-toastify';
 import { useIsKitchen } from '@/utils/utils'
 import { OrdersPannel } from './-components/OrdersPannel'
 import SegmentedControl from '@/components/common/SegmentedControl'
-import { IsMobile } from '@/utils/mobile'
+import { useIsMobile } from '@/utils/mobile'
 
 
 function KitchenPage() {
@@ -16,7 +16,7 @@ function KitchenPage() {
     const { tab } = Route.useSearch();
     const navigate = useNavigate({ from: Route.fullPath });
     const isKitchen = useIsKitchen();
-    const isMobile = IsMobile();
+    const isMobile = useIsMobile();
 
     const [orders, setOrders] = useState<Order[]>([]);
 

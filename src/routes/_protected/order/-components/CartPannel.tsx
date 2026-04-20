@@ -11,10 +11,12 @@ import { getOutletId } from '@/utils/tokens';
 import { toast } from 'react-toastify';
 import { sizeColors } from '../../-constants';
 import { twMerge } from 'tailwind-merge';
+import { MdKeyboardArrowDown } from "react-icons/md";
 
 type CartPannelProps = {
   cart: CartItem[];
   setCart: Dispatch<SetStateAction<CartItem[]>>
+  setShowCart: Dispatch<SetStateAction<boolean>>
 }
 
 const orderConfigs = [
@@ -24,7 +26,7 @@ const orderConfigs = [
   { type: OrderType.SWIGGY, color: 'bg-orange-500' },
 ];
 
-const CartPannel: FC<CartPannelProps> = ({ cart, setCart }) => {
+const CartPannel: FC<CartPannelProps> = ({ cart, setCart, setShowCart }) => {
 
   const [orderType, setOrderType] = useState<OrderType>(OrderType.PARCEL);
 
@@ -55,12 +57,16 @@ const CartPannel: FC<CartPannelProps> = ({ cart, setCart }) => {
       orderItems: cart
     })
     setCart([]);
+    setShowCart(false);
   }
 
   return (
     <Card className="flex-5 p-0 h-full flex flex-col ">
-      <div className="px-3 pt-3 rounded-t-2xl text-2xl text-slate-800">
-        Cart
+      <div className="px-3 pt-3 rounded-t-2xl text-2xl text-slate-800 flex justify-between items-center">
+        <span>Cart</span>
+        <div className='md:hidden' onClick={()=>setShowCart(false)}>
+          <MdKeyboardArrowDown className='w-10 h-10'/>
+        </div>
       </div>
 
       <div className='p-3 h-full flex-1 flex flex-col gap-3 overflow-hidden'>

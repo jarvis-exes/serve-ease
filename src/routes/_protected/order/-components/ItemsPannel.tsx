@@ -12,7 +12,7 @@ type ItemsPannelProps = {
 const ItemsPannel: FC<ItemsPannelProps> = ({ items, setCart }) => {
 
     return (
-        <Card className="flex-6 p-0 h-full flex flex-col">
+        <Card className="flex-6 p-0 pb-2 h-full flex flex-col">
             <div className="px-3 pt-3 rounded-t-2xl text-2xl text-slate-800">
                 Items
             </div>
