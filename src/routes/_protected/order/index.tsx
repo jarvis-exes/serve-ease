@@ -9,6 +9,7 @@ import { toast } from 'react-toastify';
 import { useIsMobile } from '@/utils/mobile';
 import Input from '@/components/common/Input';
 import { FaCartShopping } from 'react-icons/fa6';
+import { AnimatePresence, motion } from 'framer-motion';
 
 const OrderPage = () => {
   const isMobile = useIsMobile();
@@ -33,13 +34,35 @@ const OrderPage = () => {
     [cart]);
 
   if (isMobile) return (
-    <div className='h-full'>
+    <AnimatePresence mode='wait'>
       {showCart ?
-        <div className='p-2 h-full'>
-          <CartPannel cart={cart} setCart={setCart} setShowCart={setShowCart}/>
-        </div> :
-        <div className='flex flex-col gap-2 h-full p-2'>
-          <div className='rounded-xl flex items-center justify-between gap-2 py-2'>
+        <motion.div
+          key="cart"
+          initial={{ y: '100%', opacity: 1 }}
+          animate={{ y: 0, opacity: 1 }}
+          exit={{ y: '100%', opacity: 1 }}
+          transition={{
+            type: "tween",
+            ease: "easeOut",
+            duration: 0.3
+          }}
+          className='p-2 h-full'
+        >
+          <CartPannel cart={cart} setCart={setCart} setShowCart={setShowCart} />
+        </motion.div> :
+        <motion.div
+          key="main-ui"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{
+            type: "tween",
+            ease: "easeOut",
+            duration: 0.1
+          }}
+          className='flex flex-col gap-2 h-full'
+        >
+          <div className='rounded-xl flex items-center justify-between gap-2 p-2 pb-0'>
             <Input placeholder='Search for items' />
             {totalItems > 0 && <div
               onClick={() => setShowCart(true)}
@@ -51,20 +74,20 @@ const OrderPage = () => {
               <div className='text-2xl h-full flex items-center'>{totalItems}</div>
             </div>}
           </div>
-          <div className='flex h-full gap-2 overflow-auto'>
-            <CategoriesPannel selectItems={setItems} />
+          <div className='flex h-full gap-2 p-2 overflow-auto'>
+            <CategoriesPannel selectItems={setItems} items={items}/>
             {items && <ItemsPannel items={items} setCart={setCart} />}
           </div>
-        </div>
+        </motion.div>
       }
-    </div>
+    </AnimatePresence>
   )
 
   return (
     <div className='flex w-full h-full p-2 gap-2'>
       <CategoriesPannel selectItems={setItems} />
       <ItemsPannel items={items} setCart={setCart} />
-      <CartPannel cart={cart} setCart={setCart} setShowCart={setShowCart}/>
+      <CartPannel cart={cart} setCart={setCart} setShowCart={setShowCart} />
     </div>
   )
 }

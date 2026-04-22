@@ -108,7 +108,6 @@ const Items: FC<ItemsProps> = ({ subCategoryId }) => {
           {subCategoryId &&
             <Button
               icon={<FaPlus />}
-              color="transparent"
               onClick={() => {
                 setAddingItem(true);
               }}
@@ -153,7 +152,7 @@ const Items: FC<ItemsProps> = ({ subCategoryId }) => {
               const imageSrc = images[item._id] === null ? null : images[item._id] ?? item.image;
 
               return (
-                <Accordion.Item value={item._id} className="space-y-2">
+                <Accordion.Item key={item._id} value={item._id} className="space-y-2">
                   <Accordion.Header className="group flex relative items-center ">
                     <Accordion.Trigger
                       disabled={!item.isActive}

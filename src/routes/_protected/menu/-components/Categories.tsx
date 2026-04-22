@@ -72,7 +72,6 @@ const Categories: FC<CategoriesProps> = ({
           <div className="text-xl font-bold">Categories({totalCategories})</div>
           <Button
             icon={<FaPlus />}
-            
             onClick={() => setAddingCategory(true)}
           >
             Add Category

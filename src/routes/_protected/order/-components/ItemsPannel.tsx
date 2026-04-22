@@ -24,7 +24,7 @@ const ItemsPannel: FC<ItemsPannelProps> = ({ items, setCart }) => {
                 </div>
             }
 
-            <div className='p-3 pb-9 gap-2 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 overflow-auto'>
+            <div className='p-2 pb-9 gap-2 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 overflow-auto'>
                 {items?.map(item =>
                     item.isActive && <ItemCard key={item._id} item={item} setCart={setCart} />
                 )}

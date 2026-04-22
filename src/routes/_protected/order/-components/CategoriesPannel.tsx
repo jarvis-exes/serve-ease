@@ -11,10 +11,11 @@ import "react-loading-skeleton/dist/skeleton.css";
 
 type CategoriesPannelProps = {
   selectItems: (items: ItemType[]) => void;
+  items?: ItemType[];
 };
 
 const CategoriesPannel: FC<CategoriesPannelProps> = ({
-  selectItems
+  selectItems, items
 }) => {
 
   const outletId = getOutletId();
@@ -30,15 +31,15 @@ const CategoriesPannel: FC<CategoriesPannelProps> = ({
   }
 
   return (
-    <Card className="flex-3 p-0 pb-2">
+    <Card className={twMerge("md:flex-3 p-0 pb-2", items ? 'max-w-1/2' : 'w-full')}>
       <div className="h-full flex flex-col">
-        <div className="px-3 pt-3 rounded-t-2xl text-2xl text-slate-800">
+        <div className="px-3 pt-3 pb-2 rounded-t-2xl text-2xl text-slate-800">
           Categories
         </div>
 
         <Accordion.Root
           type="multiple"
-          className="w-full h-full p-3 overflow-auto "
+          className="w-full h-full p-2 overflow-auto "
         >
           {isLoading ? (
             <div>
@@ -55,9 +56,9 @@ const CategoriesPannel: FC<CategoriesPannelProps> = ({
               >
                 <Accordion.Header className="group flex relative items-center">
                   <Accordion.Trigger
-                    className=" border-b-4 border-gray-300 flex w-full items-center justify-between px-6 py-4 rounded-2xl hover:bg-gray-100 group-data-[state=open]:bg-gray-100"
+                    className=" border-b-4 border-gray-300 flex gap-2 w-full items-center justify-between px-3 py-2 md:px-6 md:py-4 rounded-2xl hover:bg-gray-100 group-data-[state=open]:bg-gray-100"
                   >
-                    <span>{category.name}</span>
+                    <span className="group-data-[state=closed]:truncate">{category.name}</span>
                     <FaChevronDown className="transition-transform duration-300 ease-[cubic-bezier(0.87,0,0.13,1)] group-data-[state=open]:rotate-180" />
                   </Accordion.Trigger>
                 </Accordion.Header>
@@ -69,7 +70,7 @@ const CategoriesPannel: FC<CategoriesPannelProps> = ({
                       <li
                         key={subCategory._id}
                         className={twMerge(
-                          "pl-10 pr-15 py-4 rounded-2xl hover:bg-gray-100 cursor-pointer",
+                          "px-3 py-2 pl-4 md:pl-10 md:pr-15 md:py-4 rounded-2xl hover:bg-gray-100 cursor-pointer",
                           selectedSubCategoryId === subCategory._id
                             ? "bg-gray-200 border-b-4 border-gray-500 hover:bg-gray-200"
                             : "",
