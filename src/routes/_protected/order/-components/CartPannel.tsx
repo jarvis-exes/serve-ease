@@ -61,7 +61,7 @@ const CartPannel: FC<CartPannelProps> = ({ cart, setCart, setShowCart }) => {
   }
 
   return (
-    <Card className="flex-5 p-0 h-full flex flex-col ">
+    <Card className="flex-5 p-0 h-full flex flex-col shadow-none ">
       <div className="px-3 pt-3 rounded-t-2xl text-2xl text-slate-800 flex justify-between items-center">
         <span>Cart</span>
         <div className='md:hidden' onClick={()=>setShowCart(false)}>

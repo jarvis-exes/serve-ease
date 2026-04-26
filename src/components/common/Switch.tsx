@@ -13,9 +13,9 @@ type SwitchProps = ButtonHTMLAttributes<HTMLButtonElement> & {
 const SwitchButton: FC<SwitchProps> = ({ name, label, checked = true, className, onChange, onClick, ...rest }) => {
     return (
         <div className={twMerge('flex gap-2', className)}>
-            <label className="font-medium text-slate-700" htmlFor={name}>
+            {label && <label className="font-medium text-slate-700" htmlFor={name}>
                 {label}
-            </label>
+            </label>}
             <Switch.Root
                 id={name}
                 checked={checked}

@@ -13,9 +13,9 @@ const MenuBar: FC<MenuBarProps> = ({ items }) => {
           <Link
             key={idx}
             to={item.link}
-            className="flex items-center gap-2 px-3 py-2 rounded-full bg-gray-300 text-gray-700"
+            className="flex items-center gap-2 px-3 py-2 rounded-full bg-slate-200 text-gray-700 shadow-inner-lg"
             activeProps={{
-              className: "bg-gray-900 text-white",
+              className: "bg-slate-900 text-white",
             }}
           >
             <item.icon />

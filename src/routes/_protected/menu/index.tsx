@@ -1,8 +1,8 @@
 import { createFileRoute } from '@tanstack/react-router'
-import Input from '@/components/common/Input';
 import Categories from './-components/Categories';
 import Items from './-components/Items';
 import { useState } from 'react';
+import { useIsMobile } from '@/utils/mobile';
 
 
 export const Route = createFileRoute('/_protected/menu/')({
@@ -10,17 +10,25 @@ export const Route = createFileRoute('/_protected/menu/')({
 })
 
 function Menu() {
+    const isMobile = useIsMobile();
     const [selectedSubCategoryId, setSelectedSubCategoryId] = useState('');
+
+    if (isMobile) return (
+        <div className='flex flex-col h-full'>
+            <div className='flex h-full gap-2 md:gap-3 overflow-auto p-2 md:p-3'>
+                {selectedSubCategoryId ?
+                    <Items subCategoryId={selectedSubCategoryId} /> :
+                    <Categories setSelectedSubCategoryId={setSelectedSubCategoryId} selectedSubCategoryId={selectedSubCategoryId} />
+                }
+            </div>
+        </div>
+    )
 
     return (
         <div className='flex flex-col h-full'>
-            <div className='flex pt-5 px-5'>
-                <Input color='white' containerClasses='w-1/3' placeholder='Search for an item or category' />
-            </div>
-
-            <div className='flex h-full gap-5 overflow-auto p-5'>
-                <Categories setSelectedSubCategoryId= {setSelectedSubCategoryId} selectedSubCategoryId={selectedSubCategoryId}/>
-                <Items subCategoryId={selectedSubCategoryId}/>
+            <div className='flex h-full gap-2 md:gap-3 overflow-auto p-2 md:p-3'>
+                <Categories setSelectedSubCategoryId={setSelectedSubCategoryId} selectedSubCategoryId={selectedSubCategoryId} />
+                <Items subCategoryId={selectedSubCategoryId} />
             </div>
         </div>
     )

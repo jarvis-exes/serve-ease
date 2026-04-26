@@ -42,9 +42,9 @@ const OrderPage = () => {
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: '100%', opacity: 1 }}
           transition={{
-            type: "tween",
+            type: "spring",
             ease: "easeOut",
-            duration: 0.3
+            duration: 0.2
           }}
           className='p-2 h-full'
         >
@@ -56,9 +56,9 @@ const OrderPage = () => {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{
-            type: "tween",
+            type: "spring",
             ease: "easeOut",
-            duration: 0.1
+            duration: 0.2
           }}
           className='flex flex-col gap-2 h-full'
         >
@@ -84,7 +84,7 @@ const OrderPage = () => {
   )
 
   return (
-    <div className='flex w-full h-full p-2 gap-2'>
+    <div className='flex w-full h-full p-2 md:p-3 gap-2 md:gap-3'>
       <CategoriesPannel selectItems={setItems} />
       <ItemsPannel items={items} setCart={setCart} />
       <CartPannel cart={cart} setCart={setCart} setShowCart={setShowCart} />

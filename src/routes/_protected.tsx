@@ -33,7 +33,7 @@ function App() {
   }
 
   return (
-    <div className="h-dvh flex flex-col bg-slate-100">
+    <div className="h-dvh flex flex-col">
       <Header />
       <main className="flex-1 overflow-auto">
         <Outlet />

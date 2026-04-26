@@ -17,6 +17,8 @@ import type { UpdateCategoriesRequestType } from "@/models/menu.model";
 import { getOutletId } from "@/utils/tokens";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import { FaEdit } from "react-icons/fa";
+import { MdDelete } from "react-icons/md";
 
 type CategoriesProps = {
   setSelectedSubCategoryId: (id: string) => void;
@@ -66,29 +68,32 @@ const Categories: FC<CategoriesProps> = ({
   };
 
   return (
-    <Card className="flex-5 p-0">
-      <div className="h-full flex flex-col">
-        <div className="flex justify-between items-center px-7 pt-2 rounded-t-2xl">
-          <div className="text-xl font-bold">Categories({totalCategories})</div>
+    <Card className="flex-5 p-2 md:p-4 bg-slate-200 shadow-none">
+      <div className="h-full flex flex-col gap-2 md:gap-4">
+        <div className="flex justify-between items-centerS">
+          <div className="flex items-center text-xl font-bold">
+            Categories({totalCategories})
+          </div>
           <Button
             icon={<FaPlus />}
             onClick={() => setAddingCategory(true)}
+            className="bg-slate-900 text-white text-md"
           >
-            Add Category
+            Add
           </Button>
         </div>
 
         <Accordion.Root
           type="single"
           collapsible
-          className="w-full h-full px-5 py-2 overflow-auto "
+          className="w-full h-full overflow-auto flex flex-col gap-2"
         >
           {addingCategory && (
-            <div className="flex gap-5 my-5 items-center animate-in fade-in slide-in-from-top-2">
+            <div className="flex gap-5 mb-3 items-center animate-in fade-in slide-in-from-top-2">
               <Input
                 color="white"
                 placeholder="Enter category name"
-                inputClasses="h-14"
+                inputClasses="h-12"
                 id="categoryInput"
                 onChange={(e) => setName(e.target.value)}
               />
@@ -107,24 +112,23 @@ const Categories: FC<CategoriesProps> = ({
 
           {isCategoriesLoading ? (
             <div className="space-y-3 px-1 py-4">
-              <Skeleton height={60}  borderRadius={20} />
-              <Skeleton height={60}  borderRadius={20} />
-              <Skeleton height={60}  borderRadius={20} width={'70%'}/>
+              <Skeleton height={60} borderRadius={20} />
+              <Skeleton height={60} borderRadius={20} />
+              <Skeleton height={60} borderRadius={20} width={"70%"} />
             </div>
           ) : (
             categories?.map((item) => (
               <Accordion.Item
                 value={item._id}
                 key={item._id}
-                className="space-y-2"
+                className="bg-white rounded-2xl"
                 disabled={!item.isActive}
               >
-                <Accordion.Header className="group flex relative items-center">
+                <Accordion.Header className="relative group flex items-center">
                   <Accordion.Trigger
-                    className=" border-b-4 border-gray-300 flex w-full items-center justify-between px-6 py-4 rounded-2xl hover:bg-gray-100"
-                    onClick={() => {
-                      setCategoryId(item._id);
-                    }}
+                    className="flex w-full items-center justify-between p-4 md:px-6 md:py-4 rounded-2xl 
+                              hover:shadow-[0_4px_0_0_#d1d5db] group-data-[state=open]:shadow-[0_4px_0_0_#d1d5db] transition-all"
+                    onClick={() => setCategoryId(item._id)}
                   >
                     {editingId && editingId === item._id ? (
                       <div
@@ -156,49 +160,42 @@ const Categories: FC<CategoriesProps> = ({
                         </div>
                       </div>
                     ) : (
-                      <span>{item.name}</span>
+                      <span className="w-60 truncate">{item.name}</span>
                     )}
 
                     <FaChevronDown className="transition-transform duration-300 ease-[cubic-bezier(0.87,0,0.13,1)] group-data-[state=open]:rotate-180" />
                   </Accordion.Trigger>
 
-                  <div className="flex items-center absolute end-15">
-                    {!editingId && (
-                      <div
-                        className="flex items-center"
-                        onClick={(e) => e.stopPropagation()}
-                      >
-                        <Button
-                          color="transparent"
-                          className=" text-green-500 group-data-[state=closed]:hidden"
-                          onClick={() => {
-                            setEditingId(item._id);
-                            setName(item.name);
-                          }}
-                        >
-                          Edit
-                        </Button>
-                        <Button
-                          color="transparent"
-                          className=" text-red-500 group-data-[state=closed]:hidden"
-                          onClick={() => handleDeleteCategory(item._id)}
-                        >
-                          Delete
-                        </Button>
-                        <SwitchButton
-                          name="isActive"
-                          className=""
-                          checked={item.isActive}
-                          onChange={() =>
-                            handleUpdateCategory({
-                              isActive: !item.isActive,
-                              categoryId: item._id,
-                            })
-                          }
-                        />
-                      </div>
-                    )}
-                  </div>
+                  {!editingId && (
+                    <div
+                      className="flex gap-2 items-center absolute end-12 md:end-15"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <FaEdit
+                        className=" text-green-500 w-7 h-7 hover:bg-gray-100 group-data-[state=closed]:hidden"
+                        onClick={() => {
+                          setEditingId(item._id);
+                          setName(item.name);
+                        }}
+                      />
+                      <MdDelete
+                        className=" text-red-500 w-8 h-8 group-data-[state=closed]:hidden"
+                        onClick={() => handleDeleteCategory(item._id)}
+                      />
+
+                      <SwitchButton
+                        name="isActive"
+                        className=""
+                        checked={item.isActive}
+                        onChange={() =>
+                          handleUpdateCategory({
+                            isActive: !item.isActive,
+                            categoryId: item._id,
+                          })
+                        }
+                      />
+                    </div>
+                  )}
                 </Accordion.Header>
 
                 <Accordion.Content className="overflow-hidden transition-all data-[state=closed]:animate-slide-up data-[state=open]:animate-slide-down">
