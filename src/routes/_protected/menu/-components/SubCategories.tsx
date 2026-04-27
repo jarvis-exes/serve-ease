@@ -1,7 +1,7 @@
 import Button from "@/components/common/Button";
-import { FaCheck, FaPlus } from "react-icons/fa";
+import { FaCheck, FaEdit, FaPlus } from "react-icons/fa";
 import { FaXmark } from "react-icons/fa6";
-import { useState, type FC } from "react";
+import { useState, type Dispatch, type FC, type SetStateAction } from "react";
 import Input from "@/components/common/Input";
 import {
   useCreateSubCategory,
@@ -11,20 +11,21 @@ import {
 } from "../-query-hooks";
 import { twMerge } from "tailwind-merge";
 import SwitchButton from "@/components/common/Switch";
-import type { UpdateSubCategoriesRequestType } from "@/models/menu.model";
+import type { SubCategoryType, UpdateSubCategoriesRequestType } from "@/models/menu.model";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import { MdDelete } from "react-icons/md";
 
 type SubCategoriesProps = {
   categoryId: string;
-  selectedSubCategoryId: string;
-  setSelectedSubCategoryId: (id: string) => void;
+  selectedSubCategory?: SubCategoryType;
+  setSelectedSubCategory: Dispatch<SetStateAction<SubCategoryType | undefined>>;
 };
 
 const SubCategories: FC<SubCategoriesProps> = ({
   categoryId,
-  selectedSubCategoryId,
-  setSelectedSubCategoryId,
+  selectedSubCategory,
+  setSelectedSubCategory,
 }) => {
   const [addingSubCategory, setAddingSubCategory] = useState(false);
   const [name, setName] = useState("");
@@ -35,8 +36,8 @@ const SubCategories: FC<SubCategoriesProps> = ({
   const { mutateAsync: deleteSubCategory } = useDeleteSubCategory();
   const { mutateAsync: updateSubCategory } = useUpdateSubCategory();
 
-  const handleSelectItem = (subCategoryId: string) => {
-    setSelectedSubCategoryId(subCategoryId);
+  const handleSelectItem = (subCategoryId: SubCategoryType) => {
+    setSelectedSubCategory(subCategoryId);
   };
   const handleAddSubCategory = () => {
     createSubCategory({
@@ -62,73 +63,67 @@ const SubCategories: FC<SubCategoriesProps> = ({
   };
 
   return (
-    <ul className="p-0 space-y-1">
+    <ul className="p-2 flex flex-col gap-1">
       {subCategories ? (
         subCategories.map((item) => (
           <li
             key={item._id}
             className={twMerge(
-              "flex justify-between items-center pl-10 pr-15 py-2 rounded-2xl hover:bg-gray-100 cursor-pointer",
-              selectedSubCategoryId === item._id
+              "flex justify-between items-center p-1 rounded-2xl hover:bg-gray-100 cursor-pointer",
+              selectedSubCategory?._id === item._id
                 ? "bg-gray-200 border-b-4 border-gray-500 hover:bg-gray-200"
                 : "",
             )}
-            onClick={() => handleSelectItem(item._id)}
+            onClick={() => handleSelectItem(item)}
           >
             {editingId && editingId === item._id ? (
               <div
-                className="flex w-full gap-5 items-center animate-in fade-in slide-in-from-top-2"
+                className="flex w-full gap-2 items-center animate-in fade-in slide-in-from-top-2"
                 onClick={(e) => e.stopPropagation()}
               >
                 <Input
                   color="white"
                   placeholder="Enter category name"
-                  inputClasses="h-12"
+                  inputClasses=""
                   id="categoryInput"
                   onChange={(e) => setName(e.target.value)}
                   value={name}
                 />
                 <div className="flex gap-2 items-center">
                   <FaCheck
-                    className="w-10 h-10 cursor-pointer text-green-500"
+                    className="w-8 h-8 cursor-pointer text-green-500"
                     onClick={() =>
                       handleUpdateSubCategory({ name, subCategoryId: item._id })
                     }
                   />
                   <FaXmark
-                    className="w-12 h-12 cursor-pointer text-red-500"
+                    className="w-10 h-10 cursor-pointer text-red-500"
                     onClick={() => setEditingId(null)}
                   />
                 </div>
               </div>
             ) : (
-              <span className="">{item.name}</span>
+              <span className="m-2">{item.name}</span>
             )}
             {!editingId && (
               <div
-                className="flex items-center"
+                className="flex gap-2 items-center"
                 onClick={(e) => e.stopPropagation()}
               >
-                <Button
-                  color="transparent"
-                  className=" text-green-500 group-data-[state=closed]:hidden"
+                <FaEdit
+                  className="h-5 w-full text-green"
                   onClick={() => {
                     setEditingId(item._id);
                     setName(item.name);
                   }}
-                >
-                  Edit
-                </Button>
-                <Button
-                  color="transparent"
-                  className=" text-red-500 group-data-[state=closed]:hidden"
+                />
+                <MdDelete
+                  className="h-7 w-full text-red-500"
                   onClick={() => handleDeleteSubCategory(item._id)}
-                >
-                  Delete
-                </Button>
+                />
                 <SwitchButton
                   name="isActive"
-                  className=""
+                  className="mr-1"
                   checked={item.isActive}
                   onClick={(e) => {
                     e.stopPropagation();
@@ -153,11 +148,11 @@ const SubCategories: FC<SubCategoriesProps> = ({
       )}
       <li className="flex justify-center">
         {addingSubCategory ? (
-          <div className="flex w-full gap-5 my-4 items-center animate-in fade-in slide-in-from-top-2">
+          <div className="flex w-full gap-2 px-1 items-center animate-in fade-in slide-in-from-top-2">
             <Input
               color="white"
               placeholder="Enter sub category name"
-              inputClasses="h-14"
+              inputClasses=""
               id="subCategoryInput"
               onChange={(e) => setName(e.target.value)}
             />
