@@ -10,13 +10,21 @@ import { useIsMobile } from '@/utils/mobile';
 import Input from '@/components/common/Input';
 import { FaCartShopping } from 'react-icons/fa6';
 import { AnimatePresence, motion } from 'framer-motion';
+import { useGetMenu } from './-query-hooks';
+import { getOutletId } from '@/utils/tokens';
 
 const OrderPage = () => {
   const isMobile = useIsMobile();
+  const outletId = getOutletId();
+
+  const { data, isLoading } = useGetMenu(outletId);
 
   const [items, setItems] = useState<ItemType[]>();
   const [cart, setCart] = useState<CartItem[]>([]);
   const [showCart, setShowCart] = useState(false);
+
+  const categories = useMemo(() => data?.categories.filter(c => c.isActive), [data])
+
 
   useEffect(() => {
     socket.on("get_ready_order", (order: Order) => {
@@ -75,7 +83,7 @@ const OrderPage = () => {
             </div>}
           </div>
           <div className='flex h-full gap-2 p-2 overflow-auto'>
-            <CategoriesPannel selectItems={setItems} items={items}/>
+            <CategoriesPannel selectItems={setItems} categories={categories} isLoading={isLoading} />
             {items && <ItemsPannel items={items} setCart={setCart} />}
           </div>
         </motion.div>
@@ -85,7 +93,7 @@ const OrderPage = () => {
 
   return (
     <div className='flex w-full h-full p-2 md:p-3 gap-2 md:gap-3'>
-      <CategoriesPannel selectItems={setItems} />
+      <CategoriesPannel selectItems={setItems} categories={categories} isLoading={isLoading} />
       <ItemsPannel items={items} setCart={setCart} />
       <CartPannel cart={cart} setCart={setCart} setShowCart={setShowCart} />
     </div>

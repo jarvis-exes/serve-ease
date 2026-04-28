@@ -11,7 +11,7 @@ import { getOutletId } from '@/utils/tokens';
 import { toast } from 'react-toastify';
 import { sizeColors } from '../../-constants';
 import { twMerge } from 'tailwind-merge';
-import { MdKeyboardArrowDown } from "react-icons/md";
+import { IoCloseSharp } from 'react-icons/io5';
 
 type CartPannelProps = {
   cart: CartItem[];
@@ -61,11 +61,11 @@ const CartPannel: FC<CartPannelProps> = ({ cart, setCart, setShowCart }) => {
   }
 
   return (
-    <Card className="flex-5 p-0 h-full flex flex-col shadow-none ">
-      <div className="px-3 pt-3 rounded-t-2xl text-2xl text-slate-800 flex justify-between items-center">
-        <span>Cart</span>
+    <Card shadow='none' className="flex-5 p-0 h-full flex flex-col">
+      <div className="p-2 rounded-t-2xl text-2xl text-slate-800 flex justify-between items-center">
+        <span className='ml-2'>Cart</span>
         <div className='md:hidden' onClick={()=>setShowCart(false)}>
-          <MdKeyboardArrowDown className='w-10 h-10'/>
+          <IoCloseSharp className='w-10 h-10'/>
         </div>
       </div>
 

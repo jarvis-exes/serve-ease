@@ -1,29 +1,23 @@
 import Card from "@/components/common/Card";
 import * as Accordion from "@radix-ui/react-accordion";
 import { FaChevronDown } from "react-icons/fa";
-import { useMemo, useState, type FC } from "react";
-import { getOutletId } from "@/utils/tokens";
-import { useGetMenu } from "../-query-hooks";
+import { useState, type FC } from "react";
 import { twMerge } from "tailwind-merge";
-import type { ItemType, OrderSubCategory } from "@/models/menu.model";
+import type { ItemType, OrderCategory, OrderSubCategory } from "@/models/menu.model";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 
 type CategoriesPannelProps = {
   selectItems: (items: ItemType[]) => void;
-  items?: ItemType[];
+  categories?: OrderCategory[];
+  isLoading: boolean;
 };
 
 const CategoriesPannel: FC<CategoriesPannelProps> = ({
-  selectItems, items
+  selectItems, categories, isLoading
 }) => {
 
-  const outletId = getOutletId();
-  const { data, isLoading } = useGetMenu(outletId);
-
   const [selectedSubCategoryId, setSelectedSubCategoryId] = useState<string | null>(null);
-
-  const categories = useMemo(()=>data?.categories.filter(c=>c.isActive),[data])
 
   const handleSelect = (subCategory: OrderSubCategory) => {
     setSelectedSubCategoryId(subCategory._id);
@@ -31,7 +25,7 @@ const CategoriesPannel: FC<CategoriesPannelProps> = ({
   }
 
   return (
-    <Card shadow="none" className={twMerge("md:flex-3 p-0 pb-2 bg-linear-to-b from-slate-200 to-slate-100", items ? 'max-w-1/2' : 'w-full')}>
+    <Card shadow="none" className={twMerge("flex-1 md:flex-3 min-w-1/2 md:min-w-fit p-0 pb-2 bg-linear-to-b from-slate-200 to-slate-100")}>
       <div className="h-full flex flex-col">
         <div className="px-3 pt-3 pb-2 rounded-t-2xl text-2xl text-slate-800">
           Categories
