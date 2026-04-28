@@ -1,7 +1,7 @@
 import Card from "@/components/common/Card";
 import * as Accordion from "@radix-ui/react-accordion";
 import { FaChevronDown } from "react-icons/fa";
-import { useState, type FC } from "react";
+import { useEffect, useState, type FC } from "react";
 import { twMerge } from "tailwind-merge";
 import type { ItemType, OrderCategory, OrderSubCategory } from "@/models/menu.model";
 import Skeleton from "react-loading-skeleton";
@@ -24,8 +24,13 @@ const CategoriesPannel: FC<CategoriesPannelProps> = ({
     selectItems(subCategory.items);
   }
 
+  useEffect(()=>{
+    if(categories)
+    selectItems(categories[0].subCategories[0].items)
+  },[])
+
   return (
-    <Card shadow="none" className={twMerge("flex-1 md:flex-3 min-w-1/2 md:min-w-fit p-0 pb-2 bg-linear-to-b from-slate-200 to-slate-100")}>
+    <Card shadow="none" className={twMerge("min-w-1/2 md:min-w-1/4 max-w-12 p-0 pb-2 bg-linear-to-b from-slate-200 to-slate-100")}>
       <div className="h-full flex flex-col">
         <div className="px-3 pt-3 pb-2 rounded-t-2xl text-2xl text-slate-800">
           Categories
@@ -50,7 +55,7 @@ const CategoriesPannel: FC<CategoriesPannelProps> = ({
               >
                 <Accordion.Header className="group flex relative items-center">
                   <Accordion.Trigger
-                    className="border-gray-300 flex gap-2 w-full items-center justify-between px-3 py-2 md:px-6 md:py-4 rounded-2xl hover:border-b-4 group-data-[state=open]:border-b-4 transition-all"
+                    className="flex gap-2 w-full items-center justify-between px-3 py-2 md:px-6 md:py-4 rounded-2xl hover:shadow-[0_4px_0_0_#d1d5db] group-data-[state=open]:shadow-[0_4px_0_0_#d1d5db] transition-all"
                   >
                     <span className="group-data-[state=closed]:truncate">{category.name}</span>
                     <FaChevronDown className="transition-transform duration-300 ease-[cubic-bezier(0.87,0,0.13,1)] group-data-[state=open]:rotate-180" />

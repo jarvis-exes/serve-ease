@@ -20,7 +20,7 @@ const MobileMenu = () => {
                 >
                     {menuItems.map((item, idx) => {
                         return (
-                            <Dropdown.Item asChild>
+                            <Dropdown.Item asChild key={item.name}>
                                 <Link
                                     key={idx}
                                     to={item.link}

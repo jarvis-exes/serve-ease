@@ -12,6 +12,7 @@ import { toast } from 'react-toastify';
 import { sizeColors } from '../../-constants';
 import { twMerge } from 'tailwind-merge';
 import { IoCloseSharp } from 'react-icons/io5';
+import { useNotificationSound } from '@/utils/utils';
 
 type CartPannelProps = {
   cart: CartItem[];
@@ -28,11 +29,14 @@ const orderConfigs = [
 
 const CartPannel: FC<CartPannelProps> = ({ cart, setCart, setShowCart }) => {
 
+  const play = useNotificationSound();
+
   const [orderType, setOrderType] = useState<OrderType>(OrderType.PARCEL);
 
   const { mutateAsync: createOrder, isPending } = useCreateOrder({
     onSuccess: () => {
       toast.success('Order Created');
+      play();
     }
   });
 

@@ -4,7 +4,7 @@ import { socket } from '@/socket'
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify';
-import { useIsKitchen } from '@/utils/utils'
+import { useIsKitchen, useNotificationSound } from '@/utils/utils'
 import { OrdersPannel } from './-components/OrdersPannel'
 import SegmentedControl from '@/components/common/SegmentedControl'
 import { useIsMobile } from '@/utils/mobile'
@@ -17,6 +17,7 @@ function KitchenPage() {
     const navigate = useNavigate({ from: Route.fullPath });
     const isKitchen = useIsKitchen();
     const isMobile = useIsMobile();
+    const play = useNotificationSound();
 
     const [orders, setOrders] = useState<Order[]>([]);
 
@@ -39,7 +40,7 @@ function KitchenPage() {
         socket.on("new_order", (order: Order) => {
             setOrders((prev) => [...prev, order]);
             toast.info(`New Order #${order.tokenNumber}`);
-            new Audio('./notification.wav').play();
+            play();
         });
 
         return () => {
