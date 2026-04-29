@@ -17,12 +17,13 @@ const SearchItems: FC<SearchItemsProps> = ({ items, setCart }) => {
                 <Input
                     placeholder='Search for items'
                     onChange={(e) => setSearch(e.target.value)}
-                    color='white'
-                    inputClasses='bg-slate-300'
+                    color='slate'
+                    value={search}
+                    onClear={()=>setSearch('')}
                 />
             </div>
             {search &&
-                <div className='absolute p-2 mt-2 w-dvw md:w-full top-full -left-2 md:left-0 h-fit  z-2 rounded-2xl shadow-2xl bg-linear-to-b from-slate-300 to-white'>
+                <div className='absolute p-2 mt-2 w-dvw md:w-full top-full -left-2 md:left-0 h-fit z-2 rounded-2xl shadow-2xl bg-linear-to-b from-slate-300 to-white'>
                     {filteredItems.length > 0 ?
                         <div className='grid grid-cols-2 gap-2'>
                             {filteredItems.map(item =>

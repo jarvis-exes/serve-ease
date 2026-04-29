@@ -127,7 +127,7 @@ const OrderPage = () => {
   return (
     <div className="flex flex-col w-full h-full p-2 md:p-3 gap-2 md:gap-3">
       <SearchItems items={allItems} setCart={setCart} />
-      <div className="flex w-full overflow-auto">
+      <div className="flex w-full h-full overflow-auto">
         <CategoriesPannel
           selectItems={setItems}
           categories={categories}

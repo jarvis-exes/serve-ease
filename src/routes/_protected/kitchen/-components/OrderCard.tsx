@@ -14,7 +14,7 @@ interface OrderCardProps {
 }
 
 export const OrderCard: React.FC<OrderCardProps> = ({ order, borderColor, buttonColor, buttonLabel, onAction, showButton }) => (
-    <div className={twMerge('grow shrink-0 flex flex-col justify-between min-w-fit border-2 rounded-xl p-3 text-nowrap bg-white', borderColor)}>
+    <div className={twMerge('grow shrink-0 flex flex-col justify-between min-w-fit border-2 rounded-xl p-3 text-nowrap bg-white animate-pop-in', borderColor)}>
         <div>
             <div className="font-bold flex gap-2 justify-between items-center border-b-2 border-gray-300 pb-3">
                 <span className='text-xl'>Order #{order.tokenNumber}</span>
