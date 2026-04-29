@@ -27,7 +27,7 @@ const CategoriesPannel: FC<CategoriesPannelProps> = ({
   useEffect(()=>{
     if(categories)
     selectItems(categories[0].subCategories[0].items)
-  },[])
+  },[categories])
 
   return (
     <Card shadow="none" className={twMerge("min-w-1/2 md:min-w-1/4 max-w-12 p-0 pb-2 bg-linear-to-b from-slate-200 to-slate-100")}>
@@ -58,18 +58,18 @@ const CategoriesPannel: FC<CategoriesPannelProps> = ({
                     className="flex gap-2 w-full items-center justify-between px-3 py-2 md:px-6 md:py-4 rounded-2xl hover:shadow-[0_4px_0_0_#d1d5db] group-data-[state=open]:shadow-[0_4px_0_0_#d1d5db] transition-all"
                   >
                     <span className="group-data-[state=closed]:truncate">{category.name}</span>
-                    <FaChevronDown className="transition-transform duration-300 ease-[cubic-bezier(0.87,0,0.13,1)] group-data-[state=open]:rotate-180" />
+                    <FaChevronDown className="transition-transform shrink-0 duration-300 ease-[cubic-bezier(0.87,0,0.13,1)] group-data-[state=open]:rotate-180" />
                   </Accordion.Trigger>
                 </Accordion.Header>
 
                 <Accordion.Content className="overflow-hidden transition-all data-[state=closed]:animate-slide-up data-[state=open]:animate-slide-down">
-                  <ul className="flex flex-col gap-2 p-1 md:p-2">
+                  <ul className="flex flex-col gap-2 p-1 pt-2 md:p-2">
                     {category.subCategories.map(subCategory =>
                       subCategory.isActive &&
                       <li
                         key={subCategory._id}
                         className={twMerge(
-                          "px-3 py-2 pl-4 md:pl-8  md:py-4 rounded-2xl hover:bg-gray-100 cursor-pointer",
+                          "px-3 py-2 pl-4 md:pl-8 md:py-4 rounded-2xl hover:bg-gray-100 cursor-pointer",
                           selectedSubCategoryId === subCategory._id
                             ? "bg-slate-200 border-b-4 border-gray-500 hover:bg-gray-200"
                             : "",

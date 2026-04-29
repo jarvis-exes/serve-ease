@@ -198,7 +198,7 @@ const Items: FC<ItemsProps> = ({ setSelectedSubCategory, selectedSubCategory }) 
                       : (
                         <span className="m-2 md:ml-4">{item.name}</span>
                       )}
-                    <FaChevronDown className="transition-transform duration-300 ease-[cubic-bezier(0.87,0,0.13,1)] group-data-[state=open]:rotate-180" />
+                    <FaChevronDown className="transition-transform duration-300 shrink-0 ease-[cubic-bezier(0.87,0,0.13,1)] group-data-[state=open]:rotate-180" />
                   </Accordion.Trigger>
 
                   <SwitchButton

@@ -22,7 +22,7 @@ const SearchItems: FC<SearchItemsProps> = ({ items, setCart }) => {
                 />
             </div>
             {search &&
-                <div className='p-2 mt-2 w-full h-fit max-h-175 overflow-auto absolute z-2 rounded-2xl shadow-2xl bg-linear-to-b from-slate-300 to-white'>
+                <div className='absolute p-2 mt-2 w-dvw md:w-full top-full -left-2 md:left-0 h-fit  z-2 rounded-2xl shadow-2xl bg-linear-to-b from-slate-300 to-white'>
                     {filteredItems.length > 0 ?
                         <div className='grid grid-cols-2 gap-2'>
                             {filteredItems.map(item =>
