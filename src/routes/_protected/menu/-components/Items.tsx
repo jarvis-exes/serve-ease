@@ -17,6 +17,7 @@ import type { ItemType, SubCategoryType } from "@/models/menu.model";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { MdArrowBackIosNew, MdDelete } from "react-icons/md";
+import { toast } from "react-toastify";
 
 type ItemsProps = {
   setSelectedSubCategory: Dispatch<SetStateAction<SubCategoryType | undefined>>;
@@ -34,9 +35,13 @@ const Items: FC<ItemsProps> = ({ setSelectedSubCategory, selectedSubCategory }) 
   const subCategoryId = selectedSubCategory?._id || '';
 
   const { data: items, isLoading } = useListItems(subCategoryId);
-  const { mutateAsync: createItem } = useCreateItem();
+  const { mutateAsync: createItem } = useCreateItem({
+    onError: () => { toast.error('Failed to create item') }
+  });
   const { mutateAsync: deleteItem } = useDeleteItem();
-  const { mutateAsync: updateItem } = useUpdateItem();
+  const { mutateAsync: updateItem } = useUpdateItem({
+    onError: () => { toast.error('Failed to update item') }
+  });
 
   const totalItems = items?.length;
 
@@ -215,99 +220,99 @@ const Items: FC<ItemsProps> = ({ setSelectedSubCategory, selectedSubCategory }) 
                 <Accordion.Content className="group overflow-hidden w-full transition-all data-[state=closed]:animate-slide-up data-[state=open]:animate-slide-down">
                   <div className="flex flex-col gap-2 p-2">
                     <div
-                    className="flex gap-2 w-full justify-center pt-1 items-center"
-                  >
-                    <div className="text-green-500 w-full h-10 bg-green-100 rounded-full p-2 flex items-center cursor-pointer">
-                      {editingItem?._id === item._id ?
-                        <div
-                          className="cursor-pointer w-full flex items-center justify-center gap-2 font-bold text-lg"
-                          onClick={() => {
-                            handleUpdateItem();
-                            setEditingItem(null);
-                          }}
-                        >
-                          <FaCheck
-                            className="w-5 h-5"
+                      className="flex gap-2 w-full justify-center pt-1 items-center"
+                    >
+                      <div className="text-green-500 w-full h-10 bg-green-100 rounded-full p-2 flex items-center cursor-pointer">
+                        {editingItem?._id === item._id ?
+                          <div
+                            className="cursor-pointer w-full flex items-center justify-center gap-2 font-bold text-lg"
+                            onClick={() => {
+                              handleUpdateItem();
+                              setEditingItem(null);
+                            }}
+                          >
+                            <FaCheck
+                              className="w-5 h-5"
+                            />
+                            <span>Update</span>
+                          </div>
+                          : <FaEdit
+                            className="h-6 w-full"
+                            onClick={() => {
+                              setEditingItem(item);
+                            }}
                           />
-                          <span>Update</span>
-                        </div>
-                        : <FaEdit
-                          className="h-6 w-full"
-                          onClick={() => {
-                            setEditingItem(item);
-                          }}
-                        />
-                      }
-                    </div>
-                    <div className=" text-red-500 bg-red-100 rounded-full w-full h-10 p-2 flex items-center cursor-pointer">
-                      {editingItem?._id === item._id ?
-                        <div
-                          className="cursor-pointer w-full flex items-center justify-center gap-2 font-bold text-lg"
-                          onClick={() => setEditingItem(null)}>
-                          <FaXmark
-                            className="w-6 h-6"
-                          />
-                          <span>Cancel</span>
-                        </div>
-                        : <MdDelete
-                          className="h-8 w-full"
-                          onClick={() => handleDeleteItem(item._id)}
-                        />
-                      }
-                    </div>
-                  </div>
-                  <div className="flex gap-2">
-                    <ul className="w-1/2 min-w-fit space-y-1 items-center">
-                    {Object.keys(Quantity).map((key) => {
-                      const qKey = key as keyof typeof Quantity;
-                      return (
-                        <li
-                          key={qKey}
-                          className="flex justify-between gap-2 items-center py-2 md:p-2 rounded-2xl hover:bg-gray-100 cursor-pointer"
-                        >
-                          <span>{Quantity[qKey]}</span>
-                          <Input
-                            color="white"
-                            placeholder="Price"
-                            containerClasses="w-24 md:w-32"
-                            disabled={editingItem?._id !== item._id}
-                            value={editingItem?._id === item._id ? editingItem?.prices[qKey] : item.prices[qKey]}
-                            onChange={(e) => updatePrice(qKey, e.target.value)}
-                          />
-                        </li>
-                      );
-                    })}
-                  </ul>
-                  <div className="w-1/2 h-44 relative flex gap-2 justify-center items-center font-bold bg-gray-200 rounded-2xl">
-                    {
-                      imageSrc ? <img
-                        className="rounded-2xl h-full"
-                        src={
-                          imageSrc as string
                         }
-                        alt="Item Image"
-                      /> :
-                        <div>Image Removed</div>
-                    }
-                    {editingItem?._id == item._id &&
-                      <div className="absolute h-full w-full flex flex-col gap-5 items-center justify-center rounded-2xl backdrop-blur-sm">
-                        <Button onClick={() => fileInputRef.current?.click()}>
-                          Upload
-                        </Button>
-                        <Button onClick={() => handleRemoveImage(item)}>
-                          Remove
-                        </Button>
-                        <input
-                          type="file"
-                          ref={fileInputRef}
-                          hidden
-                          accept="image/*"
-                          onChange={(e) => handleFileChange(e, item)}
-                        />
                       </div>
-                    }
-                  </div>
-                  </div>
+                      <div className=" text-red-500 bg-red-100 rounded-full w-full h-10 p-2 flex items-center cursor-pointer">
+                        {editingItem?._id === item._id ?
+                          <div
+                            className="cursor-pointer w-full flex items-center justify-center gap-2 font-bold text-lg"
+                            onClick={() => setEditingItem(null)}>
+                            <FaXmark
+                              className="w-6 h-6"
+                            />
+                            <span>Cancel</span>
+                          </div>
+                          : <MdDelete
+                            className="h-8 w-full"
+                            onClick={() => handleDeleteItem(item._id)}
+                          />
+                        }
+                      </div>
+                    </div>
+                    <div className="flex gap-2">
+                      <ul className="w-1/2 min-w-fit space-y-1 items-center">
+                        {Object.keys(Quantity).map((key) => {
+                          const qKey = key as keyof typeof Quantity;
+                          return (
+                            <li
+                              key={qKey}
+                              className="flex justify-between gap-2 items-center py-2 md:p-2 rounded-2xl hover:bg-gray-100 cursor-pointer"
+                            >
+                              <span>{Quantity[qKey]}</span>
+                              <Input
+                                color="white"
+                                placeholder="Price"
+                                containerClasses="w-24 md:w-32"
+                                disabled={editingItem?._id !== item._id}
+                                value={editingItem?._id === item._id ? editingItem?.prices[qKey] : item.prices[qKey]}
+                                onChange={(e) => updatePrice(qKey, e.target.value)}
+                              />
+                            </li>
+                          );
+                        })}
+                      </ul>
+                      <div className="w-1/2 h-44 relative flex gap-2 justify-center items-center font-bold bg-gray-200 rounded-2xl">
+                        {
+                          imageSrc ? <img
+                            className="rounded-2xl h-full"
+                            src={
+                              imageSrc as string
+                            }
+                            alt="Item Image"
+                          /> :
+                            <div>Image Removed</div>
+                        }
+                        {editingItem?._id == item._id &&
+                          <div className="absolute h-full w-full flex flex-col gap-5 items-center justify-center rounded-2xl backdrop-blur-sm">
+                            <Button onClick={() => fileInputRef.current?.click()}>
+                              Upload
+                            </Button>
+                            <Button onClick={() => handleRemoveImage(item)}>
+                              Remove
+                            </Button>
+                            <input
+                              type="file"
+                              ref={fileInputRef}
+                              hidden
+                              accept="image/*"
+                              onChange={(e) => handleFileChange(e, item)}
+                            />
+                          </div>
+                        }
+                      </div>
+                    </div>
                   </div>
                 </Accordion.Content>
               </Accordion.Item>
