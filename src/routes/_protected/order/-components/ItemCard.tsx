@@ -3,6 +3,9 @@ import { Quantity } from "@/enums/menu.enum";
 import type { CartItem, ItemType } from "@/models/menu.model";
 import type { Dispatch, FC, SetStateAction } from "react";
 import { twMerge } from "tailwind-merge";
+import { sizeColors } from "../../-constants";
+import * as Dropdown from '@radix-ui/react-dropdown-menu'
+import { FaChevronDown } from "react-icons/fa";
 
 type ItemsCardProps = {
     item: ItemType;
@@ -51,36 +54,71 @@ const ItemCard: FC<ItemsCardProps> = ({ item, setCart }) => {
                 className='rounded-xl object-cover'
             />
         </div>}
-        <div className='flex w-full h-24 gap-2 text-white cursor-pointer'>
+
+        <div className='flex w-full h-12 gap-2 text-white cursor-pointer'>
             {!!prices.FULL &&
                 <div
                     onClick={() => handleSetCart(Quantity.FULL, item.prices.FULL)}
-                    className='w-1/2 flex flex-col justify-center items-center gap-2 rounded-xl p-2 bg-green-light active:scale-105'
+                    className={twMerge('w-full flex flex-col justify-center items-center rounded-xl p-2 font-medium active:scale-105',
+                        sizeColors.FULL,
+                    )}
                 >
                     <span>{Quantity.FULL}</span>
                     ₹{prices.FULL}
                 </div>
             }
 
-            <div className='w-1/2 h-full flex flex-col gap-2'>
-                {!!prices.HALF &&
-                    <div
-                        onClick={() => handleSetCart(Quantity.HALF, item.prices.HALF)}
-                        className={twMerge('w-full h-full flex justify-center items-center gap-2 rounded-xl p-2 bg-green-medium active:scale-105',
-                            !prices.QUARTER ? 'flex-col' : '')}
-                    >
-                        {!!prices.QUARTER ? <span>H</span> : <span>{Quantity.HALF}</span>}
-                        ₹{prices.HALF}
-                    </div>}
+            <div className='w-full h-full flex flex-col gap-2'>
 
-                {!!prices.QUARTER &&
-                    <div
-                        onClick={() => handleSetCart(Quantity.QUARTER, item.prices.QUARTER)}
-                        className='w-full h-full flex justify-center items-center gap-2 rounded-xl p-2 bg-green-dark active:scale-105'
+                {!!prices.QUARTER ?
+                    <Dropdown.Root>
+                        <Dropdown.Trigger asChild>
+                            <div className={twMerge('group w-full h-full flex justify-center items-center rounded-xl p-2 font-medium active:scale-105',
+                                sizeColors.HALF)}
+                            >
+                                <FaChevronDown className="transition-transform shrink-0 duration-300 ease-[cubic-bezier(0.87,0,0.13,1)] group-data-[state=open]:rotate-180" />
+                            </div>
+                        </Dropdown.Trigger>
+
+                        <Dropdown.Portal>
+                            <Dropdown.Content
+                                sideOffset={5} align="end"
+                                /* 2. UPDATED CLASSES: Override trigger coordinates to stretch to the Card edges */
+                                className="z-20 flex gap-2 bg-white p-2 rounded-xl shadow-lg border border-gray-100 data-[state='open']:animate-pop-in data-[state='closed']:animate-pop-out"
+                            >
+                                <Dropdown.Item
+                                    onSelect={() => handleSetCart(Quantity.HALF, item.prices.HALF)}
+                                    className={twMerge('w-full flex flex-col justify-center items-center rounded-xl p-2 font-medium active:scale-105 cursor-pointer',
+                                        sizeColors.HALF,
+                                    )}
+                                >
+                                    <span>{Quantity.HALF}</span>
+                                    ₹{prices.HALF}
+                                </Dropdown.Item>
+
+                                <Dropdown.Item
+                                    onSelect={() => handleSetCart(Quantity.QUARTER, item.prices.QUARTER)}
+                                    className={twMerge('w-full flex flex-col justify-center items-center rounded-xl p-2 font-medium active:scale-105 cursor-pointer',
+                                        sizeColors.QUARTER,
+                                    )}
+                                >
+                                    <span>{Quantity.QUARTER}</span>
+                                    ₹{prices.QUARTER}
+                                </Dropdown.Item>
+                            </Dropdown.Content>
+                        </Dropdown.Portal>
+                    </Dropdown.Root>
+                    :
+                    prices.HALF &&  <div
+                        onClick={() => handleSetCart(Quantity.HALF, item.prices.HALF)}
+                        className={twMerge('w-full h-full flex flex-col justify-center items-center rounded-xl p-2 font-medium active:scale-105',
+                            sizeColors.HALF)}
                     >
-                        <span>Q</span>
-                        ₹{prices.QUARTER}
-                    </div>}
+                        <span>{Quantity.HALF}</span>
+                        ₹{prices.HALF}
+                    </div>
+                }
+
             </div>
         </div>
     </Card>

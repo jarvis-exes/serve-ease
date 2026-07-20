@@ -58,7 +58,7 @@ function KitchenPage() {
                 replace: true
             })
         }
-    },[tab])
+    }, [tab])
 
     const handleOrderReady = (orderId: string) => socket.emit("mark_order_ready", { orderId });
     const handleOrderComplete = (orderId: string) => socket.emit("mark_order_complete", { orderId });
@@ -89,6 +89,7 @@ function KitchenPage() {
                         buttonLabel="Ready"
                         onAction={handleOrderReady}
                         showButton={isKitchen}
+                        showPrice={!isKitchen}
                     />
                 )}
 
@@ -101,6 +102,7 @@ function KitchenPage() {
                         buttonLabel="Complete"
                         onAction={handleOrderComplete}
                         showButton={!isKitchen}
+                        showPrice={!isKitchen}
                     />
                 )}
 
