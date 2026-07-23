@@ -78,6 +78,7 @@
 
 html {
   scrollbar-gutter: stable overlay;
+  user-select: none;
 }
 
 *::-webkit-scrollbar {

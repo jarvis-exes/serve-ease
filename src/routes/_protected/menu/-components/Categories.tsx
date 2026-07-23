@@ -19,6 +19,7 @@ import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { FaEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
+import { ConfirmDeleteModal } from "@/components/common/ConfirmDeleteModal";
 
 type CategoriesProps = {
   setSelectedSubCategory: Dispatch<SetStateAction<SubCategoryType | undefined>>;
@@ -130,19 +131,19 @@ const Categories: FC<CategoriesProps> = ({
                               hover:shadow-[0_4px_0_0_#d1d5db] group-data-[state=open]:shadow-[0_4px_0_0_#d1d5db] transition-all"
                     onClick={() => setCategoryId(item._id)}
                   >
-                    {editingId === item._id ?        
-                        <Input
-                          color="white"
-                          placeholder="Enter category name"
-                          containerClasses=" mr-20 items-center animate-in fade-in slide-in-from-top-2"
-                          id="categoryInput"
-                          onChange={(e) => setName(e.target.value)}
-                          value={name}
-                          onClick={(e) => e.stopPropagation()}
-                        />                      
-                     : (
-                      <span className="m-2 md:ml-4">{item.name}</span>
-                    )}
+                    {editingId === item._id ?
+                      <Input
+                        color="white"
+                        placeholder="Enter category name"
+                        containerClasses=" mr-20 items-center animate-in fade-in slide-in-from-top-2"
+                        id="categoryInput"
+                        onChange={(e) => setName(e.target.value)}
+                        value={name}
+                        onClick={(e) => e.stopPropagation()}
+                      />
+                      : (
+                        <span className="m-2 md:ml-4">{item.name}</span>
+                      )}
 
                     <FaChevronDown className="transition-transform duration-300 shrink-0 ease-[cubic-bezier(0.87,0,0.13,1)] group-data-[state=open]:rotate-180" />
                   </Accordion.Trigger>
@@ -199,10 +200,15 @@ const Categories: FC<CategoriesProps> = ({
                           />
                           <span>Cancel</span>
                         </div>
-                        : <MdDelete
-                          className="h-8 w-full"
-                          onClick={() => handleDeleteCategory(item._id)}
-                        />
+                        :
+                        <ConfirmDeleteModal
+                          title={`Delete Category?`}
+                          onConfirm={() => handleDeleteCategory(item._id)}
+                        >
+                          <MdDelete
+                            className="h-8 w-full "
+                          />
+                        </ConfirmDeleteModal>
                       }
                     </div>
                   </div>
