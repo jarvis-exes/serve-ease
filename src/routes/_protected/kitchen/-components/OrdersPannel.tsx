@@ -13,6 +13,7 @@ interface OrdersPannelProps {
     onAction: (id: string) => void;
     showButton: boolean;
     showPrice: boolean;
+    showDeleteButton: boolean;
 }
 
 export const OrdersPannel = ({
@@ -24,6 +25,7 @@ export const OrdersPannel = ({
     onAction,
     showButton,
     showPrice,
+    showDeleteButton,
 }: OrdersPannelProps) => {
     const textClass = accentColor === "orange" ? "text-orange" : "text-green";
     const bgClass = accentColor === "orange" ? "bg-orange" : "bg-green";
@@ -54,6 +56,7 @@ export const OrdersPannel = ({
                                 onAction={onAction}
                                 showButton={showButton}
                                 showPrice={showPrice}
+                                showDeleteButton={showDeleteButton}
                             />
                         ))}
                     </div>

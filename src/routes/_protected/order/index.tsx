@@ -17,7 +17,7 @@ import { useNotificationSound } from "@/utils/utils";
 const OrderPage = () => {
   const isMobile = useIsMobile();
   const outletId = getOutletId();
-  const play = useNotificationSound();
+  const play = useNotificationSound('./order_ready_eng.mp3');
 
   const { data, isLoading } = useGetMenu(outletId);
 

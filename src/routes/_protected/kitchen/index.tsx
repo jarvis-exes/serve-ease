@@ -17,7 +17,8 @@ function KitchenPage() {
     const navigate = useNavigate({ from: Route.fullPath });
     const isKitchen = useIsKitchen();
     const isMobile = useIsMobile();
-    const play = useNotificationSound();
+    const playNewOrderSound = useNotificationSound('./new_order_hin.mp3');
+    const playDeleteSound = useNotificationSound('./deleted_order_hin.mp3');
 
     const [orders, setOrders] = useState<Order[]>([]);
 
@@ -30,7 +31,9 @@ function KitchenPage() {
 
     useEffect(() => {
         socket.emit("sync_orders", {});
-        socket.on("orders_synced", (orders: Order[]) => setOrders(orders));
+        socket.on("orders_synced", (orders: Order[]) => {
+            setOrders(orders)
+        });
         socket.on("get_ready_order", (order: Order) => {
             setOrders((prev) => prev.map((o) => (o._id === order._id ? order : o)));
         });
@@ -40,7 +43,12 @@ function KitchenPage() {
         socket.on("new_order", (order: Order) => {
             setOrders((prev) => [...prev, order]);
             toast.info(`New Order #${order.tokenNumber}`);
-            play();
+            playNewOrderSound();
+        });
+        socket.on("order_deleted", ({ orderId }) => {
+            setOrders((prev) => prev.filter((o) => o._id !== orderId));
+            toast.info(`Order Deleted`);
+            playDeleteSound();
         });
 
         return () => {
@@ -48,6 +56,7 @@ function KitchenPage() {
             socket.off("orders_synced");
             socket.off("get_ready_order");
             socket.off("order_completed");
+            socket.off("order_deleted");
         };
     }, []);
 
@@ -90,6 +99,7 @@ function KitchenPage() {
                         onAction={handleOrderReady}
                         showButton={isKitchen}
                         showPrice={!isKitchen}
+                        showDeleteButton={!isKitchen}
                     />
                 )}
 
@@ -103,6 +113,7 @@ function KitchenPage() {
                         onAction={handleOrderComplete}
                         showButton={!isKitchen}
                         showPrice={!isKitchen}
+                        showDeleteButton={!isKitchen}
                     />
                 )}
 

@@ -3,6 +3,7 @@ import { OrderTypeChip } from "./OrderTypeChip";
 import { sizeColors } from "../../-constants";
 import type { Order } from "@/models";
 import Button from "@/components/common/Button";
+import { OrderActionMenu } from "./OrderActionMenu";
 
 interface OrderCardProps {
     order: Order;
@@ -12,6 +13,7 @@ interface OrderCardProps {
     onAction: (id: string) => void;
     showButton: boolean;
     showPrice: boolean;
+    showDeleteButton: boolean;
 }
 
 export const OrderCard: React.FC<OrderCardProps> = ({
@@ -22,7 +24,9 @@ export const OrderCard: React.FC<OrderCardProps> = ({
     onAction,
     showButton,
     showPrice,
-}) => (
+    showDeleteButton
+}) => {
+    return (
     <div
         className={twMerge(
             "grow shrink-0 flex flex-col justify-between min-w-fit border-2 rounded-xl p-3 text-nowrap bg-white animate-pop-in",
@@ -72,6 +76,8 @@ export const OrderCard: React.FC<OrderCardProps> = ({
                     {buttonLabel}
                 </Button>
             )}
+            {showDeleteButton && <OrderActionMenu orderId={order._id} />}
         </div>
     </div>
 );
+}

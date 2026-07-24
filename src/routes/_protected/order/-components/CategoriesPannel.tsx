@@ -13,21 +13,44 @@ type CategoriesPannelProps = {
   isLoading: boolean;
 };
 
+const STORAGE_KEY = "orderCategoriesOpenState";
+
 const CategoriesPannel: FC<CategoriesPannelProps> = ({
   selectItems, categories, isLoading
 }) => {
 
   const [selectedSubCategoryId, setSelectedSubCategoryId] = useState<string | null>(null);
+  const [openItems, setOpenItems] = useState<string[]>([]);
 
   const handleSelect = (subCategory: OrderSubCategory) => {
     setSelectedSubCategoryId(subCategory._id);
     selectItems(subCategory.items);
   }
 
+  useEffect(() => {
+    const saved = window.localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved) as string[];
+        setOpenItems(parsed);
+      } catch {
+        setOpenItems([]);
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(openItems));
+  }, [openItems]);
+
   useEffect(()=>{
-    if(categories)
-    selectItems(categories[0].subCategories[0].items)
-  },[categories])
+    if(categories) {
+      if (openItems.length === 0) {
+        selectItems(categories[0].subCategories[0].items);
+        setOpenItems([categories[0]._id]);
+      }
+    }
+  },[categories, openItems, selectItems])
 
   return (
     <Card shadow="none" className={twMerge("min-w-1/2 md:min-w-1/4 max-w-12 p-0 pb-2 bg-linear-to-b from-slate-200 to-slate-100")}>
@@ -38,6 +61,8 @@ const CategoriesPannel: FC<CategoriesPannelProps> = ({
 
         <Accordion.Root
           type="multiple"
+          value={openItems}
+          onValueChange={(value) => setOpenItems(value as string[])}
           className="w-full h-full flex flex-col gap-2 p-2 overflow-auto"
         >
           {isLoading ? (
