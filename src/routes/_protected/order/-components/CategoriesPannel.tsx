@@ -16,46 +16,35 @@ type CategoriesPannelProps = {
 const STORAGE_KEY = "orderCategoriesOpenState";
 
 const CategoriesPannel: FC<CategoriesPannelProps> = ({
-  selectItems, categories, isLoading
+  selectItems,
+  categories,
+  isLoading,
 }) => {
-
   const [selectedSubCategoryId, setSelectedSubCategoryId] = useState<string | null>(null);
-  const [openItems, setOpenItems] = useState<string[]>([]);
+
+  const [openItems, setOpenItems] = useState<string[]>(() => {
+    if (typeof window === "undefined") return [];
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      return saved ? JSON.parse(saved) : [];
+    } catch {
+      return [];
+    }
+  });
 
   const handleSelect = (subCategory: OrderSubCategory) => {
     setSelectedSubCategoryId(subCategory._id);
     selectItems(subCategory.items);
-  }
+  };
 
   useEffect(() => {
-    const saved = window.localStorage.getItem(STORAGE_KEY);
-    if (saved) {
-      try {
-        const parsed = JSON.parse(saved) as string[];
-        setOpenItems(parsed);
-      } catch {
-        setOpenItems([]);
-      }
-    }
-  }, []);
-
-  useEffect(() => {
-    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(openItems));
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(openItems));
   }, [openItems]);
 
-  useEffect(()=>{
-    if(categories) {
-      if (openItems.length === 0) {
-        selectItems(categories[0].subCategories[0].items);
-        setOpenItems([categories[0]._id]);
-      }
-    }
-  },[categories, openItems, selectItems])
-
   return (
-    <Card shadow="none" className={twMerge("min-w-1/2 md:min-w-1/4 max-w-12 p-0 pb-2 bg-linear-to-b from-slate-200 to-slate-100")}>
+    <Card shadow="none" className={twMerge("w-full md:w-1/4 max-w-xs p-0 pb-2 bg-linear-to-b from-slate-200 to-slate-100")}>
       <div className="h-full flex flex-col">
-        <div className="px-3 pt-3 pb-2 rounded-t-2xl text-2xl text-slate-800">
+        <div className="px-3 pt-3 pb-2 rounded-t-2xl text-2xl text-slate-800 font-semibold">
           Categories
         </div>
 
@@ -66,7 +55,7 @@ const CategoriesPannel: FC<CategoriesPannelProps> = ({
           className="w-full h-full flex flex-col gap-2 p-2 overflow-auto"
         >
           {isLoading ? (
-            <div>
+            <div className="flex flex-col gap-2">
               <Skeleton height={60} borderRadius={20} />
               <Skeleton height={60} borderRadius={20} />
               <Skeleton height={60} borderRadius={20} />
@@ -76,7 +65,7 @@ const CategoriesPannel: FC<CategoriesPannelProps> = ({
               <Accordion.Item
                 value={category._id}
                 key={category._id}
-                className="bg-white rounded-2xl"
+                className="bg-white rounded-2xl overflow-hidden"
               >
                 <Accordion.Header className="group flex relative items-center">
                   <Accordion.Trigger
@@ -89,21 +78,23 @@ const CategoriesPannel: FC<CategoriesPannelProps> = ({
 
                 <Accordion.Content className="overflow-hidden transition-all data-[state=closed]:animate-slide-up data-[state=open]:animate-slide-down">
                   <ul className="flex flex-col gap-2 p-1 pt-2 md:p-2">
-                    {category.subCategories.map(subCategory =>
-                      subCategory.isActive &&
-                      <li
-                        key={subCategory._id}
-                        className={twMerge(
-                          "px-3 py-2 pl-4 md:pl-8 md:py-4 rounded-2xl hover:bg-gray-100 cursor-pointer",
-                          selectedSubCategoryId === subCategory._id
-                            ? "bg-slate-200 border-b-4 border-gray-500 hover:bg-gray-200"
-                            : "",
-                        )}
-                        onClick={() => handleSelect(subCategory)}
-                      >{subCategory.name}</li>
-                    )}
+                    {category.subCategories
+                      ?.filter((sub) => sub.isActive)
+                      .map((subCategory) => (
+                        <li
+                          key={subCategory._id}
+                          className={twMerge(
+                            "px-3 py-2 pl-4 md:pl-8 md:py-4 rounded-2xl hover:bg-gray-100 cursor-pointer transition-colors",
+                            selectedSubCategoryId === subCategory._id
+                              ? "bg-slate-200 border-b-4 border-gray-500 hover:bg-gray-200"
+                              : ""
+                          )}
+                          onClick={() => handleSelect(subCategory)}
+                        >
+                          {subCategory.name}
+                        </li>
+                      ))}
                   </ul>
-
                 </Accordion.Content>
               </Accordion.Item>
             ))
