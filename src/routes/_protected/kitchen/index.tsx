@@ -48,7 +48,7 @@ function KitchenPage() {
         socket.on("order_deleted", ({ orderId }) => {
             setOrders((prev) => prev.filter((o) => o._id !== orderId));
             toast.info(`Order Deleted`);
-            playDeleteSound();
+            isKitchen && playDeleteSound();
         });
 
         return () => {

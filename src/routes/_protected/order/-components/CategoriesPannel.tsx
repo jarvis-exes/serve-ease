@@ -42,7 +42,7 @@ const CategoriesPannel: FC<CategoriesPannelProps> = ({
   }, [openItems]);
 
   return (
-    <Card shadow="none" className={twMerge("w-full md:w-1/4 max-w-xs p-0 pb-2 bg-linear-to-b from-slate-200 to-slate-100")}>
+    <Card shadow="none" className={twMerge("min-w-1/2 md:min-w-1/4 max-w-12 p-0 pb-2 bg-linear-to-b from-slate-200 to-slate-100")}>
       <div className="h-full flex flex-col">
         <div className="px-3 pt-3 pb-2 rounded-t-2xl text-2xl text-slate-800 font-semibold">
           Categories
